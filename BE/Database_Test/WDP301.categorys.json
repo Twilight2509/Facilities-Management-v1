@@ -1,0 +1,20 @@
+[
+  {
+    "categoryName": "Electronics",
+    "image": "electronics.jpg",
+    "createdBy": "admin",
+    "modifiedBy": "admin"
+  },
+  {
+    "categoryName": "Books",
+    "image": "books.jpg",
+    "createdBy": "admin",
+    "modifiedBy": "editor"
+  },
+  {
+    "categoryName": "Clothing",
+    "image": "clothing.jpg",
+    "createdBy": "user123",
+    "modifiedBy": "user456"
+  }
+]

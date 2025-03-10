@@ -1,0 +1,21 @@
+server {
+  listen 5152 ssl;
+  server_name localhost;
+  
+  location / {
+    # Thêm CORS header
+    add_header Access-Control-Allow-Origin *;
+    add_header Access-Control-Allow-Methods 'GET, POST, PUT, DELETE, OPTIONS';
+    add_header Access-Control-Allow-Headers 'Origin, X-Requested-With, Content-Type, Accept, Authorization';
+
+    # Xử lý OPTIONS request
+    if ($request_method = 'OPTIONS') {
+      add_header Access-Control-Allow-Origin *;
+      add_header Access-Control-Allow-Methods 'GET, POST, PUT, DELETE, OPTIONS';
+      add_header Access-Control-Allow-Headers 'Origin, X-Requested-With, Content-Type, Accept, Authorization';
+      return 204;
+    }
+
+    proxy_pass http://localhost:5152;
+  }
+}

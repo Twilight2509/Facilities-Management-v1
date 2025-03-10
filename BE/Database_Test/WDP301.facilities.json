@@ -1,0 +1,42 @@
+[{
+  "_id": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "name": "Gym",
+  "category": "60c8c3bf04f49b4a5cc658e1",
+  "image": "gym.jpg",
+  "status": 1,
+  "location": "Building A, Floor 2",
+  "description": "Fully equipped gym with modern facilities.",
+  "shortTitle": "Fitness Center",
+  "modifiedBy": "admin",
+  "createdBy": "user123"
+},
+{
+  "_id": {
+    "$oid": "65e04ade8f873474db54bb65"
+  },
+  "name": "Swimming Pool",
+  "category": "60c8c3bf04f49b4a5cc658e2",
+  "image": "pool.jpg",
+  "status": 1,
+  "location": "Adjacent to Building B",
+  "description": "Olympic-size swimming pool suitable for all ages.",
+  "shortTitle": "Pool",
+  "modifiedBy": "admin",
+  "createdBy": "user456"
+},
+{
+  "_id": {
+    "$oid": "65e04ade8f873474db54bb66"
+  },
+  "name": "Conference Room",
+  "category": "60c8c3bf04f49b4a5cc658e3",
+  "image": "conference.jpg",
+  "status": 1,
+  "location": "Building C, Floor 1",
+  "description": "State-of-the-art conference room for meetings and presentations.",
+  "shortTitle": "Conference Hall",
+  "modifiedBy": "admin",
+  "createdBy": "user789"
+}]

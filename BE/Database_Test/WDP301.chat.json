@@ -1,0 +1,17 @@
+[
+  {
+    "userId": "670ea4fe1cd437ba6c692548",
+    "content": "Hello, how can I help you?",
+    "type": "text"
+  },
+  {
+    "userId": "670ea4fe1cd437ba6c692548",
+    "content": "Thanks for your assistance!",
+    "type": "text"
+  },
+  {
+    "userId": "670ea4fe1cd437ba6c692548",
+    "content": "Can you provide more details?",
+    "type": "text"
+  }
+]

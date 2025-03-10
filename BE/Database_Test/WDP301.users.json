@@ -1,0 +1,19 @@
+{
+  "_id": {
+    "$oid": "670ea4fe1cd437ba6c692548"
+  },
+  "roleId": {
+    "$oid": "6704b034dca1fe26d189f83b"
+  },
+  "name": "Pham Duc Manh (K16_HL)",
+  "email": "manhpdhe160198@fpt.edu.vn",
+  "avatar": "https://lh3.googleusercontent.com/a/ACg8ocIY40luQDhEe8fTP3iMWV1BG_HSiQiJsH_Y0UqYhcn3zG4Tcw=s96-c",
+  "status": 1,
+  "createdAt": {
+    "$date": "2024-10-15T17:23:10.777Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-15T17:23:10.777Z"
+  },
+  "__v": 0
+}

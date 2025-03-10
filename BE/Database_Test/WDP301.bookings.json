@@ -1,0 +1,373 @@
+[{
+  "_id": {
+    "$oid": "65eab91ab21e3bf7b7c3a9f3"
+  },
+  "booker": {
+    "$oid": "65bc5d40a8e5961c0621d9c3"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb65"
+  },
+  "startDate": {
+    "$date": "2024-03-27T12:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-03-20T18:00:00.000Z"
+  },
+  "slot": "Slot1",
+  "weeks": " 2025-W09",
+  "weekdays": "Friday",
+  "status": 3,
+  "createdAt": {
+    "$date": "2025-01-08T07:07:06.734Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-11T10:22:58.701Z"
+  },
+  "__v": 0,
+  "reason": "Tao ghét mày thì reject. Thế thôi"
+},
+{
+  "_id": {
+    "$oid": "65eab963080431f23e2791df"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": {
+    "$date": "2024-02-29T12:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-01-25T18:00:00.000Z"
+  },
+  "slot": "Slot1",
+  "weeks": " 2025-W09",
+  "weekdays": "Friday",
+  "status": 3,
+  "createdAt": {
+    "$date": "2024-03-08T07:08:19.014Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-11T10:13:37.701Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed2e881d8bca9773b5abe6"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": {
+    "$date": "2024-03-10T07:30:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-03-10T09:00:00.000Z"
+  },
+  "slot": "1",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 3,
+  "createdAt": {
+    "$date": "2024-03-10T03:52:40.218Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-11T10:13:37.701Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed535965148b845206d61a"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": {
+    "$date": "2024-03-10T07:30:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-03-10T09:00:00.000Z"
+  },
+  "slot": "slot1",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 3,
+  "createdAt": {
+    "$date": "2024-03-10T06:29:45.967Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-11T10:13:37.701Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed535f65148b845206d61d"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": {
+    "$date": "2024-03-10T07:30:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-03-10T09:00:00.000Z"
+  },
+  "slot": "slot1",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 3,
+  "createdAt": {
+    "$date": "2024-03-10T06:29:51.655Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-11T10:13:37.701Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed536665148b845206d620"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": {
+    "$date": "2024-03-10T07:30:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-03-10T09:00:00.000Z"
+  },
+  "slot": "slot1",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 3,
+  "createdAt": {
+    "$date": "2024-03-10T06:29:58.622Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-11T10:13:37.701Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed53a1ca0f5b13098b0928"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": {
+    "$date": "2024-03-10T09:10:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-03-10T10:40:00.000Z"
+  },
+  "slot": "slot2",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 3,
+  "createdAt": {
+    "$date": "2024-03-10T06:30:57.326Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-11T10:13:37.701Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed545945a3d5557f8cc01c"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": "T10:50:00.000Z",
+  "endDate": "T12:40:00.000Z",
+  "slot": "slot3",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 2,
+  "createdAt": {
+    "$date": "2024-03-10T06:34:01.453Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-10T06:34:01.453Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed54ca45a3d5557f8cc020"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": "T15:30:00.000Z",
+  "endDate": "T17:20:00.000Z",
+  "slot": "slot5",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 2,
+  "createdAt": {
+    "$date": "2024-03-10T06:35:54.428Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-10T06:35:54.428Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed6107fb293a3d4a4c7874"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": "T17:40:00.000Z",
+  "endDate": "T17:30:00.000Z",
+  "slot": "slot6",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 2,
+  "createdAt": {
+    "$date": "2024-03-10T07:28:07.926Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-10T07:28:07.926Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed613afb293a3d4a4c7877"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": "",
+  "endDate": "",
+  "slot": "Slot7",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 2,
+  "createdAt": {
+    "$date": "2024-03-10T07:28:58.341Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-10T07:28:58.341Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed61d75e3f9684b5511fac"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": "T20:40:00.000Z",
+  "endDate": "T20:30:00.000Z",
+  "slot": "Slot8",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 2,
+  "createdAt": {
+    "$date": "2024-03-10T07:31:35.898Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-10T07:31:35.898Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed80d1a7356463c22c4d28"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": {
+    "$date": "2022-03-10T22:10:00.000Z"
+  },
+  "endDate": {
+    "$date": "2022-03-10T22:00:00.000Z"
+  },
+  "slot": "Slot9",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 3,
+  "createdAt": {
+    "$date": "2024-03-10T09:43:45.138Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-11T10:13:37.701Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed8101a7356463c22c4d2b"
+  },
+  "booker": {
+    "$oid": "65a8d48dcc27741e746f7b59"
+  },
+  "facilityId": {
+    "$oid": "65e04ade8f873474db54bb64"
+  },
+  "startDate": {
+    "$date": "2022-03-10T07:30:00.000Z"
+  },
+  "endDate": {
+    "$date": "2022-03-10T09:00:00.000Z"
+  },
+  "slot": "Slot1",
+  "weeks": " 2025-W10",
+  "weekdays": "Friday",
+  "status": 3,
+  "createdAt": {
+    "$date": "2024-03-10T09:44:33.502Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-11T10:13:37.701Z"
+  },
+  "__v": 0
+}]

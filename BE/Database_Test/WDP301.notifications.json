@@ -1,0 +1,23 @@
+[
+  {
+    "userId": "670ea4fe1cd437ba6c692548",
+    "content": "Your booking has been confirmed.",
+    "path": "/bookings/6502f1e1e2b2c6c37f4c2e2e",
+    "name": "Booking Confirmation",
+    "read": false
+  },
+  {
+    "userId": "670ea4fe1cd437ba6c692548",
+    "content": "New facility added to your location.",
+    "path": "/facilities/6502f4f4f5b5f9f50f7f5f5f",
+    "name": "New Facility",
+    "read": true
+  },
+  {
+    "userId": "670ea4fe1cd437ba6c692548",
+    "content": "You have a new message from support.",
+    "path": "/chat/6502c1efef3d4c6d29f4d3c3",
+    "name": "New Message",
+    "read": false
+  }
+]

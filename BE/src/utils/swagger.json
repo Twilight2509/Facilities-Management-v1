@@ -1,0 +1,306 @@
+{
+  "swagger": "2.0",
+  "info": {
+      "title": "Manage Facilities API",
+      "description": "API description in Markdown.",
+      "version": "1.0.0"
+  },
+  "host": "localhost:5152",
+  "basePath": "/",
+  "tags": [
+      {
+          "name": "user",
+          "description": "Everything about user"
+      },
+      {
+          "name": "facility",
+          "description": "Everything about facility"
+      },
+      {
+          "name": "category",
+          "description": "Everything about category"
+      }
+  ],
+  "schemes": [
+      "http"
+  ],
+  "paths": {
+      "/users": {
+          "get": {
+              "tags": [
+                  "user"
+              ],
+              "summary": "Returns a list of users.",
+              "description": "Optional extended description",
+              "produces": [
+                  "application/json"
+              ],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  }
+              }
+          }
+      },
+      "/users/{id}": {
+          "get": {
+              "tags": [
+                  "user"
+              ],
+              "summary": "Return an user detail",
+              "description": "Get user detail data",
+              "parameters": [
+                  {
+                      "name": "id",
+                      "in": "path",
+                      "description": "ID of user to get detail",
+                      "required": true,
+                      "type": "string"
+                  }
+              ],
+              "produces": [
+                  "application/json"
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Get user detail"
+                  }
+              }
+          },
+          "put": {
+              "tags": [
+                  "user"
+              ],
+              "summary": "Update an user",
+              "description": "Update an user",
+              "parameters": [
+                  {
+                      "name": "id",
+                      "in": "path",
+                      "description": "ID of user to update",
+                      "required": true,
+                      "type": "string"
+                  },
+                  {
+                      "in": "body",
+                      "name": "body",
+                      "description": "User object that need to be updated",
+                      "required": true,
+                      "schema": {
+                          "$ref": "#/definitions/User"
+                      }
+                  }
+              ],
+              "produces": [
+                  "application/json"
+              ],
+              "responses": {
+                  "200": {
+                      "description": "User updated"
+                  }
+              }
+          }
+      },
+      "/facility/create": {
+          "post": {
+              "tags": [
+                  "facility"
+              ],
+              "summary": "Create a facility",
+              "description": "Create new facility",
+              "parameters": [
+                  {
+                      "in": "body",
+                      "name": "body",
+                      "description": "Facility object that need to be created",
+                      "required": true,
+                      "schema": {
+                          "$ref": "#/definitions/Facility"
+                      }
+                  }
+              ],
+              "produces": [
+                  "application/json"
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Facility created"
+                  }
+              }
+          }
+      },
+      "/facility/import": {
+          "post": {
+              "tags": [
+                  "facility"
+              ],
+              "summary": "Import facilities",
+              "description": "Import facilities from an Excel file",
+              "parameters": [
+                  {
+                      "in": "formData",
+                      "name": "file",
+                      "description": "Excel file containing facility data",
+                      "required": true,
+                      "type": "file"
+                  }
+              ],
+              "produces": [
+                  "application/json"
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Facilities imported successfully"
+                  },
+                  "400": {
+                      "description": "Invalid file format or error during import"
+                  }
+              }
+          }
+      },
+      "/facility/{id}": {
+    "put": {
+        "tags": [
+            "facility"
+        ],
+        "summary": "Update a facility",
+        "description": "Update details of an existing facility",
+        "parameters": [
+            {
+                "name": "id",
+                "in": "path",
+                "description": "ID of facility to update",
+                "required": true,
+                "type": "string"
+            },
+            {
+                "in": "body",
+                "name": "body",
+                "description": "Facility object that needs to be updated",
+                "required": true,
+                "schema": {
+                    "$ref": "#/definitions/Facility"
+                }
+            }
+        ],
+        "produces": [
+            "application/json"
+        ],
+        "responses": {
+            "200": {
+                "description": "Facility updated successfully",
+                "schema": {
+                    "$ref": "#/definitions/Facility"
+                }
+            },
+            "400": {
+                "description": "Invalid ID or validation error"
+            },
+            "404": {
+                "description": "Facility not found"
+            }
+        }
+    }
+},
+      "/category/create": {
+          "post": {
+              "tags": [
+                  "category"
+              ],
+              "summary": "Create a category",
+              "description": "Create new category",
+              "parameters": [
+                  {
+                      "in": "body",
+                      "name": "body",
+                      "description": "Name of category",
+                      "required": true,
+                      "schema": {
+                          "$ref": "#/definitions/Category"
+                      }
+                  }
+              ],
+              "produces": [
+                  "application/json"
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Category created"
+                  }
+              }
+          }
+      },
+      "/category/list": {
+          "get": {
+              "tags": [
+                  "category"
+              ],
+              "summary": "Get list category",
+              "description": "Get all categories",
+              "produces": [
+                  "application/json"
+              ],
+              "responses": {
+                  "200": {
+                      "description": "List categories"
+                  }
+              }
+          }
+      }
+  },
+  "definitions": {
+      "User": {
+          "type": "object",
+          "properties": {
+              "name": {
+                  "type": "string"
+              },
+              "email": {
+                  "type": "string"
+              },
+              "avatar": {
+                  "type": "string"
+              },
+              "status": {
+                  "type": "integer",
+                  "format": "int32"
+              },
+              "address": {
+                  "type": "string"
+              }
+          }
+      },
+      "Facility": {
+          "type": "object",
+          "properties": {
+              "name": {
+                  "type": "string"
+              },
+              "category": {
+                  "type": "string"
+              },
+              "image": {
+                  "type": "string"
+              },
+              "status": {
+                  "type": "integer",
+                  "format": "int32"
+              },
+              "location": {
+                  "type": "string"
+              },
+              "description": {
+                  "type": "string"
+              }
+          }
+      },
+      "Category": {
+          "type": "object",
+          "properties": {
+              "categoryName": {
+                  "type": "string"
+              }
+          }
+      }
+  }
+}

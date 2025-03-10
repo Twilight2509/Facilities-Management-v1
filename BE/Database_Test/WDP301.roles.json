@@ -1,0 +1,50 @@
+[{
+  "_id": {
+    "$oid": "65bc5c56a8e5961c0621d9b3"
+  },
+  "id": "615e74a1b54597001e8b9180",
+  "roleName": "Admin",
+  "status": 1,
+  "createdBy": "admin_user",
+  "modifiedBy": "admin_user",
+  "createdAt": "2021-10-15T10:20:30.123Z",
+  "updatedAt": "2021-10-15T10:20:30.123Z"
+},
+{
+  "_id": {
+    "$oid": "65bc5c56a8e5961c0621d9b4"
+  },
+  "id": "615e74a1b54597001e8b9182",
+  "roleName": "Moderator",
+  "status": 1,
+  "createdBy": "admin_user",
+  "modifiedBy": "moderator_user",
+  "createdAt": "2021-10-16T08:15:40.456Z",
+  "updatedAt": "2021-10-16T08:15:40.456Z"
+},
+{
+  "_id": {
+    "$oid": "65bc5c56a8e5961c0621d9b5"
+  },
+  "id": "615e74a1b54597001e8b9184",
+  "roleName": "User",
+  "status": 1,
+  "createdBy": "admin_user",
+  "modifiedBy": "user123",
+  "createdAt": "2021-10-17T15:35:50.789Z",
+  "updatedAt": "2021-10-17T15:35:50.789Z"
+},
+{
+  "_id": {
+    "$oid": "65dd884c75fbf9312982e7db"
+  },
+  "roleName": "Student",
+  "status": 1,
+  "createdAt": {
+    "$date": "2024-02-27T06:59:24.942Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-27T06:59:24.942Z"
+  },
+  "__v": 0
+}]
