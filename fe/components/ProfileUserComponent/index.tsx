@@ -15,6 +15,8 @@ const ProfileUserComponent = () => {
   const [address, setAddress] = useState("");
   const [role, setRole] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  let item = null;
+  let userId: string = ''; // Khai báo biến userId ở ngoài phạm vi của block
   const toast = useRef<any>(null);
 
 
