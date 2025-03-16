@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --blue-500: #007bff;
+    --yellow-500: #ffc107;
+    --green-500: #28a745;
+    --blue-400: #0056b3;
+    --yellow-400: #d39e00;
+    --green-400: #218838;
+  }
+  
