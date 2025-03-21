@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import Logo from "../../public/Logo_facility.svg";
+import Logo from "../../public/Logo_facility.png";
 import Image from "next/image";
 import { Badge } from "primereact/badge";
 import { useRouter } from "next/navigation";
