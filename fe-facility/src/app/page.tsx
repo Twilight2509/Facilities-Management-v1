@@ -195,7 +195,7 @@ export default function Home() {
       {/* search bar */}
       <div className="relative">
         <img
-          src="/bannerfpt.jpg"
+          src="/bannerfpt.webp"
           alt="loading..."
           className="w-full filter brightness-100 h-screen object-cover"
         />
