@@ -70,7 +70,7 @@ export default function Login() {
           <Link href={"/"}>
             <Image
               src={Logo}
-              width={150}
+              width={300}
               height={60}
               alt="logo"
               className="mt-2 ml-5 rounded-full cursor-pointer text-red-500"
