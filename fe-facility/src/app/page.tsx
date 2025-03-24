@@ -186,19 +186,20 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <div >
       <NavbarComponent
         colorNavbarOne={colorNavbarOne}
         colorNavbarTwo={colorNavbarTwo}
+        
       />
 
       {/* search bar */}
       <div className="relative">
-        <img
-          src="/bannerfpt.webp"
-          alt="loading..."
-          className="w-full filter brightness-100 h-screen object-cover"
-        />
+      <img
+  src="/bannerfpt.webp"
+  alt="loading..."
+  className="w-full filter brightness-100 h-screen object-cover rounded-b-xl"
+/>
         <div className="md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 flex items-center justify-center">
           <InputText
             className="outline-none p-3 shadow-none w-96 md:rounded-l-lg"
@@ -207,10 +208,15 @@ export default function Home() {
           />
           <button
             onClick={handleSearch}
-            className="bg-blue-500 hover:bg-blue-300 p-3 md:rounded-r-lg"
+            className="bg-orange-500 hover:bg-blue-300 p-3 md:rounded-r-lg"
           >
             <span className="pi pi-search text-white h-full"></span>
           </button>
+        </div>
+      </div>
+      <div>
+        <div className="text-start mt-12 font-bold text-2x1 size-">
+          <h1>About us</h1>
         </div>
       </div>
 
@@ -278,6 +284,7 @@ export default function Home() {
           {role === "Student" && (
             <>
               <h2 className="text-lg font-semibold mb-2">Chat Box</h2>
+              <div className="border-b-4 border-blue-300 mb-2"></div> 
               <div className="flex flex-col space-y-2">
                 {messages.map((message, index) => (
                   <div
