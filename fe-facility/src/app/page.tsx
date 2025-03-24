@@ -198,7 +198,8 @@ export default function Home() {
       <img
   src="/bannerfpt.webp"
   alt="loading..."
-  className="w-full filter brightness-100 h-screen object-cover rounded-b-xl"
+  className="w-full filter brightness-100 h-screen object-cover"
+  style={{ borderRadius: "0 0 10% 10%" }} 
 />
         <div className="md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 flex items-center justify-center">
           <InputText
@@ -208,17 +209,13 @@ export default function Home() {
           />
           <button
             onClick={handleSearch}
-            className="bg-orange-500 hover:bg-blue-300 p-3 md:rounded-r-lg"
+            className="bg-orange-500 hover:bg-orange-300 p-3 md:rounded-r-lg"
           >
             <span className="pi pi-search text-white h-full"></span>
           </button>
         </div>
       </div>
-      <div>
-        <div className="text-start mt-12 font-bold text-2x1 size-">
-          <h1>About us</h1>
-        </div>
-      </div>
+      
 
       <div>
         <div className="text-center mt-12 font-bold text-2xl">
