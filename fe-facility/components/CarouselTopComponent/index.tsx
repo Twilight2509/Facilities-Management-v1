@@ -81,8 +81,8 @@ export default function CarouselTopComponent(props: any) {
     <div className="px-16">
       <Carousel
         value={data}
-        numVisible={3}
-        numScroll={3}
+        numVisible={4}
+        numScroll={4}
         circular
         prevIcon={
           <div className="bg-gray-300 p-3">

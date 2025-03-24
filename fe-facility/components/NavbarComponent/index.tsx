@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import Logo from "../../public/Logo_facility.png";
+import Logo from "../../public/Logo_facility.svg";
 import Image from "next/image";
 import { Badge } from "primereact/badge";
 import { useRouter } from "next/navigation";
@@ -149,8 +149,8 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({
           className="logo-container cursor-pointer"
           onClick={() => router.push("/")}
         >
-          <Image src={Logo} height={100} style={{
-            marginTop: "0px"
+          <Image src={Logo} width={125} height={50} style={{
+            marginTop: "35px"
           }} alt="logo" />
         </div>
         <div
@@ -164,7 +164,7 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({
           {!isLogin && (
             <div>
               <button
-                className="bg-white hover:bg-gray-800 p-2 rounded-lg"
+                className="bg-gray-950 hover:bg-gray-800 p-2 text-white rounded-lg"
                 onClick={() => router.push("/login")}
               >
                 Đăng nhập

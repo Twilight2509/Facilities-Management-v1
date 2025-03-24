@@ -77,11 +77,11 @@ export default function CarouselComponent(props: any) {
   };
 
   return (
-    <div className="px-64">
+    <div className="px-32">
       <Carousel
         value={cate}
-        numVisible={1}
-        numScroll={1}
+        numVisible={3}
+        numScroll={3}
         circular
         prevIcon={
           <div className="bg-gray-300 p-3">

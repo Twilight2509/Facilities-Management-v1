@@ -7,12 +7,15 @@ import categoryRouter from './category.router.js';
 import facilityRouter from './facility.router.js';
 import swaggerUi from 'swagger-ui-express';
 import commentRouter from './comment.router.js';
-// import swaggerDocument from '../utils/swagger.json' assert { type: 'json' };
 import chatRouter from './chat.router.js';
 import logRouter from './log.router.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const swaggerDocument = require('../utils/swagger.json');
+
 const router = express.Router();
 
-// router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 router.use("/users", userRouter);
 router.use("/role", rolerRouter);
 router.use("/booking", bookingRouter);
@@ -23,4 +26,4 @@ router.use("/comment", commentRouter);
 router.use("/chat", chatRouter);
 router.use("/log", logRouter);
 
-export default router; 
+export default router;

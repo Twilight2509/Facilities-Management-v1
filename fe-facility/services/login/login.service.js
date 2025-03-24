@@ -17,26 +17,22 @@ const login = (url) => {
                     localStorage.setItem("accessToken", JSON.stringify(data?.token?.token));
                     localStorage.setItem("user", JSON.stringify(data?.user));
 
-                    // Kiểm tra nếu có URL trước đó đã được lưu trong localStorage
-                    const previousPath = localStorage.getItem("previousPath");
-
-                    if (previousPath) {
-                        localStorage.removeItem("previousPath"); // Xóa đường dẫn sau khi sử dụng
-                        router.push(previousPath);
-                    } else if (response.data.user.roleId.roleName === 'Admin') {
-                        setTimeout(() => {
-                            router.push('/dashboard');
-                        }, 1000);
+                    if (response.data.user.roleId.roleName === 'Admin') {
+                        setTimeout(
+                            router.push('/dashboard')
+                            , 1000)
                     } else {
-                        router.push('/');
+                        router.push('/')
                     }
                 }
+
+                // throw new Error(data?.message || data);
             })
             .catch((error) => {
+                // setError(error?.message);
                 setError(error);
-            });
+            })
     };
-
     return { loading, error, handleGoogle, setError };
 };
 

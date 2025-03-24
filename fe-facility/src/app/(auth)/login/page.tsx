@@ -2,7 +2,7 @@
 import Image from "next/image";
 import LoginComponent from "../../../../components/LoginComponent";
 import Link from "next/link";
-import Logo from "../../../../public/Logo_facility.png";
+import Logo from "../../../../public/icons8-logo.svg";
 import { useState, useEffect } from "react";
 import { getCategory } from "../../../../services/category.api";
 import { StorageService } from "../../../../services/storage";
@@ -70,7 +70,7 @@ export default function Login() {
           <Link href={"/"}>
             <Image
               src={Logo}
-              width={300}
+              width={150}
               height={60}
               alt="logo"
               className="mt-2 ml-5 rounded-full cursor-pointer text-red-500"
@@ -80,7 +80,44 @@ export default function Login() {
         </div>
 
         <div className="w-screen h-screen flex flex-col items-center justify-center">
-        <LoginComponent />
+          <div className="px-32">
+            <Carousel
+              value={cate}
+              numVisible={3}
+              numScroll={3}
+              circular
+              prevIcon={
+                <div className="bg-gray-300 p-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="16"
+                    width="14"
+                    viewBox="0 0 448 512"
+                  >
+                    <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                  </svg>
+                </div>
+              }
+              nextIcon={
+                <div className="bg-gray-300 p-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="16"
+                    width="14"
+                    viewBox="0 0 448 512"
+                  >
+                    <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                  </svg>
+                </div>
+              }
+              showIndicators={false}
+              autoplayInterval={3000}
+              itemTemplate={productTemplate}
+            />
+          </div>
+          <div>
+            <LoginComponent />
+          </div>
         </div>
       </div>
     </div>

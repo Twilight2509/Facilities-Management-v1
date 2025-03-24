@@ -39,7 +39,7 @@ const update = async (req, res) => {
 const getListCommentByFacility = async (req, res) => {
     const { facilityId } = req.query;
     const page = parseInt(req.query.page) || 1;
-    const size = parseInt(req.query.size) || 4;
+    const size = parseInt(req.query.size) || 5;
     try {
         const result = await commentService.getCommentsByFacilityId(facilityId, page, size);
         const code = result.statusCode === 0 ? 500 : 200;

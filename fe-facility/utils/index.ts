@@ -44,7 +44,7 @@ export function convertWeekDateToDate(weekDateString: string): string {
   // Calculate the date of the first day of the specified week
   const firstDayOfWeek: Date = new Date(
     firstDayOfYear.getTime() +
-    ((week - 1) * 7 - firstDayOfYear.getDay() + 1) * 24 * 60 * 60 * 1000
+      ((week - 1) * 7 - firstDayOfYear.getDay() + 1) * 24 * 60 * 60 * 1000
   );
 
   // Calculate the date of the specified day of the week
@@ -52,16 +52,16 @@ export function convertWeekDateToDate(weekDateString: string): string {
     dayOfWeek === "Sunday"
       ? 0
       : dayOfWeek === "Monday"
-        ? 1
-        : dayOfWeek === "Tuesday"
-          ? 2
-          : dayOfWeek === "Wednesday"
-            ? 3
-            : dayOfWeek === "Thursday"
-              ? 4
-              : dayOfWeek === "Friday"
-                ? 5
-                : 6;
+      ? 1
+      : dayOfWeek === "Tuesday"
+      ? 2
+      : dayOfWeek === "Wednesday"
+      ? 3
+      : dayOfWeek === "Thursday"
+      ? 4
+      : dayOfWeek === "Friday"
+      ? 5
+      : 6;
 
   const targetDate: Date = new Date(
     firstDayOfWeek.getTime() + day * 24 * 60 * 60 * 1000
@@ -266,62 +266,7 @@ export const checkValidSlotSunday = (slot: string, data: any): boolean => {
     return false;
   }
 };
-// Check if a slot is in pending approval state for each day
-export const checkPendingSlotMonday = (slot: string, data: any): boolean => {
-  try {
-    return !!data?.Monday?.find((res: any) => res.slot === slot && res.status === 1);
-  } catch (err) {
-    return false;
-  }
-};
 
-export const checkPendingSlotTuesday = (slot: string, data: any): boolean => {
-  try {
-    return !!data?.Tuesday?.find((res: any) => res.slot === slot && res.status === 1);
-  } catch (err) {
-    return false;
-  }
-};
-
-export const checkPendingSlotWednesday = (slot: string, data: any): boolean => {
-  try {
-    return !!data?.Wednesday?.find((res: any) => res.slot === slot && res.status === 1);
-  } catch (err) {
-    return false;
-  }
-};
-
-export const checkPendingSlotThursday = (slot: string, data: any): boolean => {
-  try {
-    return !!data?.Thursday?.find((res: any) => res.slot === slot && res.status === 1);
-  } catch (err) {
-    return false;
-  }
-};
-
-export const checkPendingSlotFriday = (slot: string, data: any): boolean => {
-  try {
-    return !!data?.Friday?.find((res: any) => res.slot === slot && res.status === 1);
-  } catch (err) {
-    return false;
-  }
-};
-
-export const checkPendingSlotSaturday = (slot: string, data: any): boolean => {
-  try {
-    return !!data?.Saturday?.find((res: any) => res.slot === slot && res.status === 1);
-  } catch (err) {
-    return false;
-  }
-};
-
-export const checkPendingSlotSunday = (slot: string, data: any): boolean => {
-  try {
-    return !!data?.Sunday?.find((res: any) => res.slot === slot && res.status === 1);
-  } catch (err) {
-    return false;
-  }
-};
 export const getCurrentDate = (weekdays: any, weeks: any) => {
   // Split the weeks string to get the year and week number
   const [year, weekNumber] = weeks.trim().split("-W");

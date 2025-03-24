@@ -33,14 +33,14 @@ const host = "http://localhost:5152";
 
 export default function Home() {
   const router = useRouter();
-  const colorNavbarOne: string = "bg-gray-100";
+  const colorNavbarOne: string = "bg-gray-300";
   const colorNavbarTwo: string = "bg-transparent";
   const [faci, setFaci] = useState([]);
   const [cate, setCate] = useState([]);
   const [text, setText] = useState<string>("");
   const [role, setRole] = useState<string>("");
 
-  // Bắt đầu chat to admin
+  // Bắt đầu chat to admin - TrungNQ
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState<string>("");
   const [showChat, setShowChat] = useState(false);
@@ -195,7 +195,7 @@ export default function Home() {
       {/* search bar */}
       <div className="relative">
         <img
-          src="/bannerfpt.webp"
+          src="/bannerfpt.jpg"
           alt="loading..."
           className="w-full filter brightness-100 h-screen object-cover"
         />
@@ -216,14 +216,14 @@ export default function Home() {
 
       <div>
         <div className="text-center mt-12 font-bold text-2xl">
-          <h1>Các toà nhà và khu vực khác</h1>
+          <h1>Phân loại dịch vụ đặt trước</h1>
         </div>
         <CarouselComponent data={cate} />
       </div>
 
       <div className="mt-10 text-center">
         <h1 className="ml-7 font-bold text-lg">
-          Top 8 cơ sở vật chất được sử dụng nhiều nhất
+          Top 8 phòng , sân thể dục được sử dụng nhiều
         </h1>
         {topData.filter((data: any) => data.totalBooked > 0).length > 4 ? (
           <CarouselTopComponent data={topData} />
@@ -265,7 +265,7 @@ export default function Home() {
       </div>
       {role === "Student" && (
         <i
-          className="pi pi-inbox font-bold text-white bg-blue-500 p-3 rounded-full back text-3xl cursor-pointer fixed top-3/4 right-10 z-50   "
+          className="pi pi-inbox font-bold text-white bg-green-400 p-3 rounded-full back text-3xl cursor-pointer fixed top-3/4 right-10 z-50   "
           onClick={() => setLoginChat(!loginChat)}
         ></i>
       )}

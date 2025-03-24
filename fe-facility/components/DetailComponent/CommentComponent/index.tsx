@@ -156,7 +156,7 @@ export default function CommentComponent({
             </div>
           </div>
         </div>
-      )}
+      )} 
 
       <div className="mt-5">
         {listComment && (
@@ -170,10 +170,10 @@ export default function CommentComponent({
         )}
 
         {/* comment */}
-        <div className="mt-10 grid grid-cols-2 gap-6">
+        <div className="mt-10">
           {listComment &&
             listComment.map((comment, index) => (
-              <div className="col-md-6 flex gap-5 items-center mt-5" key={index}>
+              <div className="flex gap-5 items-center mt-5" key={index}>
                 <div>
                   <Avatar
                     src={comment?.userId?.avatar}
@@ -224,14 +224,13 @@ export default function CommentComponent({
             ))}
         </div>
       </div>
-      {totalPages > 1 && (
+      {totalPages > 0 && (
         <div className="flex items-center justify-center my-16">
           <Pagination
             defaultCurrent={activePage}
             total={Number(`${totalPages}0`)}
             onChange={onChangePage}
             showSizeChanger={false}
-           
           />
         </div>
       )}

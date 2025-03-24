@@ -3,7 +3,6 @@ import { Button, Modal, Space, Tooltip } from "antd";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from 'next/router'
 // import TableComponentBooked from "../TableComponentBooked";
 import { StorageService } from "../../services/storage";
 import { Toast } from "primereact/toast";
@@ -14,13 +13,6 @@ import {
   getBookingUserByWeek,
 } from "../../services/booking.api";
 import {
-  checkPendingSlotMonday,
-  checkPendingSlotTuesday,
-  checkPendingSlotWednesday,
-  checkPendingSlotThursday,
-  checkPendingSlotFriday,
-  checkPendingSlotSaturday,
-  checkPendingSlotSunday,
   checkValidSlotFriday,
   checkValidSlotFridayUser,
   checkValidSlotMonday,
@@ -135,11 +127,6 @@ export default function InfomationDetailComponent({
     console.log("====================================");
     console.log("current day::", currentDay);
     console.log("====================================");
-    if (typeof window !== 'undefined') {
-      const currentPath = window.location.pathname + window.location.search;
-      console.log("Saving current path to localStorage:", currentPath);
-      localStorage.setItem("previousPath", currentPath);
-    }
     if (!weekValue) {
       const currentDate = new Date();
       const year = currentDate.getFullYear();
@@ -262,7 +249,7 @@ export default function InfomationDetailComponent({
           console.log("====================================");
           setBookingUserByWeek(res.data.booking);
         },
-        (error) => { }
+        (error) => {}
       );
     }
 
@@ -303,7 +290,7 @@ export default function InfomationDetailComponent({
           console.log("====================================");
           setBookingUserByWeek(res.data.booking);
         },
-        (error) => { }
+        (error) => {}
       );
     }
 
@@ -394,13 +381,6 @@ export default function InfomationDetailComponent({
     console.log("====================================");
     console.log("day::", day);
     console.log("====================================");
-
-    if (!userId) {
-      window.location.href = '/login';
-      return; // Dừng thực hiện code sau khi chuyển hướng
-    }
-
-
     addBooking(bookingBody)
       .then((res: any) => {
         if (
@@ -409,8 +389,6 @@ export default function InfomationDetailComponent({
         ) {
           showErrorCategory("Booking failed: You already have a booking");
         } else {
-          // check login, neu chua thi ve /login
-          // neu roi thi chay code
           showSuccessCategory("Booking successfully !!!");
           calendarBooking(weekValue, detailData?._id)
             .then((res: any) => {
@@ -434,7 +412,7 @@ export default function InfomationDetailComponent({
                 console.log("====================================");
                 setBookingUserByWeek(res.data.booking);
               },
-              (error) => { }
+              (error) => {}
             );
           }
         }
@@ -449,28 +427,45 @@ export default function InfomationDetailComponent({
     setOpen(false);
   };
 
-  const [showDetails, setShowDetails] = useState(false);
-
-  const toggleDetails = () => {
-    setShowDetails(!showDetails);
-  };
-
   return (
     <>
-      <div className="flex-1 flex flex-col gap-4 items-center">
+      <div className="flex flex-col gap-10 items-center">
         <div className="font-bold text-5xl">{detailData?.name}</div>
         <div>
-          <span className="font-bold">Phân loại :</span> {detailData?.category?.categoryName}
+          <span className="font-bold">Phân loại :</span>{" "}
+          {detailData?.category?.categoryName}
+        </div>
+        <div>
+          <Button
+            className="bg-blue-400 text-white font-semibold"
+            onClick={() => info(detailData?.description)}
+          >
+            Xem thông tin chi tiết
+          </Button>
         </div>
 
-        {/* Hiển thị nội dung chi tiết luôn */}
-        <div className="p-4 bg-gray-100 rounded shadow-lg w-full">
-          <h2 className="font-bold text-2xl mb-2">Thông tin chi tiết</h2>
-          <div dangerouslySetInnerHTML={{ __html: detailData?.description }}></div>
+        <div>
+          <button
+            onClick={showModal}
+            className="bg-green-500 hover:bg-green-300 text-white font-semibold px-5 py-2 rounded-md"
+          >
+            Đặt phòng
+          </button>
         </div>
       </div>
+
       {/* modal booking */}
-      <div className="flex-1">
+      <Modal
+        className="w-fit"
+        open={open}
+        onOk={handleOk}
+        closeIcon={<></>}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Hủy
+          </Button>,
+        ]}
+      >
         <div>
           <div className="flex items-center justify-end gap-2 my-3">
             <span className="font-bold text-xl"> Tuần và năm </span>
@@ -482,9 +477,6 @@ export default function InfomationDetailComponent({
             />
           </div>
           <div className="flex gap-2 justify-end mb-3">
-            <Tooltip title="Chờ duyệt">
-              <div className="w-1 h-4 bg-yellow-500"></div>
-            </Tooltip>
             <Tooltip title="Đã có người đặt">
               <div className="w-1 h-4 bg-red-500"></div>
             </Tooltip>
@@ -535,24 +527,36 @@ export default function InfomationDetailComponent({
                       <button
                         disabled={
                           disableButtonsMonday ||
-                          checkPendingSlotMonday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotMonday(`Slot${i + 1}`, listBooking) ||
-                          checkValidSlotMondayUser(`Slot${i + 1}`, bookingUserByWeek)
+                          checkValidSlotMondayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          )
                         }
-                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
+                        onClick={() =>
+                          handleBooking(`Slot${i + 1}#Monday#${weekValue}`)
+                        }
                         className={`p-2 rounded-full text-white px-4 
-    ${checkPendingSlotMonday(`Slot${i + 1}`, listBooking)
-                            ? "bg-yellow-500 hover:bg-yellow-300 cursor-not-allowed opacity-50" // Chờ xét duyệt
-                            : checkValidSlotMondayUser(`Slot${i + 1}`, bookingUserByWeek)
-                              ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50" // Slot của người dùng
-                              : checkValidSlotMonday(`Slot${i + 1}`, listBooking)
-                                ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50" // Slot đã đặt
-                                : "bg-blue-500 hover:bg-blue-300" // Có thể đặt
-                          }
-    ${checkValidSlotMonday(`Slot${i + 1}`, listBooking) === false && disableButtonsMonday
+                        ${
+                          checkValidSlotMondayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          ) === true
+                            ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
+                            : checkValidSlotMonday(
+                                `Slot${i + 1}`,
+                                listBooking
+                              ) === true
+                            ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
+                            : "bg-blue-500 hover:bg-blue-300"
+                        }
+                
+                        ${
+                          checkValidSlotMonday(`Slot${i + 1}`, listBooking) ===
+                            false && disableButtonsMonday
                             ? "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                             : "bg-blue-500 hover:bg-blue-300"
-                          }`}
+                        }`}
                       >
                         Đặt
                       </button>
@@ -562,164 +566,240 @@ export default function InfomationDetailComponent({
                       <button
                         disabled={
                           disableButtonsTuesday ||
-                          checkPendingSlotTuesday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotTuesday(`Slot${i + 1}`, listBooking) ||
-                          checkValidSlotTuesdayUser(`Slot${i + 1}`, bookingUserByWeek)
+                          checkValidSlotTuesdayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          )
                         }
-                        onClick={() => handleBooking(`Slot${i + 1}#Tuesday#${weekValue}`)}
+                        onClick={() =>
+                          handleBooking(`Slot${i + 1}#Tuesday#${weekValue}`)
+                        }
                         className={`p-2 rounded-full text-white px-4 
-    ${checkPendingSlotTuesday(`Slot${i + 1}`, listBooking)
-                            ? "bg-yellow-500 hover:bg-yellow-300 cursor-not-allowed opacity-50"
-                            : checkValidSlotTuesdayUser(`Slot${i + 1}`, bookingUserByWeek)
-                              ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
-                              : checkValidSlotTuesday(`Slot${i + 1}`, listBooking)
-                                ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
-                                : "bg-blue-500 hover:bg-blue-300"
-                          }
-    ${checkValidSlotTuesday(`Slot${i + 1}`, listBooking) === false && disableButtonsTuesday
+                        ${
+                          checkValidSlotTuesdayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          ) === true
+                            ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
+                            : checkValidSlotTuesday(
+                                `Slot${i + 1}`,
+                                listBooking
+                              ) === true
+                            ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
+                            : "bg-blue-500 hover:bg-blue-300"
+                        }
+                
+                        ${
+                          checkValidSlotTuesday(`Slot${i + 1}`, listBooking) ===
+                            false && disableButtonsTuesday
                             ? "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                             : "bg-blue-500 hover:bg-blue-300"
-                          }`}
+                        }`}
                       >
                         Đặt
                       </button>
-
                     </td>
 
                     <td className="p-2 border">
                       <button
                         disabled={
                           disableButtonsWendsday ||
-                          checkPendingSlotWednesday(`Slot${i + 1}`, listBooking) ||
-                          checkValidSlotWednesday(`Slot${i + 1}`, listBooking) ||
-                          checkValidSlotWednesdayUser(`Slot${i + 1}`, bookingUserByWeek)
+                          checkValidSlotWednesday(
+                            `Slot${i + 1}`,
+                            listBooking
+                          ) ||
+                          checkValidSlotWednesdayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          )
                         }
-                        onClick={() => handleBooking(`Slot${i + 1}#Wednesday#${weekValue}`)}
+                        onClick={() =>
+                          handleBooking(`Slot${i + 1}#Wednesday#${weekValue}`)
+                        }
                         className={`p-2 rounded-full text-white px-4 
-    ${checkPendingSlotWednesday(`Slot${i + 1}`, listBooking)
-                            ? "bg-yellow-500 hover:bg-yellow-300 cursor-not-allowed opacity-50"
-                            : checkValidSlotWednesdayUser(`Slot${i + 1}`, bookingUserByWeek)
-                              ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
-                              : checkValidSlotWednesday(`Slot${i + 1}`, listBooking)
-                                ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
-                                : "bg-blue-500 hover:bg-blue-300"
-                          }
-    ${checkValidSlotWednesday(`Slot${i + 1}`, listBooking) === false && disableButtonsWendsday
+                        ${
+                          checkValidSlotWednesdayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          ) === true
+                            ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
+                            : checkValidSlotWednesday(
+                                `Slot${i + 1}`,
+                                listBooking
+                              ) === true
+                            ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
+                            : "bg-blue-500  hover:bg-blue-300"
+                        }
+                
+                        ${
+                          checkValidSlotWednesday(
+                            `Slot${i + 1}`,
+                            listBooking
+                          ) === false && disableButtonsWendsday
                             ? "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                             : "bg-blue-500 hover:bg-blue-300"
-                          }`}
+                        }`}
                       >
                         Đặt
                       </button>
-
                     </td>
 
                     <td className="p-2 border">
                       <button
                         disabled={
                           disableButtonsThurday ||
-                          checkPendingSlotThursday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotThursday(`Slot${i + 1}`, listBooking) ||
-                          checkValidSlotThursdayUser(`Slot${i + 1}`, bookingUserByWeek)
+                          checkValidSlotThursdayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          )
                         }
-                        onClick={() => handleBooking(`Slot${i + 1}#Thursday#${weekValue}`)}
+                        onClick={() =>
+                          handleBooking(`Slot${i + 1}#Thursday#${weekValue}`)
+                        }
                         className={`p-2 rounded-full text-white px-4 
-    ${checkPendingSlotThursday(`Slot${i + 1}`, listBooking)
-                            ? "bg-yellow-500 hover:bg-yellow-300 cursor-not-allowed opacity-50"
-                            : checkValidSlotThursdayUser(`Slot${i + 1}`, bookingUserByWeek)
-                              ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
-                              : checkValidSlotThursday(`Slot${i + 1}`, listBooking)
-                                ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
-                                : "bg-blue-500 hover:bg-blue-300"
-                          }
-    ${checkValidSlotThursday(`Slot${i + 1}`, listBooking) === false && disableButtonsThurday
+                        ${
+                          checkValidSlotThursdayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          ) === true
+                            ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
+                            : checkValidSlotThursday(
+                                `Slot${i + 1}`,
+                                listBooking
+                              ) === true
+                            ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
+                            : "bg-blue-500 hover:bg-blue-300"
+                        }
+                
+                        ${
+                          checkValidSlotThursday(
+                            `Slot${i + 1}`,
+                            listBooking
+                          ) === false && disableButtonsThurday
                             ? "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                             : "bg-blue-500 hover:bg-blue-300"
-                          }`}
+                        }`}
                       >
                         Đặt
                       </button>
-
                     </td>
 
                     <td className="p-2 border">
                       <button
                         disabled={
                           disableButtonsFriday ||
-                          checkPendingSlotFriday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotFriday(`Slot${i + 1}`, listBooking) ||
-                          checkValidSlotFridayUser(`Slot${i + 1}`, bookingUserByWeek)
+                          checkValidSlotFridayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          )
                         }
-                        onClick={() => handleBooking(`Slot${i + 1}#Friday#${weekValue}`)}
+                        onClick={() =>
+                          handleBooking(`Slot${i + 1}#Friday#${weekValue}`)
+                        }
                         className={`p-2 rounded-full text-white px-4 
-    ${checkPendingSlotFriday(`Slot${i + 1}`, listBooking)
-                            ? "bg-yellow-500 hover:bg-yellow-300 cursor-not-allowed opacity-50"
-                            : checkValidSlotFridayUser(`Slot${i + 1}`, bookingUserByWeek)
-                              ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
-                              : checkValidSlotFriday(`Slot${i + 1}`, listBooking)
-                                ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
-                                : "bg-blue-500 hover:bg-blue-300"
-                          }
-    ${checkValidSlotFriday(`Slot${i + 1}`, listBooking) === false && disableButtonsFriday
+                        ${
+                          checkValidSlotFridayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          ) === true
+                            ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
+                            : checkValidSlotFriday(
+                                `Slot${i + 1}`,
+                                listBooking
+                              ) === true
+                            ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
+                            : "bg-blue-500 hover:bg-blue-300"
+                        }
+                
+                        ${
+                          checkValidSlotFriday(`Slot${i + 1}`, listBooking) ===
+                            false && disableButtonsFriday
                             ? "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                             : "bg-blue-500 hover:bg-blue-300"
-                          }`}
+                        }`}
                       >
                         Đặt
                       </button>
-
                     </td>
 
                     <td className="p-2 border">
                       <button
                         disabled={
                           disableButtonsSaturday ||
-                          checkPendingSlotSaturday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotSaturday(`Slot${i + 1}`, listBooking) ||
-                          checkValidSlotSaturdayUser(`Slot${i + 1}`, bookingUserByWeek)
+                          checkValidSlotSaturdayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          )
                         }
-                        onClick={() => handleBooking(`Slot${i + 1}#Saturday#${weekValue}`)}
+                        onClick={() =>
+                          handleBooking(`Slot${i + 1}#Saturday#${weekValue}`)
+                        }
                         className={`p-2 rounded-full text-white px-4 
-    ${checkPendingSlotSaturday(`Slot${i + 1}`, listBooking)
-                            ? "bg-yellow-500 hover:bg-yellow-300 cursor-not-allowed opacity-50"
-                            : checkValidSlotSaturdayUser(`Slot${i + 1}`, bookingUserByWeek)
-                              ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
-                              : checkValidSlotSaturday(`Slot${i + 1}`, listBooking)
-                                ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
-                                : "bg-blue-500 hover:bg-blue-300"
-                          }
-    ${checkValidSlotSaturday(`Slot${i + 1}`, listBooking) === false && disableButtonsSaturday
+                        ${
+                          checkValidSlotSaturdayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          ) === true
+                            ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
+                            : checkValidSlotSaturday(
+                                `Slot${i + 1}`,
+                                listBooking
+                              ) === true
+                            ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
+                            : "bg-blue-500 hover:bg-blue-300"
+                        }
+                
+                        ${
+                          checkValidSlotSaturday(
+                            `Slot${i + 1}`,
+                            listBooking
+                          ) === false && disableButtonsSaturday
                             ? "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                             : "bg-blue-500 hover:bg-blue-300"
-                          }`}
+                        }`}
                       >
                         Đặt
                       </button>
-
                     </td>
 
                     <td className="p-2 border">
                       <button
                         disabled={
                           disableButtonsSunday ||
-                          checkPendingSlotSunday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotSunday(`Slot${i + 1}`, listBooking) ||
-                          checkValidSlotSundayUser(`Slot${i + 1}`, bookingUserByWeek)
+                          checkValidSlotSundayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          )
                         }
-                        onClick={() => handleBooking(`Slot${i + 1}#Sunday#${weekValue}`)}
+                        onClick={() =>
+                          handleBooking(`Slot${i + 1}#Sunday#${weekValue}`)
+                        }
                         className={`p-2 rounded-full text-white px-4 
-    ${checkPendingSlotSunday(`Slot${i + 1}`, listBooking)
-                            ? "bg-yellow-500 hover:bg-yellow-300 cursor-not-allowed opacity-50"
-                            : checkValidSlotSundayUser(`Slot${i + 1}`, bookingUserByWeek)
-                              ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
-                              : checkValidSlotSunday(`Slot${i + 1}`, listBooking)
-                                ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
-                                : "bg-blue-500 hover:bg-blue-300"
-                          }
-    ${checkValidSlotSunday(`Slot${i + 1}`, listBooking) === false && disableButtonsSunday
+                        ${
+                          checkValidSlotSundayUser(
+                            `Slot${i + 1}`,
+                            bookingUserByWeek
+                          ) === true
+                            ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
+                            : checkValidSlotSunday(
+                                `Slot${i + 1}`,
+                                listBooking
+                              ) === true
+                            ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
+                            : "bg-blue-500 hover:bg-blue-300"
+                        }
+                
+                        ${
+                          checkValidSlotSunday(`Slot${i + 1}`, listBooking) ===
+                            false && disableButtonsSunday
                             ? "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                             : "bg-blue-500 hover:bg-blue-300"
-                          }`}
+                        }`}
                       >
                         Đặt
                       </button>
@@ -734,7 +814,7 @@ export default function InfomationDetailComponent({
             </div>
           </div>
         </div>
-      </div>
+      </Modal>
     </>
   );
 }
