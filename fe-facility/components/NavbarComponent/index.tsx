@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import Logo from "../../public/Logo_facility.svg";
+import Logo from "../../public/Logo_facility.png";
 import Image from "next/image";
 import { Badge } from "primereact/badge";
 import { useRouter } from "next/navigation";
@@ -149,9 +149,7 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({
           className="logo-container cursor-pointer"
           onClick={() => router.push("/")}
         >
-          <Image src={Logo} width={125} height={50} style={{
-            marginTop: "35px"
-          }} alt="logo" />
+          <Image src={Logo} width={250} height={50} alt="logo" />
         </div>
         <div
           style={{
