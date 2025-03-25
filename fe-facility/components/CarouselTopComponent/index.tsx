@@ -67,7 +67,7 @@ export default function CarouselTopComponent(props: any) {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-white px-2 pb-2 rounded-b-lg">
             <p className="font-bold">{facility.name}</p>
           </div>
-          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-black hover:bg-opacity-80 p-2 rounded-full">
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-orange-400 hover:bg-opacity-80 p-2 rounded-full">
             <button className="text-white px-3 w-fit">
               {facility?.totalBooked} lần sử dụng
             </button>
