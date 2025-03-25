@@ -440,6 +440,7 @@ export default function InfomationDetailComponent({
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     return `${day}/${month}`;
   };
+
   return (
     <>
       <div className="flex flex-col gap-10 items-center">
@@ -484,7 +485,9 @@ export default function InfomationDetailComponent({
             />
           </div>
           <div className="flex gap-2 justify-end mb-3">
-
+            <Tooltip title="Chờ duyệt">
+              <div className="w-1 h-4 bg-yellow-500"></div>
+            </Tooltip>
             <Tooltip title="Đã có người đặt">
               <div className="w-1 h-4 bg-red-500"></div>
             </Tooltip>
