@@ -33,7 +33,7 @@ const host = "http://localhost:5152";
 
 export default function Home() {
   const router = useRouter();
-  const colorNavbarOne: string = "bg-gray-300";
+  const colorNavbarOne: string = "bg-gray-200";
   const colorNavbarTwo: string = "bg-transparent";
   const [faci, setFaci] = useState([]);
   const [cate, setCate] = useState([]);
@@ -195,7 +195,7 @@ export default function Home() {
       {/* search bar */}
       <div className="relative">
         <img
-          src="/bannerfpt.jpg"
+          src="/bannerfpt.webp"
           alt="loading..."
           className="w-full filter brightness-100 h-screen object-cover"
         />
