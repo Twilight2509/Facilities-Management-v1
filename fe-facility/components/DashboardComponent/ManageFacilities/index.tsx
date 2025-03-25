@@ -148,7 +148,7 @@ export default function ManageFacilities() {
   const [isModalOpenChangeInactive, setIsModalOpenChangeInactive] =
     useState(false);
 
-  const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null>(null);
 
   const showModalInactive = () => {
     setIsModalOpenChangeInactive(true);
@@ -426,23 +426,23 @@ export default function ManageFacilities() {
             setisLoadingUpdateFormCategory(false);
             setImgUpdate(null);
             getFacilities(activePage, null, "").then(
-              (res) => {
-                setListFacility(res?.data.items);
-                setTotalPage(res?.data.totalPage);
-              },
-              (err) => {
-                setActivePage(1);
-                setTotalPage(0);
-                console.log(err);
-              }
+                (res) => {
+                    setListFacility(res?.data.items);
+                    setTotalPage(res?.data.totalPage);
+                },
+                (err) => {
+                    setActivePage(1);
+                    setTotalPage(0);
+                    console.log(err);
+                }
             );
-          } else {
+        } else {
             // Xử lý khi mã trạng thái không phải là 200
             showErrorCategory(
-              res?.data.message || "Facility name Exist"
+               res?.data.message || "Facility name Exist"
             );
             setisLoadingUpdateFormCategory(false);
-          }
+        }
         })
         .catch((err) => {
           handleCancelUpdate();
@@ -463,7 +463,7 @@ export default function ManageFacilities() {
 
   useLayoutEffect(() => {
     setIsSpinning(true);
-    getCategory(1, null, 100)
+    getCategory()
       .then((res: any) => {
         console.log(res);
         setListCategory(res.data.item);
@@ -536,16 +536,16 @@ export default function ManageFacilities() {
 
   const handleExcelSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Ngăn chặn hành động gửi biểu mẫu mặc định
-
+  
     // Kiểm tra xem có file đã được chọn hay không
     if (!file) {
       showErrorCategory('Please select a file.')
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('file', file); // Thêm file vào FormData
-
+  
     try {
       const response = await fetch('http://localhost:5152/facility/import', {
         method: 'POST',
@@ -562,20 +562,7 @@ export default function ManageFacilities() {
       showErrorCategory("Import facility error !!!");
     }
   };
-
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
-
-  const handleImageClick = (imageUrl: string) => {
-    setSelectedImage(imageUrl);
-    setIsImageModalOpen(true);
-  };
-
-  const handleImageModalClose = () => {
-    setSelectedImage(null);
-    setIsImageModalOpen(false);
-  };
-
+  
 
 
   return (
@@ -608,39 +595,40 @@ export default function ManageFacilities() {
                 />
               </div>
               <div className="py-2 flex items-center justify-end bg-blue-100">
-                <Tooltip title="Import nhiều phòng">
-                  <div className="">
-                    <div>
-                      <form onSubmit={handleExcelSubmit} className="">
-                        <input
-                          type="file"
-                          id="file"
-                          name="file"
-                          accept=".xlsx, .xls"
-                          onChange={handleFileChange}
-                          required
-                        />
-                        <button type='submit' className="rounded-md bg-blue-600 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2">
-                          Upload
-                        </button>
-                      </form>
-                    </div>
+              <Tooltip title="Import nhiều phòng">
+              <div className="">
+                <div>
+                <form onSubmit={handleExcelSubmit} className="">
+        <input
+          type="file"
+          id="file"
+          name="file"
+          accept=".xlsx, .xls"
+          onChange={handleFileChange}
+          required
+        />
+        <button type='submit' className="rounded-md bg-blue-600 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2">
+  Upload
+</button>
+      </form>
+                </div>
 
-                  </div>
+    </div>
                 </Tooltip>
               </div>
-
+              
             </div>
             <table>
               <thead className="border">
                 <tr>
-                  <th className="p-5 border ">#</th>
-                  <th className="p-5 border ">Tên phòng</th>
-                  <th className="p-5 border " style={{width: '250px'}}>Ảnh</th>
-                  <th className="p-5 border ">Thể loại</th>
-                  <th className="p-5 border ">Thời gian tạo</th>
+                  <th className="p-5 border">#</th>
+                  <th className="p-5 border">Tên phòng (sân)</th>
+                  <th className="p-5 border">Ảnh</th>
+                  <th className="p-5 border">Địa chỉ</th>
+                  <th className="p-5 border">Thời gian tạo</th>
                   <th className="p-5 border">Trạng thái</th>
-                  <th className="p-5 border ">Lịch sử cập nhật</th>
+                  <th className="p-5 border">Lịch sử cập nhật</th>
+                  <th></th>
                 </tr>
               </thead>
 
@@ -656,20 +644,22 @@ export default function ManageFacilities() {
                       <td className="p-5 border text-center">
                         <p className="cursor-pointer hover:text-gray-400 flex items-center justify-center gap-1">
                           <span>{c?.name}</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height={10}
+                            width={10}
+                            viewBox="0 0 512 512"
+                          >
+                            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                          </svg>
                         </p>
                       </td>
-                      <td className="p-5 border text-center">
-                        <img
-                          src={c?.image}
-                          className="w-32 m-auto cursor-pointer"
-                          onClick={() => handleImageClick(c?.image)}
-                          alt="Facility"
-                        />
+                      <td className="p-5  border text-center">
+                        <img src={c?.image} className="w-32 h-32 m-auto" />
                       </td>
                       <td className="p-5 border text-center">
-                        <p>{c?.category?.categoryName}</p>
+                        <p>{c?.location}</p>
                       </td>
-
                       <td className="p-5 border text-center">
                         <p>{c && new Date(c.createdAt).toLocaleString()}</p>
                       </td>
@@ -677,8 +667,9 @@ export default function ManageFacilities() {
                         <select
                           name=""
                           id=""
-                          className={`outline-none ${c?.status === 1 && "text-green-500"
-                            } ${c?.status === 0 && "text-red-500"}`}
+                          className={`outline-none ${
+                            c?.status === 1 && "text-green-500"
+                          } ${c?.status === 0 && "text-red-500"}`}
                           value={c?.status === 1 ? "active" : "inactive"}
                           onChange={(e) =>
                             handleChangeStatus(
@@ -733,8 +724,8 @@ export default function ManageFacilities() {
                     <h1 className="font-bold text-3xl my-10">No data</h1>
                   </div>
                 ) : null}
-                {totalPage > 1 && (
-                  <div className="flex items-center justify-center my-5">
+                {totalPage > 0 && (
+                  <div className="flex items-center justify-center">
                     <Pagination
                       current={activePage}
                       total={Number(totalPage + "0")}
@@ -768,8 +759,9 @@ export default function ManageFacilities() {
               <label htmlFor="name">Tên phòng,sân bóng</label>
               <input
                 id="name"
-                className={`w-full shadow-none p-3 border ${errors.name ? "outline-red-300" : "outline-blue-300"
-                  }`}
+                className={`w-full shadow-none p-3 border ${
+                  errors.name ? "outline-red-300" : "outline-blue-300"
+                }`}
                 {...register("name")}
               />
               {errors.name && (
@@ -780,8 +772,9 @@ export default function ManageFacilities() {
               <label htmlFor="shortName">Tiêu đề ngắn</label>
               <input
                 id="shortName"
-                className={`w-full shadow-none p-3 border ${errors.shortName ? "outline-red-300" : "outline-blue-300"
-                  }`}
+                className={`w-full shadow-none p-3 border ${
+                  errors.shortName ? "outline-red-300" : "outline-blue-300"
+                }`}
                 {...register("shortName")}
               />
               {errors.shortName && (
@@ -792,8 +785,9 @@ export default function ManageFacilities() {
               <label htmlFor="category">Phân loại</label>
               <select
                 id="category"
-                className={`w-full shadow-none p-3 border ${errors.category ? "outline-red-300" : "outline-blue-300"
-                  }`}
+                className={`w-full shadow-none p-3 border ${
+                  errors.category ? "outline-red-300" : "outline-blue-300"
+                }`}
                 {...register("category")}
               >
                 {listCategory &&
@@ -834,8 +828,9 @@ export default function ManageFacilities() {
               <label htmlFor="address">Địa chỉ</label>
               <input
                 id="address"
-                className={`w-full shadow-none p-3 border ${errors.address ? "outline-red-300" : "outline-blue-300"
-                  }`}
+                className={`w-full shadow-none p-3 border ${
+                  errors.address ? "outline-red-300" : "outline-blue-300"
+                }`}
                 {...register("address")}
               />
 
@@ -887,8 +882,9 @@ export default function ManageFacilities() {
               <input
                 id="name"
                 defaultValue={dataUpdaate?.name}
-                className={`w-full shadow-none p-3 border ${errorsUpdate.name ? "outline-red-300" : "outline-blue-300"
-                  }`}
+                className={`w-full shadow-none p-3 border ${
+                  errorsUpdate.name ? "outline-red-300" : "outline-blue-300"
+                }`}
                 {...registerUpdate("name")}
               />
               {errorsUpdate.name && (
@@ -904,8 +900,9 @@ export default function ManageFacilities() {
                 // disabled = {true}
                 value={dataUpdaate?.category?._id}
                 id="category"
-                className={`w-full shadow-none p-3 border ${errorsUpdate.category ? "outline-red-300" : "outline-blue-300"
-                  }`}
+                className={`w-full shadow-none p-3 border ${
+                  errorsUpdate.category ? "outline-red-300" : "outline-blue-300"
+                }`}
                 {...registerUpdate("category")}
               >
                 {listCategory &&
@@ -951,8 +948,9 @@ export default function ManageFacilities() {
               <input
                 id="address"
                 defaultValue={dataUpdaate?.location}
-                className={`w-full shadow-none p-3 border ${errorsUpdate.address ? "outline-red-300" : "outline-blue-300"
-                  }`}
+                className={`w-full shadow-none p-3 border ${
+                  errorsUpdate.address ? "outline-red-300" : "outline-blue-300"
+                }`}
                 {...registerUpdate("address")}
               />
 
@@ -1125,18 +1123,6 @@ export default function ManageFacilities() {
             OK
           </Button>
         </div>
-      </Modal>
-
-      <Modal
-        open={isImageModalOpen}
-        footer={null}
-        onCancel={handleImageModalClose}
-        width="80%"
-        centered
-      >
-        {selectedImage && (
-          <img src={selectedImage} alt="Full view" className="w-full h-auto" />
-        )}
       </Modal>
     </>
   );

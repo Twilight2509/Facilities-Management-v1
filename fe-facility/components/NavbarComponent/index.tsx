@@ -149,9 +149,7 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({
           className="logo-container cursor-pointer"
           onClick={() => router.push("/")}
         >
-          <Image src={Logo} height={100} style={{
-            marginTop: "0px"
-          }} alt="logo" />
+          <Image src={Logo} width={250} height={50} alt="logo" />
         </div>
         <div
           style={{
@@ -164,7 +162,7 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({
           {!isLogin && (
             <div>
               <button
-                className="bg-white hover:bg-gray-800 p-2 rounded-lg"
+                className="bg-gray-950 hover:bg-gray-800 p-2 text-white rounded-lg"
                 onClick={() => router.push("/login")}
               >
                 Đăng nhập

@@ -464,7 +464,7 @@ export default function CategoryComponent() {
                         </p>
                       </td>
                       <td className="p-5 border text-center flex justify-center">
-                        <img className="w-32" src={c.image} alt="" />
+                        <img className="h-32 w-32" src={c.image} alt="" />
                       </td>
                       <td className="p-5 border text-center">
                         <p>{c && new Date(c.createdAt).toLocaleString()}</p>
@@ -508,9 +508,9 @@ export default function CategoryComponent() {
               </div>
             ) : (
               totalPage != null &&
-              totalPage > 1 &&
+              totalPage > 0 &&
               activePage != null && (
-                <div className="flex items-center justify-center my-5">
+                <div className="flex items-center justify-center">
                   <Pagination
                     current={activePage}
                     total={Number(totalPage + "0")}

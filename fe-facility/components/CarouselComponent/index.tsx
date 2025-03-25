@@ -77,7 +77,7 @@ export default function CarouselComponent(props: any) {
   };
 
   return (
-    <div className="px-64">
+    <div className="px-32">
       <Carousel
         value={cate}
         numVisible={1}

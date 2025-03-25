@@ -85,7 +85,7 @@ const info = (
             </div>
           ))}
         {data.length === 0 && <Empty />}
-        {data.length > 0 && totalPage > 1 &&(
+        {data.length > 0 && (
           <div className="flex items-center justify-center mt-2">
             <Pagination
               defaultCurrent={activePage}
@@ -141,7 +141,7 @@ export default function TableVoted() {
   }, []);
 
   const onChangePageComment: PaginationProps["onChange"] = (pageNumber) => {
-    getCommentByFacilityId(idFaci, pageNumber, 1).then(
+    getCommentByFacilityId(idFaci, pageNumber, 5).then(
       (res: any) => {
         console.log("====================================");
         console.log("resComment::", res.data);
@@ -193,7 +193,7 @@ export default function TableVoted() {
     console.log("====================================");
     setIdFaci(id);
 
-    getCommentByFacilityId(id, null, 1).then(
+    getCommentByFacilityId(id, null, 5).then(
       (res: any) => {
         console.log("====================================");
         console.log("resComment::", res.data);
@@ -367,8 +367,8 @@ export default function TableVoted() {
                 <h1 className="font-bold text-3xl my-10">No data</h1>
               </div>
             )}
-            {totalPage > 1 && (
-              <div className="flex items-center justify-center my-5">
+            {totalPage > 0 && (
+              <div className="flex items-center justify-center ">
                 <Pagination
                   current={activePage}
                   total={Number(`${totalPage}0`)}

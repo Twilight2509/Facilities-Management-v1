@@ -371,7 +371,7 @@ export default function HistoryBookingPage() {
                         handleShow(e, d)
                       }
                     >
-                      Xem lý do hủy
+                      Xem lý do từ chối
                     </Button>
                   )}
 

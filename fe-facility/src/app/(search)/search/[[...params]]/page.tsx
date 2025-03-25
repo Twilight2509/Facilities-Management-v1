@@ -38,8 +38,8 @@ export default function SearchAll({ params }: { params: object }) {
 
   const handleSearch = () => {
     console.log(category);
-    console.log(text.replace(/\s+/g, ' ').trim());
-    searchFacility(text.replace(/\s+/g, ' ').trim(), category)
+    console.log(text);
+    searchFacility(text.trim(), category)
       .then((res : any) => {
         console.log(res.data.items);
         setFacilityData(res.data.items);
@@ -191,7 +191,7 @@ export default function SearchAll({ params }: { params: object }) {
             </div>
             <div>
               <button
-                className="px-10 py-4 text-white font-semibold rounded-md hover:bg-blue-400 bg-blue-600"
+                className="px-10 py-4 text-white font-semibold rounded-md hover:bg-orange-600 bg-orange-400"
                 onClick={handleSearch}
               >
                 Tìm kiếm

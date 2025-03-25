@@ -29,7 +29,7 @@ export default function ManageAccount() {
         setActivePage(res?.data?.activePage);
         setTotalPage(res?.data?.totalPage);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
   useEffect(() => {
     fetchApi(searchValue, page);
@@ -52,7 +52,15 @@ export default function ManageAccount() {
     }
     fetchApi(searchValue, page);
   };
-  
+  const handleChangeRole = async (userId: any, roleId: any) => {
+    console.log(roleId);
+
+    if (confirm("Bạn có muốn thay đổi trạng thái không ?")) {
+      await updateProfile(userId, { roleId });
+      alert("Thay đổi thành công");
+    }
+    fetchApi(searchValue, page);
+  };
   return (
     <>
       <div className="">
@@ -96,7 +104,7 @@ export default function ManageAccount() {
                 {userData?.length > 0 &&
                   userData?.map((u, index) => {
                     return (
-                      <tr className="" key={index}>
+                      <tr className="">
                         <td className="p-5 border text-center">
                           <p>{(activePage - 1) * 6 + index + 1}</p>
                         </td>
@@ -118,20 +126,22 @@ export default function ManageAccount() {
                           <p>
                             {u?.createdAt
                               ? new Date(u.createdAt).toLocaleDateString(
-                                "vi-VN"
-                              )
+                                  "vi-VN"
+                                )
                               : ""}
                           </p>
                         </td>
                         <td className="p-5 border text-center">
                           {u?.roleId?.roleName === "Student" ? (
                             <select
-                              className={` bg-transparent border-none ${u?.status === 1
-                                ? "text-green-500"
-                                : u?.status === 3
+
+                              className={`appearance-none bg-transparent border-none ${
+                                u?.status === 1
+                                  ? "text-green-500"
+                                  : u?.status === 3
                                   ? "text-red-600"
                                   : ""
-                                }`}
+                              }`}
                               value={u?.status} // Xử lý trường hợp u?.status không tồn tại
                               onChange={(e) =>
                                 handleChangeStaus(u?._id, e.target.value)
@@ -147,15 +157,16 @@ export default function ManageAccount() {
                             </select>
                           ) : (
                             // Nếu là Admin, không hiển thị select
-                            <p className="text-green-500 ">Active</p>
+                            <p className="text-green-500">Active</p>
                           )}
                         </td>
 
                         <td
-                          className={`p-5 border text-center ${u?.roleId?.roleName === "Student"
-                            ? "text-blue-500"
-                            : "text-yellow-500"
-                            }`}
+                          className={`p-5 border text-center ${
+                            u?.roleId?.roleName === "Student"
+                              ? "text-blue-500"
+                              : "text-yellow-500"
+                          }`}
                         >
                           <p>{u?.roleId?.roleName}</p>
                         </td>
@@ -164,8 +175,8 @@ export default function ManageAccount() {
                   })}
               </tbody>
             </table>
-            {totalPage > 1 && (
-              <div className="flex items-center justify-center my-5">
+            {totalPage > 0 && (
+              <div className="flex items-center justify-center ">
                 <Pagination
                   current={activePage}
                   total={Number(totalPage + "0")}

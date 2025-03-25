@@ -70,7 +70,7 @@ export default function Login() {
           <Link href={"/"}>
             <Image
               src={Logo}
-              width={300}
+              width={250}
               height={60}
               alt="logo"
               className="mt-2 ml-5 rounded-full cursor-pointer text-red-500"
@@ -80,7 +80,9 @@ export default function Login() {
         </div>
 
         <div className="w-screen h-screen flex flex-col items-center justify-center">
-        <LoginComponent />
+          <div>
+            <LoginComponent />
+          </div>         
         </div>
       </div>
     </div>
