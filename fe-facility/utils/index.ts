@@ -266,36 +266,114 @@ export const checkValidSlotSunday = (slot: string, data: any): boolean => {
     return false;
   }
 };
+// ==========================
+// Slot đang chờ xét duyệt (status === 1) - Dùng cho màu vàng cảnh báo
+// ==========================
 
-export const getCurrentDate = (weekdays: any, weeks: any) => {
-  // Split the weeks string to get the year and week number
-  const [year, weekNumber] = weeks.trim().split("-W");
-  const ISOWeekStart = new Date(year, 0, 1 + (weekNumber - 1) * 7); // Calculate the starting day of the ISO week
-
-  // Calculate the day of the week based on the weekdays value
-  const daysOfWeek = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
-  const weekDayIndex = daysOfWeek.indexOf(weekdays);
-
-  // Calculate the date for the provided day
-  const targetDate = new Date(ISOWeekStart);
-  targetDate.setDate(ISOWeekStart.getDate() + weekDayIndex);
-
-  // Add one day to the target date
-  targetDate.setDate(targetDate.getDate() + 1);
-
-  // Format the date as desired (e.g., "YYYY-MM-DD")
-  const formattedDate = targetDate.toISOString().split("T")[0];
-
-  return formattedDate;
+export const checkPendingSlotMonday = (slot: string, data: any): boolean => {
+  try {
+    return !!data?.Monday?.find((res: any) => res.slot === slot && res.status === 1);
+  } catch (err) {
+    return false;
+  }
 };
+
+export const checkPendingSlotTuesday = (slot: string, data: any): boolean => {
+  try {
+    return !!data?.Tuesday?.find((res: any) => res.slot === slot && res.status === 1);
+  } catch (err) {
+    return false;
+  }
+};
+
+export const checkPendingSlotWednesday = (slot: string, data: any): boolean => {
+  try {
+    return !!data?.Wednesday?.find((res: any) => res.slot === slot && res.status === 1);
+  } catch (err) {
+    return false;
+  }
+};
+
+export const checkPendingSlotThursday = (slot: string, data: any): boolean => {
+  try {
+    return !!data?.Thursday?.find((res: any) => res.slot === slot && res.status === 1);
+  } catch (err) {
+    return false;
+  }
+};
+
+export const checkPendingSlotFriday = (slot: string, data: any): boolean => {
+  try {
+    return !!data?.Friday?.find((res: any) => res.slot === slot && res.status === 1);
+  } catch (err) {
+    return false;
+  }
+};
+
+export const checkPendingSlotSaturday = (slot: string, data: any): boolean => {
+  try {
+    return !!data?.Saturday?.find((res: any) => res.slot === slot && res.status === 1);
+  } catch (err) {
+    return false;
+  }
+};
+
+export const checkPendingSlotSunday = (slot: string, data: any): boolean => {
+  try {
+    return !!data?.Sunday?.find((res: any) => res.slot === slot && res.status === 1);
+  } catch (err) {
+    return false;
+  }
+};
+
+
+type Weekday =
+    | "Monday"
+    | "Tuesday"
+    | "Wednesday"
+    | "Thursday"
+    | "Friday"
+    | "Saturday"
+    | "Sunday";
+
+const weekdayOffset: Record<Weekday, number> = {
+  Monday: 0,
+  Tuesday: 1,
+  Wednesday: 2,
+  Thursday: 3,
+  Friday: 4,
+  Saturday: 5,
+  Sunday: 6,
+};
+
+export const getCurrentDate = (weekdays: string, weeks: string): string => {
+  const [yearStr, weekStr] = weeks.trim().split("-W");
+  const year = parseInt(yearStr, 10);
+  const week = parseInt(weekStr, 10);
+
+  if (!Object.keys(weekdayOffset).includes(weekdays)) {
+    console.error("❌ Invalid weekday:", weekdays);
+    return "Invalid Date";
+  }
+
+  const jan4 = new Date(Date.UTC(year, 0, 4));
+  const dayOfWeek = jan4.getUTCDay() || 7;
+  const startOfWeek1 = new Date(jan4);
+  startOfWeek1.setUTCDate(jan4.getUTCDate() - (dayOfWeek - 1));
+
+  const offset = weekdayOffset[weekdays as Weekday];
+
+  const targetDate = new Date(startOfWeek1);
+  targetDate.setUTCDate(startOfWeek1.getUTCDate() + (week - 1) * 7 + offset);
+
+  if (isNaN(targetDate.getTime())) {
+    console.error("❌ Invalid date generated:", targetDate);
+    return "Invalid Date";
+  }
+
+  return targetDate.toISOString().split("T")[0]; // "YYYY-MM-DD"
+};
+
 
 export const formatDate = (dateString: string) => {
   // Parse the dateString into a Date object

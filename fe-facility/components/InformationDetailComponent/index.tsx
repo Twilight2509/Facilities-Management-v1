@@ -427,6 +427,12 @@ export default function InfomationDetailComponent({
     setOpen(false);
   };
 
+  const formatDateShort = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    return `${day}/${month}`;
+  };
   return (
     <>
       <div className="flex flex-col gap-10 items-center">
@@ -455,17 +461,11 @@ export default function InfomationDetailComponent({
       </div>
 
       {/* modal booking */}
-      <Modal
-        className="w-fit"
-        open={open}
-        onOk={handleOk}
-        closeIcon={<></>}
-        footer={[
+      <Modal className="w-fit" open={open} onOk={handleOk} closeIcon={<></>} footer={[
           <Button key="back" onClick={handleCancel}>
             Hủy
           </Button>,
-        ]}
-      >
+        ]}>
         <div>
           <div className="flex items-center justify-end gap-2 my-3">
             <span className="font-bold text-xl"> Tuần và năm </span>
@@ -477,6 +477,7 @@ export default function InfomationDetailComponent({
             />
           </div>
           <div className="flex gap-2 justify-end mb-3">
+
             <Tooltip title="Đã có người đặt">
               <div className="w-1 h-4 bg-red-500"></div>
             </Tooltip>
@@ -493,16 +494,20 @@ export default function InfomationDetailComponent({
           <div className="flex justify-center">
             <table className="border">
               <thead>
-                <tr>
-                  <th className="p-2 border"></th>
-                  {weeks.map((week, i) => {
-                    return (
-                      <th key={i} className="p-2 border">
-                        {week}
+              <tr>
+                <th className="p-2 border text-center"></th>
+                {weeks.map((week, i) => {
+                  const dateStr = getCurrentDate(week as any, weekValue);
+                  return (
+                      <th key={i} className="p-2 border text-center">
+                        <div className="flex flex-col items-center">
+                          <span className="font-medium">{week}</span>
+                          <span className="text-sm text-gray-500">{formatDateShort(dateStr)}</span>
+                        </div>
                       </th>
-                    );
-                  })}
-                </tr>
+                  );
+                })}
+              </tr>
               </thead>
               <tbody>
                 {Array.from({ length: 9 }, (_, i) => (
