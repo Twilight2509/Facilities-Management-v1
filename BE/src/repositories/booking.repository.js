@@ -336,20 +336,29 @@ const UpdateOne = async (req) => {
         req.body.status = checkUnused(startDate) ? 5 : 2;
         // cập nhật những booking khác là 3 
         const { facilityId, slot } = req.body
-        await Booking.updateMany({ facilityId: facilityId, slot: slot, _id: { $ne: id } }, { $set: { status: 3 } });
-    }
+        await Booking.updateMany(
+            { facilityId: facilityId, slot: slot, startDate: booking.startDate, _id: { $ne: id } },
+            { $set: { status: 3 } }
+        );    }
     else if (req.body.status === 3) {
         req.body.timeReject = momentMinus7Hours;
     }
     const existedUser = await Booking.findByIdAndUpdate(id, req.body, { new: true }).exec();
-    const message = req.body.status === 2 ? "Yêu cầu của bạn đã được phê duyệt" : "Yêu cầu của bạn đã bị từ chối";
+
+// ✅ Dựa vào status thực tế trong DB sau khi cập nhật
+    const message =
+        existedUser.status === 2 || existedUser.status === 5
+            ? "Yêu cầu của bạn đã được phê duyệt"
+            : "Yêu cầu của bạn đã bị từ chối";
+
     const user = await User.findById(existedUser.booker);
+
     const notification = {
         userId: existedUser.booker,
         content: message,
-        path: '/historyBooking',
-        name: user.name
-    }
+        path: "/historyBooking",
+        name: user.name,
+    };
 
     await notificationService.createNotification(notification);
     return existedUser;
