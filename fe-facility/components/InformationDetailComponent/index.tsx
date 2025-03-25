@@ -539,7 +539,13 @@ export default function InfomationDetailComponent({
                           checkValidSlotMonday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotMondayUser(`Slot${i + 1}`, bookingUserByWeek)
                         }
-                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
+                        onClick={() => {
+                          console.log("Button clicked!");
+                          console.log("Checking Pending Slot:", checkPendingSlotMonday(`Slot${i + 1}`, listBooking));
+                          console.log("Checking Valid Slot:", checkValidSlotMonday(`Slot${i + 1}`, listBooking));
+                          console.log("Checking User Booking:", checkValidSlotMondayUser(`Slot${i + 1}`, bookingUserByWeek));
+                          handleBooking(`Slot${i + 1}#Monday#${weekValue}`);
+                        }}
                         className={`p-2 rounded-full text-white px-4 
     ${checkPendingSlotMonday(`Slot${i + 1}`, listBooking)
                             ? "bg-yellow-500 hover:bg-yellow-300 cursor-not-allowed opacity-50" // Chờ xét duyệt
