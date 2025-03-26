@@ -64,7 +64,7 @@ export default function Login() {
   return (
     <div className="h-screen">
       <div className=" bg-orange-500 h-full">
-        <Image src="/fpt.jpg" alt="fptu" layout="fill" className="opacity-80" />
+        <Image src="/loginbanner.webp" alt="fptu" layout="fill" className="opacity-80" />
 
         <div className="rounded-full overflow-hidden">
           <Link href={"/"}>

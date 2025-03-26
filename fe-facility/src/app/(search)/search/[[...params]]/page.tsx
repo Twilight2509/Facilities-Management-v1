@@ -212,7 +212,7 @@ export default function SearchAll({ params }: { params: object }) {
                 <div className="flex items-center justify-center">
                   <img src={f?.image} className="w-full h-72 rounded-md" />
                   <Tooltip title={f?.name}>
-                    <p className="font-bold text-2xl bg-black text-white w-1/2 shadow-md rounded-b-md text-ellipsis overflow-hidden text-center absolute top-0 left-1/2 transform -translate-x-1/2">
+                    <p className="font-bold text-2xl bg-orange-400 text-white w-1/2 shadow-md rounded-b-md text-ellipsis overflow-hidden text-center absolute top-0 left-1/2 transform -translate-x-1/2">
                       {f?.name}
                     </p>
                   </Tooltip>
