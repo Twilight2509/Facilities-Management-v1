@@ -3,20 +3,19 @@ import { jwtDecode } from "jwt-decode";
 const TOKEN = "accessToken";
 
 export class StorageService {
-  constructor() {}
+  constructor() { }
 
   static getUser(): any | string {
-    const token = this.getToken(); // Invoke the getToken method
+    const token = this.getToken(); // Lấy token từ localStorage
     if (token) {
-      const decodedToken: any = null;
       try {
-        const decodedToken: any = jwtDecode(token);
-        return decodedToken; // Assuming 'sub' contains the email in your token
+        const decodedToken: any = jwtDecode(token); // Giải mã token
+        return decodedToken; // Trả về đối tượng decodedToken (giả sử 'sub' chứa email hoặc thông tin người dùng)
       } catch (e) {
-        return "";
+        return ""; // Nếu có lỗi giải mã, trả về chuỗi rỗng
       }
     }
-    return "";
+    return ""; // Nếu không có token, trả về chuỗi rỗng
   }
 
   static getToken(): string | null {

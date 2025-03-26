@@ -370,7 +370,7 @@ export default function InfomationDetailComponent({
     const arrayBooking = data.split("#");
     const userId = StorageService.getUser()?.id ?? null;
     const day = getCurrentDate(arrayBooking[1], arrayBooking[2]);
-    console.log("====================================");
+    console.log("================= ===================");
     console.log("dayTime::", day);
     console.log("====================================");
     const bookingBody = {

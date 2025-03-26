@@ -44,7 +44,7 @@ export function convertWeekDateToDate(weekDateString: string): string {
   // Calculate the date of the first day of the specified week
   const firstDayOfWeek: Date = new Date(
     firstDayOfYear.getTime() +
-      ((week - 1) * 7 - firstDayOfYear.getDay() + 1) * 24 * 60 * 60 * 1000
+    ((week - 1) * 7 - firstDayOfYear.getDay() + 1) * 24 * 60 * 60 * 1000
   );
 
   // Calculate the date of the specified day of the week
@@ -52,16 +52,16 @@ export function convertWeekDateToDate(weekDateString: string): string {
     dayOfWeek === "Sunday"
       ? 0
       : dayOfWeek === "Monday"
-      ? 1
-      : dayOfWeek === "Tuesday"
-      ? 2
-      : dayOfWeek === "Wednesday"
-      ? 3
-      : dayOfWeek === "Thursday"
-      ? 4
-      : dayOfWeek === "Friday"
-      ? 5
-      : 6;
+        ? 1
+        : dayOfWeek === "Tuesday"
+          ? 2
+          : dayOfWeek === "Wednesday"
+            ? 3
+            : dayOfWeek === "Thursday"
+              ? 4
+              : dayOfWeek === "Friday"
+                ? 5
+                : 6;
 
   const targetDate: Date = new Date(
     firstDayOfWeek.getTime() + day * 24 * 60 * 60 * 1000
@@ -115,13 +115,22 @@ export const checkValidSlotMondayUser = (
   setDisableButtonsMonday?: any
 ): boolean => {
   try {
+    // Lấy ID người dùng từ localStorage
+    const userId = StorageService.getUser()?.id;
+
+    // Kiểm tra nếu có slot trùng với ngày Monday, trạng thái > 0 và booker trùng với userId
     return !!data?.Monday?.find(
-      (res: any) => res.slot === slot && res.status > 0
+      (res: any) =>
+        res.slot === slot &&
+        res.status > 0 &&
+        res.booker === userId // So sánh booker với userId từ localStorage
     );
   } catch (err) {
-    return false;
+    console.log(err); // Nếu có lỗi, in ra console
+    return false; // Trả về false nếu có lỗi
   }
 };
+
 
 export const checkValidSlotTuesdayUser = (slot: string, data: any): boolean => {
   try {
@@ -269,14 +278,26 @@ export const checkValidSlotSunday = (slot: string, data: any): boolean => {
 // ==========================
 // Slot đang chờ xét duyệt (status === 1) - Dùng cho màu vàng cảnh báo
 // ==========================
+import { StorageService } from "../services/storage";
 
 export const checkPendingSlotMonday = (slot: string, data: any): boolean => {
   try {
-    return !!data?.Monday?.find((res: any) => res.slot === slot && res.status === 1);
+    // Lấy ID người dùng từ localStorage
+    const userId = StorageService.getUser()?.id ?? null;
+
+    // Kiểm tra nếu có slot trùng với ngày Monday và status là 1 (chờ duyệt)
+    // Đồng thời kiểm tra ID người dùng có trùng với booker không
+    return !!data?.Monday?.find((res: any) =>
+      res.slot === slot &&
+      res.status === 1 &&
+      res.booker === userId // Kiểm tra ID người dùng có trùng với booker
+    );
   } catch (err) {
-    return false;
+    console.log(err); // Nếu có lỗi, in ra console
+    return false; // Trả về false nếu có lỗi
   }
 };
+
 
 export const checkPendingSlotTuesday = (slot: string, data: any): boolean => {
   try {
@@ -328,13 +349,13 @@ export const checkPendingSlotSunday = (slot: string, data: any): boolean => {
 
 
 type Weekday =
-    | "Monday"
-    | "Tuesday"
-    | "Wednesday"
-    | "Thursday"
-    | "Friday"
-    | "Saturday"
-    | "Sunday";
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
 
 const weekdayOffset: Record<Weekday, number> = {
   Monday: 0,

@@ -98,7 +98,7 @@ export default function Home() {
 
           const newMessages = data.data.map((message: any) => ({
             text: message.content,
-            sender: message.type === "user" ? "left" : "right",
+            sender: message.type === "user" ? "right" : "left",
           }));
           setMessages(newMessages);
         }
@@ -283,8 +283,8 @@ export default function Home() {
                   <div
                     key={index}
                     className={`text-sm p-2 rounded-lg ${message.sender === "right"
-                        ? "bg-blue-100 self-end"
-                        : "bg-gray-100 self-start"
+                      ? "bg-blue-100 self-end"
+                      : "bg-gray-100 self-start"
                       }`}
                   >
                     {message.text}
