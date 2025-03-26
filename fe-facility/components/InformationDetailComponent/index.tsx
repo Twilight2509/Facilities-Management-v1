@@ -370,7 +370,7 @@ export default function InfomationDetailComponent({
     const arrayBooking = data.split("#");
     const userId = StorageService.getUser()?.id ?? null;
     const day = getCurrentDate(arrayBooking[1], arrayBooking[2]);
-    console.log("================= ===================");
+    console.log("====================================");
     console.log("dayTime::", day);
     console.log("====================================");
     const bookingBody = {
@@ -485,7 +485,7 @@ export default function InfomationDetailComponent({
             />
           </div>
           <div className="flex gap-2 justify-end mb-3">
-            <Tooltip title="Chờ duyệt">
+            <Tooltip title="Chờ duyệt (Đã có người đặt chờ được xác nhận)">
               <div className="w-1 h-4 bg-yellow-500"></div>
             </Tooltip>
             <Tooltip title="Đã có người đặt">
@@ -542,7 +542,7 @@ export default function InfomationDetailComponent({
                       <button
                         disabled={
                           disableButtonsMonday ||
-                          checkPendingSlotMonday(`Slot${i + 1}`, listBooking) ||
+                          // checkPendingSlotMonday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotMonday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotMondayUser(
                             `Slot${i + 1}`,
@@ -582,7 +582,7 @@ export default function InfomationDetailComponent({
                       <button
                         disabled={
                           disableButtonsTuesday ||
-                          checkPendingSlotTuesday(`Slot${i + 1}`, listBooking) ||
+                          // checkPendingSlotTuesday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotTuesday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotTuesdayUser(
                             `Slot${i + 1}`,
@@ -624,8 +624,8 @@ export default function InfomationDetailComponent({
                       <button
                         disabled={
                           disableButtonsWendsday ||
-                          checkPendingSlotWednesday(`Slot${i + 1}`, listBooking) ||
-                          checkPendingSlotWednesday(`Slot${i + 1}`, listBooking) ||
+                          // checkPendingSlotWednesday(`Slot${i + 1}`, listBooking) ||
+                          // checkPendingSlotWednesday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotWednesday(
                             `Slot${i + 1}`,
                             listBooking
@@ -672,7 +672,7 @@ export default function InfomationDetailComponent({
                       <button
                         disabled={
                           disableButtonsThurday ||
-                          checkPendingSlotThursday(`Slot${i + 1}`, listBooking) ||
+                          // checkPendingSlotThursday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotThursday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotThursdayUser(
                             `Slot${i + 1}`,
@@ -714,7 +714,7 @@ export default function InfomationDetailComponent({
                       <button
                         disabled={
                           disableButtonsFriday ||
-                          checkPendingSlotFriday(`Slot${i + 1}`, listBooking) ||
+                          // checkPendingSlotFriday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotFriday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotFridayUser(
                             `Slot${i + 1}`,
@@ -754,7 +754,7 @@ export default function InfomationDetailComponent({
                       <button
                         disabled={
                           disableButtonsSaturday ||
-                          checkPendingSlotSaturday(`Slot${i + 1}`, listBooking) ||
+                          // checkPendingSlotSaturday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotSaturday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotSaturdayUser(
                             `Slot${i + 1}`,
@@ -796,7 +796,7 @@ export default function InfomationDetailComponent({
                       <button
                         disabled={
                           disableButtonsSunday ||
-                          checkPendingSlotSunday(`Slot${i + 1}`, listBooking) ||
+                          // checkPendingSlotSunday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotSunday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotSundayUser(
                             `Slot${i + 1}`,

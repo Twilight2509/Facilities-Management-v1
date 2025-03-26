@@ -339,13 +339,14 @@ const UpdateOne = async (req) => {
         await Booking.updateMany(
             { facilityId: facilityId, slot: slot, startDate: booking.startDate, _id: { $ne: id } },
             { $set: { status: 3 } }
-        );    }
+        );
+    }
     else if (req.body.status === 3) {
         req.body.timeReject = momentMinus7Hours;
     }
     const existedUser = await Booking.findByIdAndUpdate(id, req.body, { new: true }).exec();
 
-// ✅ Dựa vào status thực tế trong DB sau khi cập nhật
+    // ✅ Dựa vào status thực tế trong DB sau khi cập nhật
     const message =
         existedUser.status === 2 || existedUser.status === 5
             ? "Yêu cầu của bạn đã được phê duyệt"
