@@ -186,7 +186,7 @@ const ChatComponent = () => {
         onKeyDown={handleKeyDown}
       />
       <button
-        className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+        className="bg-orange-400 text-white py-2 px-4 rounded-lg"
         onClick={sendMessage}
       >
         <i className="pi pi-send" style={{ fontSize: "1rem" }}></i>

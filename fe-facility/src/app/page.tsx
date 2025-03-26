@@ -265,7 +265,7 @@ export default function Home() {
       </div>
       {role === "Student" && (
         <i
-          className="pi pi-inbox font-bold text-white bg-green-400 p-3 rounded-full back text-3xl cursor-pointer fixed top-3/4 right-10 z-50   "
+          className="pi pi-inbox font-bold text-white bg-orange-400 p-3 rounded-full back text-3xl cursor-pointer fixed top-3/4 right-10 z-50   "
           onClick={() => setLoginChat(!loginChat)}
         ></i>
       )}

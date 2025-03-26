@@ -67,7 +67,7 @@ export default function ManageAccount() {
         <div>
           <div className="border flex flex-col justify-center">
             <div className="border text-center">
-              <p className="text-2xl p-2 bg-blue-500 text-white font-semibold">
+              <p className="text-2xl p-2 bg-orange-500 text-white font-semibold">
                 Quản Lý Tài Khoản
               </p>
             </div>
@@ -79,7 +79,7 @@ export default function ManageAccount() {
                   placeholder="Tìm Kiếm theo email..."
                   onChange={handleFilter}
                 />
-                <button className="bg-blue-500 px-2 h-7 hover:bg-blue-300 cursor-pointer rounded-r-full">
+                <button className="bg-orange-500 px-2 h-7 hover:bg-orange-300 cursor-pointer rounded-r-full">
                   <FontAwesomeIcon
                     icon={faMagnifyingGlass}
                     className="text-white"

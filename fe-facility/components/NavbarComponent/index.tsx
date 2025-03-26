@@ -213,7 +213,7 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({
                       data.map((item: any, index: any) => (
                         <div
                           key={index}
-                          className="p-3 hover:bg-blue-200"
+                          className="p-3 hover:bg-orange-200"
                           onClick={() => router.push(item?.path)}
                         >
                           <h5 className="text-lg font-bold">{item?.name}</h5>

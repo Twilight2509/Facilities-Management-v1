@@ -4,7 +4,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Pagination, PaginationProps, Tooltip } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getAllBooking } from "../../services/booking.api";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { log } from "console";
@@ -62,7 +62,10 @@ export default function ManageBookingRequestAccept() {
         setActivePage(0);
       });
   };
-
+    const handleFilter = (e: any) => {
+        const inputValue = e.target.value.toLowerCase();
+        fetchApi(inputValue, page);
+    };
 
 function formatDate(dateString: any) {
   // Kiểm tra nếu dateString không tồn tại hoặc không phải là chuỗi hợp lệ
@@ -90,21 +93,25 @@ function formatDate(dateString: any) {
       <div>
         <div className="border flex flex-col justify-center">
           <div className="border text-center">
-            <p className="text-2xl p-2 bg-blue-500 text-white font-semibold">
+            <p className="text-2xl p-2 bg-orange-500 text-white font-semibold">
               Các yêu cầu được duyệt
             </p>
           </div>
           <div className="py-2 flex justify-between bg-blue-100">
-          
-
-            <div>
-              <input
-                type="text"
-                className="outline-none border border-gray-300 h-7 p-1 rounded-full"
-                placeholder="Điền kí tự để tìm kiếm ..."
-                onChange={(e) => handleSearch(e.target.value)}
-              />
-            </div>
+              <div className="py-2 flex justify-end bg-blue-100">
+                  <input
+                      type="text"
+                      className="outline-none border border-gray-300 h-7 p-1 rounded-l-full"
+                      placeholder="Tìm kiếm theo..."
+                      onChange={(e) => handleSearch(e.target.value)}
+                  />
+                  <button className="bg-orange-500 px-2 h-7 hover:bg-orange-300 cursor-pointer rounded-r-full">
+                      <FontAwesomeIcon
+                          icon={faMagnifyingGlass}
+                          className="text-white"
+                      />
+                  </button>
+              </div>
           </div>
           <table>
             <thead className="border">
