@@ -4,7 +4,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Pagination, PaginationProps, Tooltip } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getAllBooking } from "../../services/booking.api";
 import { ProgressSpinner } from "primereact/progressspinner";
 
@@ -45,20 +45,38 @@ export default function ManageBookingRequestExpired() {
         setActivePage(0);
       });
   };
-
-  const handleSearch = () => {
-    getAllBooking(4, null, 5, text)
-      .then((res) => {
-        setBookingData(res?.data?.booking);
-        setTotalPage(res?.data?.totalPage);
-        setActivePage(res?.data?.activePage);
-      })
-      .catch((err) => {
-        setBookingData([]);
-        setTotalPage(0);
-        setActivePage(0);
-      });
+  const handleFilter = (e: any) => {
+    const inputValue = e.target.value.toLowerCase();
+    fetchApi(inputValue, page);
   };
+  const handleSearch = () => {
+    getAllBooking(4, null, 1, 5, text)
+        .then((res) => {
+          setBookingData(res?.data?.booking);
+          setTotalPage(res?.data?.totalPage);
+          setActivePage(res?.data?.activePage);
+        })
+        .catch((err) => {
+          setBookingData([]);
+          setTotalPage(0);
+          setActivePage(0);
+        });
+  };
+
+
+  // const handleSearch = () => {
+  //   getAllBooking(4, null, 5, text)
+  //     .then((res) => {
+  //       setBookingData(res?.data?.booking);
+  //       setTotalPage(res?.data?.totalPage);
+  //       setActivePage(res?.data?.activePage);
+  //     })
+  //     .catch((err) => {
+  //       setBookingData([]);
+  //       setTotalPage(0);
+  //       setActivePage(0);
+  //     });
+  // };
 
   function formatDate(dateString: any) {
     const dateTimeParts = dateString.split("T");
@@ -73,26 +91,23 @@ export default function ManageBookingRequestExpired() {
       <div>
         <div className="border flex flex-col justify-center">
           <div className="border text-center">
-            <p className="text-2xl p-2 bg-blue-500 text-white font-semibold">
+            <p className="text-2xl p-2 bg-orange-500 text-white font-semibold">
               Các yêu cầu quá hạn
             </p>
           </div>
           <div className="py-2 flex justify-between bg-blue-100">
-            <div>
+            <div className="py-2 flex justify-end bg-blue-100">
               <input
-                type="text"
-                className="outline-none border border-gray-300 h-7 p-1 rounded-l-full"
-                placeholder="Điền kí tự để tìm kiếm ..."
-                onChange={(e) => setText(e.target.value)}
+                  type="text"
+                  className="outline-none border border-gray-300 h-7 p-1 rounded-l-full"
+                  placeholder="Tìm Kiếm theo email..."
+                  onChange={(e) => setText(e.target.value)}
               />
               <button
-                onClick={handleSearch}
-                className="bg-blue-500 px-2 h-7 hover:bg-blue-300 cursor-pointer rounded-r-full"
+                  className="bg-orange-500 px-2 h-7 hover:bg-orange-300 cursor-pointer rounded-r-full"
+                  onClick={handleSearch}
               >
-                <FontAwesomeIcon
-                  icon={faMagnifyingGlass}
-                  className="text-white"
-                />
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="text-white" />
               </button>
             </div>
           </div>

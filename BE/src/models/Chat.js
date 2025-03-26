@@ -13,8 +13,8 @@ const Chat = mongoose.model("Chat", new Schema(
         },
         type: {
             type: String,
-        } 
-	}, 
+        }
+	},
 	{
 		timestamps: true
 	}

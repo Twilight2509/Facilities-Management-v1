@@ -4,7 +4,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Pagination, PaginationProps, Tooltip } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getAllBooking } from "../../services/booking.api";
 import { ProgressSpinner } from "primereact/progressspinner";
 
@@ -59,7 +59,10 @@ export default function ManageBookingRequestReject() {
         setActivePage(0);
       });
   };
-
+  const handleFilter = (e: any) => {
+    const inputValue = e.target.value.toLowerCase();
+    fetchApi(inputValue, page);
+  };
   function formatDate(dateString: any) {
     const dateTimeParts = dateString.split("T");
     const datePart = dateTimeParts[0];
@@ -73,27 +76,23 @@ export default function ManageBookingRequestReject() {
       <div>
         <div className="border flex flex-col justify-center">
           <div className="border text-center">
-            <p className="text-2xl p-2 bg-blue-500 text-white font-semibold">
+            <p className="text-2xl p-2 bg-orange-500 text-white font-semibold">
               Các yêu cầu bị từ chối
             </p>
           </div>
           <div className="py-2 flex justify-between bg-blue-100">
-
-            <div>
+            <div className="py-2 flex justify-end bg-blue-100">
               <input
-                type="text"
-                className="outline-none border border-gray-300 h-7 p-1 rounded-l-full"
-                placeholder="Điền kí tự để tìm kiếm ..."
-                onChange={(e) => setTextSearch(e.target.value)}
+                  type="text"
+                  className="outline-none border border-gray-300 h-7 p-1 rounded-l-full"
+                  placeholder="Tìm kiếm theo email..."
+                  onChange={(e) => setTextSearch(e.target.value)}
               />
               <button
-                className="bg-blue-500 px-2 h-7 hover:bg-blue-300 cursor-pointer rounded-r-full"
-                onClick={handleSearch}
+                  className="bg-orange-500 px-2 h-7 hover:bg-orange-300 cursor-pointer rounded-r-full"
+                  onClick={handleSearch}
               >
-                <FontAwesomeIcon
-                  icon={faMagnifyingGlass}
-                  className="text-white"
-                />
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="text-white" />
               </button>
             </div>
           </div>

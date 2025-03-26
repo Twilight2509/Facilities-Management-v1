@@ -216,7 +216,7 @@ export default function ManageBookingRequest() {
       <div>
         <div className="border flex flex-col justify-center">
           <div className="border text-center">
-            <p className="text-2xl p-2 bg-blue-500 text-white font-semibold">
+            <p className="text-2xl p-2 bg-orange-500 text-white font-semibold">
               Các yêu cầu đang chờ xử lí
             </p>
           </div>
@@ -402,7 +402,7 @@ export default function ManageBookingRequest() {
             Cancel
           </Button>
           <Button
-            className="bg-blue-500 text-white"
+            className="bg-orange-500 text-white"
             htmlType="submit"
             onClick={handleRejectModal}
           >
