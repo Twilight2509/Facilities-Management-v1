@@ -571,7 +571,7 @@ export default function ManageFacilities() {
         <div>
           <div className="border flex flex-col justify-center">
             <div className="border text-center">
-              <p className="text-2xl p-2 bg-blue-500 text-white font-semibold">
+              <p className="text-2xl p-2 bg-orange-500 text-white font-semibold">
                 Quản lý phòng , sân thể dục
               </p>
             </div>
@@ -580,7 +580,7 @@ export default function ManageFacilities() {
                 <Tooltip title="Tạo một phòng hoặc sân bóng mới">
                   <button
                     onClick={showModal}
-                    className="ml-5 outline-none border border-gray-300 h-7 p-1 text-white  bg-blue-500 hover:bg-blue-300  "
+                    className="ml-5 outline-none border border-gray-300 h-7 p-1 text-white  bg-orange-500 hover:bg-orange-300  "
                   >
                     <FontAwesomeIcon className="text-xl" icon={faPlus} />
                   </button>
@@ -607,7 +607,7 @@ export default function ManageFacilities() {
           onChange={handleFileChange}
           required
         />
-        <button type='submit' className="rounded-md bg-blue-600 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2">
+        <button type='submit' className="rounded-md bg-orange-600 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2">
   Upload
 </button>
       </form>
@@ -699,7 +699,7 @@ export default function ManageFacilities() {
                         <div className="flex flex-col items-center gap-2 w-full py-1">
                           <button
                             onClick={() => showModalUpdate(c)}
-                            className="bg-blue-400 hover:bg-blue-300 p-2 text-white rounded-full w-24"
+                            className="bg-orange-500 hover:bg-blue-300 p-2 text-white rounded-full w-24"
                           >
                             Cập nhật
                           </button>

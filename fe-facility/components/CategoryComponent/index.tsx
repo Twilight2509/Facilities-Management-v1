@@ -414,7 +414,7 @@ export default function CategoryComponent() {
         <div>
           <div className="border flex flex-col justify-center">
             <div className="border text-center">
-              <p className="text-2xl p-2 bg-blue-500 text-white font-semibold">
+              <p className="text-2xl p-2 bg-orange-500 text-white font-semibold">
                 Quản lý các thể loại dịch vụ
               </p>
             </div>
@@ -423,7 +423,7 @@ export default function CategoryComponent() {
                 <Tooltip title="Tạo một dịch vụ mới">
                   <button
                     onClick={showModal}
-                    className="ml-5 outline-none border border-gray-300 h-7 p-1 text-white  bg-blue-500 hover:bg-blue-300  "
+                    className="ml-5 outline-none border border-gray-300 h-7 p-1 text-white  bg-orange-500 hover:bg-orange-300  "
                   >
                     <FontAwesomeIcon className="text-xl" icon={faPlus} />
                   </button>
