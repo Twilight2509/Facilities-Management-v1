@@ -162,6 +162,7 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({
           {!isLogin && (
             <div>
               <button
+                className="bg-orange-400 hover:bg-orange-600 p-2 text-white rounded-lg"
                 onClick={() => router.push("/login")}
               >
                 Đăng nhập
