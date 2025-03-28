@@ -207,7 +207,7 @@ export default function Home() {
           />
           <button
             onClick={handleSearch}
-            className="bg-blue-500 hover:bg-blue-300 p-3 md:rounded-r-lg"
+            className="bg-orange-500 hover:bg-orange-300 p-3 md:rounded-r-lg"
           >
             <span className="pi pi-search text-white h-full"></span>
           </button>
@@ -283,8 +283,8 @@ export default function Home() {
                   <div
                     key={index}
                     className={`text-sm p-2 rounded-lg ${message.sender === "right"
-                        ? "bg-blue-100 self-end"
-                        : "bg-gray-100 self-start"
+                      ? "bg-orange-100 self-end"
+                      : "bg-gray-100 self-start"
                       }`}
                   >
                     {message.text}
@@ -306,7 +306,7 @@ export default function Home() {
                     />
                     <button
                       onClick={handleSendMessage}
-                      className="px-4 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                      className="px-4 py-1 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
                     >
                       <i
                         className="pi pi-send"

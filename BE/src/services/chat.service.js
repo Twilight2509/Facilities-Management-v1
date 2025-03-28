@@ -51,14 +51,76 @@ const listUser = async (page, size) => {
 }
 
 const listMessage = async (userId) => {
-    const listMessage = await Chat.find({ userId }).populate({path: "userId"});
+    const listMessage = await Chat.find({ userId }).populate({ path: "userId" });
     return {
         statusCode: 1,
         data: listMessage
     }
 }
+const updateChatToRead = async (chatId) => {
+    try {
+        const chat = await Chat.findById(chatId);
+        if (!chat) {
+            return {
+                statusCode: 0,
+                message: "Chat not existed"
+            };
+        }
+        chat.read = true;  // Đánh dấu là đã đọc
+        await chat.save(); // Lưu lại thay đổi
+        return {
+            statusCode: 1,
+            data: chat
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            statusCode: 0,
+            message: "System error"
+        };
+    }
+}
+const updateAllChatsToRead = async (userId) => {
+    try {
+        const result = await Chat.updateMany({ userId, read: false }, { $set: { read: true } });
+        if (!result) {
+            return {
+                statusCode: 0,
+                message: "No chats found to update"
+            };
+        }
+        return {
+            statusCode: 1,
+            message: "All chats updated to read successfully"
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            statusCode: 0,
+            message: "System error"
+        };
+    }
+}
+const getUnreadChatsCount = async (userId) => {
+    try {
+        const unreadChats = await Chat.countDocuments({ userId, read: false });
+        return {
+            statusCode: 1,
+            unreadCount: unreadChats
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            statusCode: 0,
+            message: "System error"
+        };
+    }
+}
 
 export default {
+    getUnreadChatsCount,
+    updateAllChatsToRead,
+    updateChatToRead,
     create,
     listUser,
     listMessage

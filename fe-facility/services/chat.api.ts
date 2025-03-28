@@ -42,7 +42,40 @@ export function getListAdminMessage(userId: any) {
     return restClient({
         url: "chat/list-admin-message",
         method: "GET",
-        params: {userId},
+        params: { userId },
         headers
     })
+}
+export function markChatAsRead(chatId: string) {
+    const tokenWithQuotes = StorageService.getToken();
+    const token = tokenWithQuotes ? tokenWithQuotes.replace(/['"]+/g, '') : '';
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+    return restClient({
+        url: `chat/${chatId}/read`,
+        method: "PUT",
+        headers
+    });
+}
+export function markAllChatsAsRead(userId: string) {
+    const tokenWithQuotes = StorageService.getToken();
+    const token = tokenWithQuotes ? tokenWithQuotes.replace(/['"]+/g, '') : '';
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+    return restClient({
+        url: `chat/${userId}/read-all`,
+        method: "PUT",
+        headers
+    });
+}
+export function getUnreadChatsCount(userId: string) {
+    const tokenWithQuotes = StorageService.getToken();
+    const token = tokenWithQuotes ? tokenWithQuotes.replace(/['"]+/g, '') : '';
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+    return restClient({
+        url: `chat/${userId}/unread-count`,
+        method: "GET",
+        headers
+    });
 }

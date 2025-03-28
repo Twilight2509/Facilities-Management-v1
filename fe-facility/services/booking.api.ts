@@ -22,27 +22,25 @@ export function getBookingByUserId(
   });
 }
 
-export function getAllBooking(
-  status: any = null,
-  sort: any = "default",
-  page: number | any = 1,
-  size: number | any = 5,
-  name?: any,
-  role?: any
-) {
-  return restClient({
-    url: "booking",
-    method: "GET",
-    params: {
-      status,
-      // sort: sort === "default" ? null : sort,
-      page,
-      size,
-      name,
-      role: role === "default" ? null : role,
-      sortBeside : true
-    },
-  });
+export async function getAllBooking(status: any = null, sort: any = "default", page: number = 1, size: number = 5, name?: any, role?: any) {
+  try {
+    const response = await restClient({
+      url: "booking",
+      method: "GET",
+      params: {
+        status,
+        page,
+        size,
+        name,
+        role: role === "default" ? null : role,
+        sortBeside: true
+      },
+    });
+    return response; // Trả về dữ liệu từ API
+  } catch (error) {
+    console.error("Lỗi khi gọi API getAllBooking:", error);
+    return null; // Trả về null để tránh lỗi undefined
+  }
 }
 
 export function editBooking(data: any, id: string) {
@@ -75,7 +73,7 @@ export function getBookingUserByWeek(
   facilityId?: string
 ) {
   return restClient({
-    url: "booking/user/" + userId+"?facilityId="+facilityId,
+    url: "booking/user/" + userId + "?facilityId=" + facilityId,
     method: "GET",
     params: { weeks },
   });

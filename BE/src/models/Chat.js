@@ -1,9 +1,9 @@
 import mongoose, { ObjectId, Schema } from "mongoose";
 
 const Chat = mongoose.model("Chat", new Schema(
-	{
-		id: ObjectId,
-		userId: {
+    {
+        id: ObjectId,
+        userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         },
@@ -13,11 +13,16 @@ const Chat = mongoose.model("Chat", new Schema(
         },
         type: {
             type: String,
+        },
+        read: {
+            type: Boolean,
+            require: true,
+            default: false  // Mặc định là chưa đọc
         }
-	},
-	{
-		timestamps: true
-	}
+    },
+    {
+        timestamps: true
+    }
 ))
 
 export default Chat;

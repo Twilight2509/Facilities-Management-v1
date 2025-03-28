@@ -44,7 +44,45 @@ const listAdminMessage = async (req, res) => {
         return res.status(500).json(error);
     }
 }
+const updateChatToRead = async (req, res) => {
+    const { chatId } = req.params;
+    try {
+        const result = await chatService.updateChatToRead(chatId);
+        const statusCode = result.statusCode === 1 ? 200 : 500;
+        return res.status(statusCode).json(result);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
+
+// Cập nhật tất cả tin nhắn của người dùng là đã đọc
+const updateAllChatsToRead = async (req, res) => {
+    const userId = req.userID;
+    try {
+        const result = await chatService.updateAllChatsToRead(userId);
+        const statusCode = result.statusCode === 1 ? 200 : 500;
+        return res.status(statusCode).json(result);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
+
+// Lấy số lượng tin nhắn chưa đọc
+const getUnreadChatsCount = async (req, res) => {
+    const userId = req.userID;
+    try {
+        const result = await chatService.getUnreadChatsCount(userId);
+        const statusCode = result.statusCode === 1 ? 200 : 500;
+        return res.status(statusCode).json(result);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
+
 export default {
+    updateChatToRead,
+    updateAllChatsToRead,
+    getUnreadChatsCount,
     create,
     list,
     listUserMessage,
