@@ -33,6 +33,12 @@ facilityRouter.put("/update",
         validator.checkError
     ],
     facilityController.update);
+// Xoá cứng (xoá hẳn khỏi DB)
+facilityRouter.delete(
+    "/:id",
+    [authJWT.verifyToken, authJWT.checkRole("Admin")],
+    facilityController.remove
+);
 facilityRouter.delete("/delete", [authJWT.verifyToken, authJWT.checkRole("Admin")], facilityController.changeStatus);
 facilityRouter.get("/stastic-by-category", [authJWT.verifyToken], facilityController.getListFacilityByCategory);
 

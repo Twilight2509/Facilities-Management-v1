@@ -34,7 +34,7 @@ import { SubmitHandler, set, useForm } from "react-hook-form";
 import {
   addFacility,
   deleteFacility,
-  getFacilities,
+  getFacilities, hardDeleteFacility,
   updateFacility,
   updateStatusFaci,
 } from "../../../services/facilities.api";
@@ -702,6 +702,24 @@ export default function ManageFacilities() {
                             className="bg-orange-500 hover:bg-blue-300 p-2 text-white rounded-full w-24"
                           >
                             Cập nhật
+                          </button>
+                          <button
+                              onClick={() => {
+                                hardDeleteFacility(c._id)
+                                    .then(() => {
+                                      showSuccessCategory("Đã xoá khỏi hệ thống!");
+                                      getFacilities(1, null, "").then((res: any) => {
+                                        setListFacility(res.data.items);
+                                        setTotalPage(res.data.totalPage);
+                                      });
+                                    })
+                                    .catch(() => {
+                                      showErrorCategory("Xoá thất bại");
+                                    });
+                              }}
+                              className="bg-red-600 hover:bg-red-500 p-2 text-white rounded-full w-24"
+                          >
+                            Xoá
                           </button>
                         </div>
                       </td>

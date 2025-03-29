@@ -485,7 +485,14 @@ export default function InfomationDetailComponent({
             />
           </div>
           <div className="flex gap-2 justify-end mb-3">
-            <Tooltip title="Chờ duyệt">
+            <Tooltip
+                title={
+                  <div className="text-center">
+                    Chờ được duyệt <br />
+                    (Đã có người đặt trước, bạn có thể không được chấp nhận sử dụng phòng này)
+                  </div>
+                }
+            >
               <div className="w-1 h-4 bg-yellow-500"></div>
             </Tooltip>
             <Tooltip title="Đã có người đặt">

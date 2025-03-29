@@ -40,6 +40,29 @@ const create = async (data) => {
         }
     }
 }
+const remove = async (id) => {
+    try {
+        const facility = await Facility.findById(id);
+        if (!facility) {
+            return {
+                statusCode: 0,
+                message: "Facility not found"
+            };
+        }
+
+        await Facility.findByIdAndDelete(id);
+        return {
+            statusCode: 1,
+            message: "Facility deleted permanently"
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            statusCode: 0,
+            message: "System error"
+        };
+    }
+};
 const update = async (data, actionUser) => {
     const facility = data;
     try {
@@ -291,5 +314,6 @@ export default {
     listPagination,
     listDashboard,
     getFacilityByCategory,
-    listPaginationActive
+    listPaginationActive,
+    remove
 }

@@ -30,6 +30,17 @@ export function addFacility(data: any) {
   });
 }
 
+export function hardDeleteFacility(id: string) {
+  const tokenWithQuotes = StorageService.getToken();
+  const token = tokenWithQuotes ? tokenWithQuotes.replace(/['"]+/g, "") : "";
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  return restClient({
+    url: `facility/${id}`, // gọi đúng route xoá cứng
+    method: "DELETE",
+    headers,
+  });
+}
+
 export function updateFacility(data: any) {
   const tokenWithQuotes = StorageService.getToken();
   const token = tokenWithQuotes ? tokenWithQuotes.replace(/['"]+/g, "") : "";

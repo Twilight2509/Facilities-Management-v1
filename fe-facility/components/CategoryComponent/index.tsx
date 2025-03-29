@@ -488,6 +488,12 @@ export default function CategoryComponent() {
                           >
                             Cập nhật
                           </button>
+                          <button
+                              onClick={() => handleDelete(c._id)}
+                              className="bg-red-500 hover:bg-red-400 p-2 text-white rounded-full w-24"
+                          >
+                            Xoá
+                          </button>
                         </div>
                       </td>
                     </tr>

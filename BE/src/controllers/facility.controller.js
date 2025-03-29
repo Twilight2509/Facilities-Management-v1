@@ -88,7 +88,16 @@ const getListFacilityByCategory = async(req, res) => {
         return res.status(500).json(error);
     }
 }
-
+const remove = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await facilityService.remove(id);
+        const statusCode = result.statusCode === 1 ? 200 : 500;
+        return res.status(statusCode).json(result);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+};
 export default {
     create,
     update,
@@ -97,5 +106,5 @@ export default {
     listPagination,
     listDashboard,
     getListFacilityByCategory,
-
+    remove
 }
