@@ -15,6 +15,7 @@ import {
 } from "../../services/notification.api";
 import { set } from "zod";
 import { Flex } from "antd";
+import {getUnreadMessagesCount, markAllChatsAsRead} from "../../services/chat.api";
 
 interface NavbarComponentProps {
   colorNavbarOne: string;
@@ -36,19 +37,27 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({
   const [data, setData] = useState<any>([]);
   const [role, setRole] = useState<string>("");
   const [read, setRead] = useState<any>([]);
-
+  const [unreadMessages, setUnreadMessages] = useState<number>(0);
+  const [unreadChatCount, setUnreadChatCount] = useState(0);
+  const handleReadAllChats = async () => {
+    // await markAllChatsAsRead();
+    setUnreadChatCount(0);
+  };
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (StorageService.getToken()) {
-        if (StorageService.isExpired()) {
-          StorageService.signout();
-          router.replace("/login");
-        }
-      }
-    }, 1000);
+    if (StorageService.isLoggedIn()) {
+      const interval = setInterval(() => {
+        getUnreadMessagesCount()
+            .then((res: any) => {
+              setUnreadChatCount(res?.data?.unreadCount || 0);
+            })
+            .catch(() => {
+              setUnreadChatCount(0);
+            });
+      }, 5000);
 
-    return () => clearInterval(interval);
-  }, []);
+      return () => clearInterval(interval);
+    }  }, [role]);
+
 
   useEffect(() => {
     if (
@@ -171,23 +180,33 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({
           )}
           {isLogin && (
             <div className="flex gap-14 items-center justify-center">
-              <div className="cursor-pointer flex items-center">
+              <div className="cursor-pointer flex items-center gap-8">
+                {/* Chat icon - chỉ hiển thị nếu là Admin */}
                 {role === "Admin" && (
-                  <i
-                    className="pi pi-comment p-over lay-badge"
-                    style={{ fontSize: "1.5rem", marginRight: "3rem" }}
-                    onClick={() => {
-                      window.location.href = "/chat";
-                    }}
-                  ></i>
+                    <div
+                        className="p-overlay-badge"
+                        style={{ cursor: "pointer", position: "relative" }}
+                        onClick={async () => {
+                          await handleReadAllChats();
+                          router.push("/chat");
+                        }}
+                    >
+                      <i className="pi pi-comment" style={{ fontSize: "1.5rem" }}></i>
+                      <Badge value={unreadChatCount > 0 ? unreadChatCount : null} />
+                    </div>
                 )}
-                <i
-                  className="pi pi-bell p-overlay-badge"
-                  style={{ fontSize: "1.5rem" }}
-                  onClick={handleNotification}
+
+                {/* Bell icon - thông báo */}
+                <div
+                    className="p-overlay-badge"
+                    style={{ cursor: "pointer", position: "relative" }}
+                    onClick={handleNotification}
                 >
-                  <Badge value={read?.totalNotRead}></Badge>
-                </i>
+                  <i className="pi pi-bell" style={{ fontSize: "1.5rem" }}></i>
+                  {read?.totalNotRead > 0 && (
+                      <Badge value={read.totalNotRead} />
+                  )}
+                </div>
               </div>
               {showNotification && (
                 <div className="fixed top-16 right-28 bg-white border border-gray-300 p-2 shadow-md w-90px">
@@ -214,7 +233,7 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({
                         <div
                           key={index}
                           className="p-3 hover:bg-orange-200"
-                          onClick={() => router.push(item?.path)}
+                          onClick={() => router.push(item.path)}
                         >
                           <h5 className="text-lg font-bold">{item?.name}</h5>
                           <p className="text-sm ">{item?.content}</p>

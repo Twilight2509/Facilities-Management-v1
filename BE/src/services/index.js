@@ -8,6 +8,7 @@ import fileService from "./file.service.js";
 import logService from "./log.service.js";
 import commentService from "./comment.service.js";
 import chatService from "./chat.service.js";
+import reportService from "./report.service.js";
 
 export {
     userService,
@@ -19,5 +20,6 @@ export {
     fileService,
     logService,
     commentService,
-    chatService
+    chatService,
+    reportService
 }

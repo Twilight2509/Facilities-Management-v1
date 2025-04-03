@@ -484,7 +484,7 @@ export default function CategoryComponent() {
                         <div className="flex flex-col items-center gap-2 w-full py-1">
                           <button
                             onClick={() => showModalUpdate(c)}
-                            className="bg-blue-400 hover:bg-blue-300 p-2 text-white rounded-full w-24"
+                            className="bg-orange-400 hover:bg-orange-300 p-2 text-white rounded-full w-24"
                           >
                             Cập nhật
                           </button>

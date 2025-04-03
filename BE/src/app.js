@@ -16,7 +16,8 @@ import { fileURLToPath } from 'url';
 import importExcelToDb from './utils/importExcel.js'
 import path from 'path';
 import multer from 'multer'; // Đảm bảo nhập multer
-
+import User from './models/User.js';
+import notificationService from './services/notification.service.js';
 
 const upload = multer({ dest: 'uploads/' }); // Thay đổi đường dẫn nếu cần
 
@@ -90,25 +91,39 @@ socketIo.on('connection', (socket) => {
 
     socket.on('privateMessage', async ({ sender, receiver, message }) => {
         console.log(sender, receiver, message);
-        if (receiver && receiver != undefined) {
-            let receiverSocketId = connectedUsers[receiver];
+
+        if (receiver && receiver !== undefined) {
+            // Gửi trực tiếp cho người dùng cụ thể (nếu có receiver)
+            const receiverSocketId = connectedUsers[receiver];
+            socketIo.to(receiverSocketId).emit('privateMessage', {
+                sender,
+                message,
+            });
+        } else {
+            // Gửi đến tất cả admin
             try {
-                // Send the message to the receiver only
-                socketIo.to(receiverSocketId).emit('privateMessage', {
-                    sender,
-                    message,
+                const user = await User.findById(sender);
+
+                // Gửi realtime socket
+                for (const key in connectedAdmin) {
+                    const adminSocketId = connectedAdmin[key];
+                    socketIo.to(adminSocketId).emit('privateMessage', {
+                        sender,
+                        message,
+                        email: user?.email || 'Người dùng',
+                    });
+                }
+
+                // ✅ Gửi notification vào DB cho tất cả admin
+                await notificationService.sendNotificationToAdmin({
+                    title: "Tin nhắn mới",
+                    content: `${user?.email || 'Người dùng'} vừa gửi một tin nhắn.`,
+                    type: "chat",
+                    read: false,
+                    createdAt: new Date(),
                 });
             } catch (error) {
-                console.error('Error saving message to the database:', error);
-            }
-        } else {
-            // Send message to list admin
-            for (const key in connectedAdmin) {
-                const adminSocketId = connectedAdmin[key];
-                socketIo.to(adminSocketId).emit('privateMessage', {
-                    sender,
-                    message
-                })
+                console.error("Lỗi gửi tin nhắn/notification:", error);
             }
         }
     });

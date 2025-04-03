@@ -7,6 +7,7 @@ import facilityController from "./facility.controller.js";
 import commentController from "./comment.controller.js";
 import chatController from "./chat.controller.js";
 import logController from "./log.controller.js";
+import reportController from "./report.controller.js";
 
 export {
     userController,
@@ -17,5 +18,6 @@ export {
     facilityController,
     commentController,
     chatController,
-    logController
+    logController,
+    reportController
 }

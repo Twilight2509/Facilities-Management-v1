@@ -9,6 +9,7 @@ import swaggerUi from 'swagger-ui-express';
 import commentRouter from './comment.router.js';
 import chatRouter from './chat.router.js';
 import logRouter from './log.router.js';
+import reportRouter from './report.router.js';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const swaggerDocument = require('../utils/swagger.json');
@@ -25,5 +26,6 @@ router.use("/facility", facilityRouter);
 router.use("/comment", commentRouter);
 router.use("/chat", chatRouter);
 router.use("/log", logRouter);
+router.use("/report", reportRouter);
 
 export default router;

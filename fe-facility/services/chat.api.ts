@@ -24,6 +24,16 @@ export function getListUser() {
     })
 }
 
+export function getUnreadMessagesCount() {
+    const token = StorageService.getToken()?.replace(/['"]+/g, "") || "";
+    return restClient({
+        url: "chat/unread/count",
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    });
+}
+
+
 export function getListUserMessage() {
     const tokenWithQuotes = StorageService.getToken();
     const token = tokenWithQuotes ? tokenWithQuotes.replace(/['"]+/g, '') : '';
