@@ -83,6 +83,14 @@ function formatDate(dateString: any) {
 
   return `${timePart} ${datePart}`;
 }
+function formatToDDMMYYYY(dateString: string) {
+  if (!dateString) return 'N/A';
+  
+  const parts = dateString.split('T')[0].split('-');
+  if (parts.length !== 3) return 'Invalid date';
+  
+  return `${parts[2]}-${parts[1]}-${parts[0]}`; // dd-mm-yyyy
+}
 
   return (
     <div>
@@ -120,7 +128,7 @@ function formatDate(dateString: any) {
                 <th className="p-5 border">Người duyệt</th>
          
                 <th className="p-5 border">Người đặt</th>
-                <th></th>
+                <th className="p-5 border">Trạng thái</th>
               </tr>
             </thead>
             <tbody>
@@ -154,7 +162,7 @@ function formatDate(dateString: any) {
                         {b?.endDate && b.endDate.split("T")[1]?.substring(0, 5)}
                       </td>
                       <td className="p-5 border text-center">
-                        {b?.startDate && b.startDate.split("T")[0]}
+                        {formatToDDMMYYYY(b?.startDate)}
                       </td>
                       <td className="p-5 border text-center">
                         <p>{b?.handler?.name}</p>
@@ -172,6 +180,20 @@ function formatDate(dateString: any) {
                             <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
                           </svg>
                         </p>
+                      </td>
+                      <td className="border">
+                        <div className="flex flex-col items-center gap-2 w-full py-1">
+                          <button
+                            className="bg-orange-500 hover:bg-orange-300 p-2 text-white rounded-full w-24"
+                          >
+                            Đủ
+                          </button>
+                          <button
+                              className="bg-red-600 hover:bg-red-500 p-2 text-white rounded-full w-24"
+                          >
+                            Thiếu
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );

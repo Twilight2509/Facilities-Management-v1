@@ -10,6 +10,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import ManageBookingRequestAccept from "../ManageBookingRequestAccept";
+import ReportComponent from "./ReportComponent";
 
 import { StorageService } from "../../services/storage";
 import { getAllBooking } from "../../services/booking.api"; // Import API
