@@ -65,6 +65,7 @@ const GuardComponent: React.FC = () => {
 
   const items = [
     { key: "1", label: "Các yêu cầu được duyệt", icon: <AppstoreOutlined /> },
+    { key: "2", label: "Biên bản", icon: <AppstoreOutlined /> },
   ];
 
   return (
@@ -88,7 +89,8 @@ const GuardComponent: React.FC = () => {
         />
       </div>
       <div className="flex-grow">
-        {key === "1" && <ManageBookingRequestAccept />}        
+        {key === "1" && <ManageBookingRequestAccept />}  
+        {key === "2" && <ReportComponent />}       
       </div>
     </div>
   );
