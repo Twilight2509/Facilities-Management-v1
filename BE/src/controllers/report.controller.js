@@ -38,17 +38,31 @@ const FindAll = async (req, res) => {
     }
 }
 
-const create = async (req, res ) => {
-    try{
-        return await reportService.create(req)
-    }catch(error) {
-        return res.status(500).json({
-            message: error?.message || error,
-        })
+const create = async (req, res) => {
+    try {
+        const result = await reportService.create(req);
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error("Lỗi tạo report:", error);
+        return res.status(500).json({ message: error?.message || "Server error" });
     }
-    
-}
-
+};
+const FindByBookingId = async (req, res) => {
+    try {
+        const response = await reportService.FindByBookingId(req);
+        return res.status(200).json(response);
+    } catch (error) {
+        return res.status(500).json({ message: error?.message || error });
+    }
+};
+const DeleteOne = async (req, res) => {
+    try {
+        const result = await reportService.DeleteOne(req);
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(500).json({ message: error?.message || error });
+    }
+};
 export default {
-    FindOne, UpdateOne, FindAll, create
+    FindOne, UpdateOne, FindAll, create,FindByBookingId,DeleteOne
 }

@@ -1,33 +1,50 @@
 import Report from "../models/Report.js"
+import Booking from "../models/Booking.js";
 
 
-const findRoport = async (id) => {
-    try {
-        return await Report.findById(id).exec();
-    } catch (error) {
-        console.error("Error finding Report:", error);
-        throw error;
-    }
-}
-const UpdateOne = async (req) => {
-    const { id } = req.params;
-    return await Report.findByIdAndUpdate(id, req.body, {new: true}).exec();
-}
-const FindAll = async (req) => {
-    return await Report.find({}).exec();
-}
+const findOne = async (id) => {
+    return await Report.findById(id).exec();
+};
+const UpdateOne = async (id, updateFields) => {
+    return await Report.findByIdAndUpdate(id, updateFields, { new: true }).exec();
+};
 
-const create = async (req) => {
-    const { description, status, securityId } = req.body;
+// const UpdateOne = async (req) => {
+//     const { id } = req.params;
+//     return await Report.findByIdAndUpdate(id, req.body, {new: true}).exec();
+// }
+const FindAll = async () => {
+    return await Report.find({})
+        .populate("createdBy", "name")
+        .populate("updatedBy", "name")
+        .populate("bookingId")
+        .exec();
+};
+
+const create = async ({ body }) => {
+    const { description, status, bookingId, securityId, album } = body;
+
     const report = new Report({
         description,
+        album,
         status,
+        bookingId,
         createdBy: securityId,
         updatedBy: securityId
-    })
-    return await report.save()
-}
+    });
 
+    const savedReport = await report.save();
+
+    await Booking.findByIdAndUpdate(bookingId, { reportStatus: 1 });
+
+    return savedReport;
+};
+const FindByBookingId = async (bookingId) => {
+    return await Report.find({ bookingId }).exec();
+};
+const DeleteOne = async (id) => {
+    return await Report.findByIdAndDelete(id).exec();
+};
 export default {
-    UpdateOne, FindAll, create
+    UpdateOne, FindAll, create,FindByBookingId,DeleteOne
 }

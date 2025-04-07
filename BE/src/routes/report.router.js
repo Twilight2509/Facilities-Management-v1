@@ -1,18 +1,17 @@
 import express from 'express';
 import { reportController } from '../controllers/index.js';
+import {uploadImage} from "../middlewares/uploadMiddleware.js";
 
 const reportRouter = express.Router();
 
-// view list role
+reportRouter.put("update/:id", uploadImage.array("album", 10), reportController.UpdateOne);
 
-reportRouter.get("/", reportController.FindAll);
-// view role profile
+reportRouter.get("/search/:bookingId", reportController.FindByBookingId);
 
-reportRouter.get("/:id", reportController.FindOne);
+reportRouter.get("/search", reportController.FindAll);
 
-// Update role profile 
-reportRouter.put("/:id", reportController.UpdateOne);
+reportRouter.post('/create', uploadImage.array('album', 10), reportController.create);
 
-// Create new role
-reportRouter.post("/create", reportController.create);
+reportRouter.delete("/delete/:id", reportController.DeleteOne);
+
 export default reportRouter;

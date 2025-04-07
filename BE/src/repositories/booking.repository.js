@@ -434,7 +434,7 @@ const CreateOne = async (req) => {
         endDate: end
     }
 
-    const existedUser = await Booking.create({ ...req.body, ...dateSlot });
+    const existedUser = await Booking.create({ ...req.body, ...dateSlot, reportStatus: req.body.reportStatus ?? 0 });
     const user = await User.findById(booker);
     const facility = await Facility.findById(facilityId);
     const notification = {

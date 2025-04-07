@@ -120,11 +120,19 @@ const DashboardWeek = async (req, res) => {
         });
     }
 }
+const reportBooking = async (req, res) => {
+    try {
+        const result = await bookingService.reportBooking(req);
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(500).json({ message: error?.message || error });
+    }
+}
 
 export default {
     create,
     update,
     remove,
     detail, Dashboard, DashboardWeek,
-    listPagination, statusBooking, FindBoookinUser
+    listPagination, statusBooking, FindBoookinUser,reportBooking
 }
