@@ -71,6 +71,15 @@ export default function ManageBookingRequestReject() {
     return `${timePart} ${datePart}`;
   }
 
+  function formatToDDMMYYYY(dateString: string) {
+    if (!dateString) return 'N/A';
+    
+    const parts = dateString.split('T')[0].split('-');
+    if (parts.length !== 3) return 'Invalid date';
+    
+    return `${parts[2]}-${parts[1]}-${parts[0]}`; // dd-mm-yyyy
+  }
+
   return (
     <div>
       <div>
@@ -102,8 +111,8 @@ export default function ManageBookingRequestReject() {
                 <th className="p-5 border">#</th>
                 <th className="p-5 border">Tên phòng (sân)</th>
                 <th className="p-5 border">Slot</th>
-                <th className="p-5 border">Thời gian bắt đầu</th>
-                <th className="p-5 border">Thời gian kết thúc</th>
+                <th className="p-5 border">Thời gian</th>
+                <th className="p-5 border">Ngày</th>
                 <th className="p-5 border">Trạng thái</th>
                 <th className="p-5 border">Người đặt</th>
                 <th></th>
@@ -136,10 +145,11 @@ export default function ManageBookingRequestReject() {
                         <p>{b?.slot}</p>
                       </td>
                       <td className="p-5 border text-center">
-                        <p>{b && formatDate(b?.startDate)}</p>
+                        {b?.startDate && b.startDate.split("T")[1]?.substring(0, 5)} → 
+                        {b?.endDate && b.endDate.split("T")[1]?.substring(0, 5)}
                       </td>
                       <td className="p-5 border text-center">
-                        <p>{b && formatDate(b?.endDate)}</p>
+                        {formatToDDMMYYYY(b?.startDate)}
                       </td>
                       <td className="p-5 border text-center">
                         <p>Bị từ chối </p>

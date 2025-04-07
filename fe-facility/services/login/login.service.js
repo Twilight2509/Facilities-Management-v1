@@ -21,6 +21,10 @@ const login = (url) => {
                         setTimeout(
                             router.push('/dashboard')
                             , 1000)
+                    } else if (response.data.user.roleId.roleName === 'Guard') {
+                        setTimeout(
+                            router.push('/guarddashboard')
+                            , 1000)
                     } else {
                         router.push('/')
                     }

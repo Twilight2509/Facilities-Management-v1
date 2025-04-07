@@ -100,6 +100,15 @@ const NavbarComponent: React.FC<NavbarComponentProps> = ({
         },
       ]
       : []),
+      ...(role === "Guard"
+        ? [
+          {
+            label: "Quản lí",
+            icon: "pi pi-check",
+            command: (event: any) => router.push("/guarddashboard"),
+          },
+        ]
+        : []),
     {
       label: "Lịch sử đặt phòng",
       icon: "pi pi-calendar",
