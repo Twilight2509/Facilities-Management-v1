@@ -3,7 +3,6 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { ProgressSpinner } from "primereact/progressspinner";
-
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
 
 import {
@@ -148,7 +147,7 @@ export default function ManageFacilities() {
   const [isModalOpenChangeInactive, setIsModalOpenChangeInactive] =
     useState(false);
 
-    const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   const showModalInactive = () => {
     setIsModalOpenChangeInactive(true);
@@ -426,23 +425,23 @@ export default function ManageFacilities() {
             setisLoadingUpdateFormCategory(false);
             setImgUpdate(null);
             getFacilities(activePage, null, "").then(
-                (res) => {
-                    setListFacility(res?.data.items);
-                    setTotalPage(res?.data.totalPage);
-                },
-                (err) => {
-                    setActivePage(1);
-                    setTotalPage(0);
-                    console.log(err);
-                }
+              (res) => {
+                setListFacility(res?.data.items);
+                setTotalPage(res?.data.totalPage);
+              },
+              (err) => {
+                setActivePage(1);
+                setTotalPage(0);
+                console.log(err);
+              }
             );
-        } else {
+          } else {
             // Xử lý khi mã trạng thái không phải là 200
             showErrorCategory(
-               res?.data.message || "Facility name Exist"
+              res?.data.message || "Facility name Exist"
             );
             setisLoadingUpdateFormCategory(false);
-        }
+          }
         })
         .catch((err) => {
           handleCancelUpdate();
@@ -536,16 +535,16 @@ export default function ManageFacilities() {
 
   const handleExcelSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Ngăn chặn hành động gửi biểu mẫu mặc định
-  
+
     // Kiểm tra xem có file đã được chọn hay không
     if (!file) {
       showErrorCategory('Please select a file.')
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('file', file); // Thêm file vào FormData
-  
+
     try {
       const response = await fetch('http://localhost:5152/facility/import', {
         method: 'POST',
@@ -562,7 +561,7 @@ export default function ManageFacilities() {
       showErrorCategory("Import facility error !!!");
     }
   };
-  
+
 
 
   return (
@@ -595,28 +594,28 @@ export default function ManageFacilities() {
                 />
               </div>
               <div className="py-2 flex items-center justify-end bg-blue-100">
-              <Tooltip title="Import nhiều phòng">
-              <div className="">
-                <div>
-                <form onSubmit={handleExcelSubmit} className="">
-        <input
-          type="file"
-          id="file"
-          name="file"
-          accept=".xlsx, .xls"
-          onChange={handleFileChange}
-          required
-        />
-        <button type='submit' className="rounded-md bg-orange-600 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2">
-  Upload
-</button>
-      </form>
-                </div>
+                <Tooltip title="Import nhiều phòng">
+                  <div className="">
+                    <div>
+                      <form onSubmit={handleExcelSubmit} className="">
+                        <input
+                          type="file"
+                          id="file"
+                          name="file"
+                          accept=".xlsx, .xls"
+                          onChange={handleFileChange}
+                          required
+                        />
+                        <button type='submit' className="rounded-md bg-orange-600 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2">
+                          Upload
+                        </button>
+                      </form>
+                    </div>
 
-    </div>
+                  </div>
                 </Tooltip>
               </div>
-              
+
             </div>
             <table>
               <thead className="border">
@@ -667,9 +666,8 @@ export default function ManageFacilities() {
                         <select
                           name=""
                           id=""
-                          className={`outline-none ${
-                            c?.status === 1 && "text-green-500"
-                          } ${c?.status === 0 && "text-red-500"}`}
+                          className={`outline-none ${c?.status === 1 && "text-green-500"
+                            } ${c?.status === 0 && "text-red-500"}`}
                           value={c?.status === 1 ? "active" : "inactive"}
                           onChange={(e) =>
                             handleChangeStatus(
@@ -704,20 +702,20 @@ export default function ManageFacilities() {
                             Cập nhật
                           </button>
                           <button
-                              onClick={() => {
-                                hardDeleteFacility(c._id)
-                                    .then(() => {
-                                      showSuccessCategory("Đã xoá khỏi hệ thống!");
-                                      getFacilities(1, null, "").then((res: any) => {
-                                        setListFacility(res.data.items);
-                                        setTotalPage(res.data.totalPage);
-                                      });
-                                    })
-                                    .catch(() => {
-                                      showErrorCategory("Xoá thất bại");
-                                    });
-                              }}
-                              className="bg-red-600 hover:bg-red-500 p-2 text-white rounded-full w-24"
+                            onClick={() => {
+                              hardDeleteFacility(c._id)
+                                .then(() => {
+                                  showSuccessCategory("Đã xoá khỏi hệ thống!");
+                                  getFacilities(1, null, "").then((res: any) => {
+                                    setListFacility(res.data.items);
+                                    setTotalPage(res.data.totalPage);
+                                  });
+                                })
+                                .catch(() => {
+                                  showErrorCategory("Xoá thất bại");
+                                });
+                            }}
+                            className="bg-red-600 hover:bg-red-500 p-2 text-white rounded-full w-24"
                           >
                             Xoá
                           </button>
@@ -777,9 +775,8 @@ export default function ManageFacilities() {
               <label htmlFor="name">Tên phòng,sân bóng</label>
               <input
                 id="name"
-                className={`w-full shadow-none p-3 border ${
-                  errors.name ? "outline-red-300" : "outline-blue-300"
-                }`}
+                className={`w-full shadow-none p-3 border ${errors.name ? "outline-red-300" : "outline-blue-300"
+                  }`}
                 {...register("name")}
               />
               {errors.name && (
@@ -790,9 +787,8 @@ export default function ManageFacilities() {
               <label htmlFor="shortName">Tiêu đề ngắn</label>
               <input
                 id="shortName"
-                className={`w-full shadow-none p-3 border ${
-                  errors.shortName ? "outline-red-300" : "outline-blue-300"
-                }`}
+                className={`w-full shadow-none p-3 border ${errors.shortName ? "outline-red-300" : "outline-blue-300"
+                  }`}
                 {...register("shortName")}
               />
               {errors.shortName && (
@@ -803,9 +799,8 @@ export default function ManageFacilities() {
               <label htmlFor="category">Phân loại</label>
               <select
                 id="category"
-                className={`w-full shadow-none p-3 border ${
-                  errors.category ? "outline-red-300" : "outline-blue-300"
-                }`}
+                className={`w-full shadow-none p-3 border ${errors.category ? "outline-red-300" : "outline-blue-300"
+                  }`}
                 {...register("category")}
               >
                 {listCategory &&
@@ -846,9 +841,8 @@ export default function ManageFacilities() {
               <label htmlFor="address">Địa chỉ</label>
               <input
                 id="address"
-                className={`w-full shadow-none p-3 border ${
-                  errors.address ? "outline-red-300" : "outline-blue-300"
-                }`}
+                className={`w-full shadow-none p-3 border ${errors.address ? "outline-red-300" : "outline-blue-300"
+                  }`}
                 {...register("address")}
               />
 
@@ -900,9 +894,8 @@ export default function ManageFacilities() {
               <input
                 id="name"
                 defaultValue={dataUpdaate?.name}
-                className={`w-full shadow-none p-3 border ${
-                  errorsUpdate.name ? "outline-red-300" : "outline-blue-300"
-                }`}
+                className={`w-full shadow-none p-3 border ${errorsUpdate.name ? "outline-red-300" : "outline-blue-300"
+                  }`}
                 {...registerUpdate("name")}
               />
               {errorsUpdate.name && (
@@ -918,9 +911,8 @@ export default function ManageFacilities() {
                 // disabled = {true}
                 value={dataUpdaate?.category?._id}
                 id="category"
-                className={`w-full shadow-none p-3 border ${
-                  errorsUpdate.category ? "outline-red-300" : "outline-blue-300"
-                }`}
+                className={`w-full shadow-none p-3 border ${errorsUpdate.category ? "outline-red-300" : "outline-blue-300"
+                  }`}
                 {...registerUpdate("category")}
               >
                 {listCategory &&
@@ -966,9 +958,8 @@ export default function ManageFacilities() {
               <input
                 id="address"
                 defaultValue={dataUpdaate?.location}
-                className={`w-full shadow-none p-3 border ${
-                  errorsUpdate.address ? "outline-red-300" : "outline-blue-300"
-                }`}
+                className={`w-full shadow-none p-3 border ${errorsUpdate.address ? "outline-red-300" : "outline-blue-300"
+                  }`}
                 {...registerUpdate("address")}
               />
 

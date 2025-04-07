@@ -86,6 +86,7 @@ export default function ReportComponent() {
               <th className="p-5 border">Tên phòng (sân)</th>
               <th className="p-5 border">Slot</th>
               <th className="p-5 border">Thời gian tạo</th>
+              <th className="p-5 border">Ảnh</th>
               <th className="p-5 border">Người chịu trách nghiệm</th>
               <th className="p-5 border">Người lập biên bản</th>
               <th className="p-5 border">Lỗi vi phạm</th>
@@ -107,7 +108,9 @@ export default function ReportComponent() {
                 <td className="p-5 border text-center">
                   {formatDate(r?.bookingId?.createdAt)}
                 </td>
-
+                <td className="p-5 border text-center">
+                  <img src={r?.album} className="w-32 h-32 m-auto" />
+                </td>
                 <td className="p-5 border text-center">
                   {r?.bookingId?.booker?.name || "-"}
                 </td>
