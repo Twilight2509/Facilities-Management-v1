@@ -1,4 +1,6 @@
 import bookingService from "../services/booking.service.js";
+import Booking from "../models/Booking.js";
+import Belonging from "../models/Belonging.js";
 
 const create = async (req, res) => {
 
@@ -128,11 +130,27 @@ const reportBooking = async (req, res) => {
         return res.status(500).json({ message: error?.message || error });
     }
 }
+const getBelongingsFromBooking = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const booking = await Booking.findById(id).populate("facilityId");
 
+        if (!booking || !booking.facilityId?.categoryId) {
+            return res.status(404).json({ message: "Không tìm thấy thông tin category từ booking" });
+        }
+
+        const categoryId = booking.facilityId.categoryId;
+        const belongings = await Belonging.find({ categoryId });
+
+        res.status(200).json(belongings);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 export default {
     create,
     update,
     remove,
     detail, Dashboard, DashboardWeek,
-    listPagination, statusBooking, FindBoookinUser,reportBooking
+    listPagination, statusBooking, FindBoookinUser,reportBooking,getBelongingsFromBooking
 }

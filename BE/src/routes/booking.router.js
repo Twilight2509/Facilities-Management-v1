@@ -14,5 +14,6 @@ bookingRouter.get("/:id", bookingController.detail);
 bookingRouter.get("/user/:id", bookingController.FindBoookinUser);
 bookingRouter.put("/:id", [authJWT.verifyToken, authJWT.checkRole("Admin")], bookingController.update);
 bookingRouter.delete("/:id", bookingController.remove);
+bookingRouter.get("/:id/belongings", bookingController.getBelongingsFromBooking);
 
 export default bookingRouter;

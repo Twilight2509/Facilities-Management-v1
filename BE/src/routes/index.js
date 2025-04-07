@@ -11,6 +11,7 @@ import chatRouter from './chat.router.js';
 import logRouter from './log.router.js';
 import reportRouter from './report.router.js';
 import { createRequire } from 'module';
+import belongingRouter from "./belonging.router.js";
 const require = createRequire(import.meta.url);
 const swaggerDocument = require('../utils/swagger.json');
 
@@ -27,5 +28,6 @@ router.use("/comment", commentRouter);
 router.use("/chat", chatRouter);
 router.use("/log", logRouter);
 router.use("/report", reportRouter);
+router.use("/belonging",belongingRouter);
 
 export default router;
