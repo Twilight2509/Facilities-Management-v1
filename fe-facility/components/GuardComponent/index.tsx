@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import ManageBookingRequestAccept from "../ManageBookingRequestAccept";
 import ReportComponent from "./ReportComponent";
+import ListRoom from "./ListRoom";
 
 import { StorageService } from "../../services/storage";
 import { getAllBooking } from "../../services/booking.api"; // Import API
@@ -64,8 +65,9 @@ const GuardComponent: React.FC = () => {
   };
 
   const items = [
-    { key: "1", label: "Các yêu cầu được duyệt", icon: <AppstoreOutlined /> },
-    { key: "2", label: "Biên bản", icon: <AppstoreOutlined /> },
+    { key: "1", label: "Danh sánh cơ sở vật chất", icon: <AppstoreOutlined /> },
+    { key: "2", label: "Các yêu cầu được duyệt", icon: <AppstoreOutlined /> },
+    { key: "3", label: "Biên bản", icon: <AppstoreOutlined /> },
   ];
 
   return (
@@ -89,8 +91,9 @@ const GuardComponent: React.FC = () => {
         />
       </div>
       <div className="flex-grow">
-        {key === "1" && <ManageBookingRequestAccept />}  
-        {key === "2" && <ReportComponent />}       
+        {key === "1" && <ListRoom />}  
+        {key === "2" && <ManageBookingRequestAccept />}  
+        {key === "3" && <ReportComponent />}       
       </div>
     </div>
   );
