@@ -17,7 +17,14 @@ const FindAll = async () => {
     return await Report.find({})
         .populate("createdBy", "name")
         .populate("updatedBy", "name")
-        .populate("bookingId")
+        // .populate("bookingId")
+        .populate({
+            path: "bookingId",
+            populate: {
+                path: "facilityId", // <-- populate thêm field bên trong
+                model: "Facility",   // <-- đúng với tên model của bạn
+            },
+        })
         .exec();
 };
 
@@ -46,5 +53,5 @@ const DeleteOne = async (id) => {
     return await Report.findByIdAndDelete(id).exec();
 };
 export default {
-    UpdateOne, FindAll, create,FindByBookingId,DeleteOne
+    UpdateOne, FindAll, create, FindByBookingId, DeleteOne
 }

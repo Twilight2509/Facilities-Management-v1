@@ -91,9 +91,11 @@ const GuardComponent: React.FC = () => {
         />
       </div>
       <div className="flex-grow">
-        {key === "1" && <ListRoom />}  
-        {key === "2" && <ManageBookingRequestAccept />}  
-        {key === "3" && <ReportComponent />}       
+
+        {key === "1" && <ListRoom />}
+        {key === "2" && <ManageBookingRequestAccept />}
+        {key === "3" && <ReportComponent />}
+
       </div>
     </div>
   );
