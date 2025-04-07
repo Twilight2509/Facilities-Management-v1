@@ -26,7 +26,7 @@ const deleteOne = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
+//asd
 const findOne = async (req, res) => {
     try {
         const data = await belongingService.findOne(req);
