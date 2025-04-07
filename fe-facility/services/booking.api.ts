@@ -66,7 +66,17 @@ export function calendarBooking(weeks?: string, faciId?: string) {
     params: { weeks },
   });
 }
-
+export function updateReportStatus(bookingId: string, reportStatus: number) {
+  const tokenWithQuotes = StorageService.getToken();
+  const token = tokenWithQuotes ? tokenWithQuotes.replace(/['"]+/g, "") : "";
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  return restClient({
+    url: `booking/${bookingId}/report-status`,
+    method: "PUT",
+    data: { reportStatus },
+    headers
+  });
+}
 export function getBookingUserByWeek(
   weeks?: string,
   userId?: string,

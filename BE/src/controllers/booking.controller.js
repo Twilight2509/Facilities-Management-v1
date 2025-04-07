@@ -147,10 +147,20 @@ const getBelongingsFromBooking = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+const updateReportStatus = async (req, res) => {
+    try {
+        const result = await bookingService.updateReportStatus(req);
+        res.status(result.statusCode).json(result);
+    } catch (error) {
+        res.status(500).json({ statusCode: 0, message: "System error" });
+    }
+};
+
 export default {
     create,
     update,
     remove,
     detail, Dashboard, DashboardWeek,
-    listPagination, statusBooking, FindBoookinUser,reportBooking,getBelongingsFromBooking
+    updateReportStatus,
+    listPagination, statusBooking, FindBoookinUser, reportBooking, getBelongingsFromBooking
 }

@@ -216,10 +216,32 @@ const checkBookingExpire5 = async () => {
         console.error(err);
     }
 }
+const updateReportStatus = async (req) => {
+    try {
+        const result = await bookingRepository.UpdateReportStatus(req);
+        if (!result) {
+            return {
+                statusCode: 400,
+                message: "Not found booking ID"
+            };
+        }
+        return {
+            statusCode: 200,
+            result,
+            message: "Report status updated successfully"
+        };
+    } catch (error) {
+        return {
+            statusCode: 0,
+            message: error.message
+        };
+    }
+};
+
 export default {
     create, Dashboard, DashboardWeek,
     update, FindAll, deleteOne, detail, statusBooking, FindBoookinUser,
-
+    updateReportStatus,
     CheckExpireBooking, CheckUnusedBooking, updateBookingWhenFacilityDelete, checkBookingExpire5
 
 }

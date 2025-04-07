@@ -4,7 +4,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Pagination, type PaginationProps } from "antd"
 import { useEffect, useState } from "react"
-import { getAllBooking } from "../../services/booking.api"
+import { getAllBooking, updateReportStatus } from "../../services/booking.api"
 import { ProgressSpinner } from "primereact/progressspinner"
 import { FacilityStatusModal } from "./facility-status-modal"
 
@@ -75,17 +75,28 @@ export default function ManageBookingRequestAccept() {
   }
 
   const handleSubmitReport = (data: { description: string; image?: File }) => {
-    // Implement your API call to submit the report
-    console.log("Submitting report for booking:", selectedBooking)
+    if (!selectedBooking) return
+
     console.log("Report data:", data)
-    // Example API call:
-    // submitFacilityReport(selectedBooking.id, data)
-    //   .then(res => {
-    //     // Handle success
-    //   })
-    //   .catch(err => {
-    //     // Handle error
-    //   });
+
+    updateReportStatus(selectedBooking._id, 2) // 2 = Thiếu
+      .then(() => {
+        // Cập nhật UI local
+        setBookingData(prev =>
+          prev.map(item =>
+            item._id === selectedBooking._id
+              ? { ...item, reportStatus: 2 }
+              : item
+          )
+        )
+
+        // Reset modal
+        setIsModalOpen(false)
+        setSelectedBooking(null)
+      })
+      .catch(err => {
+        console.error("Lỗi khi cập nhật reportStatus = 2", err)
+      })
   }
 
   function formatDate(dateString: any) {
@@ -117,6 +128,21 @@ export default function ManageBookingRequestAccept() {
 
     return `${parts[2]}-${parts[1]}-${parts[0]}` // dd-mm-yyyy
   }
+  const handleMarkEnough = (booking: any) => {
+    updateReportStatus(booking._id, 1) // 1 là reportStatus = Đủ
+      .then(() => {
+        // Cập nhật local UI nếu cần
+        setBookingData(prev =>
+          prev.map(item =>
+            item._id === booking._id ? { ...item, reportStatus: 1 } : item
+          )
+        );
+      })
+      .catch(err => {
+        console.error("Lỗi khi cập nhật reportStatus = 1", err);
+      });
+  };
+
 
   return (
     <div>
@@ -192,15 +218,26 @@ export default function ManageBookingRequestAccept() {
                       </td>
                       <td className="border">
                         <div className="flex flex-col items-center gap-2 w-full py-1">
-                          <button className="bg-orange-500 hover:bg-orange-300 p-2 text-white rounded-full w-24">
-                            Đủ
-                          </button>
-                          <button
-                            className="bg-red-600 hover:bg-red-500 p-2 text-white rounded-full w-24"
-                            onClick={() => handleOpenModal(b)}
-                          >
-                            Thiếu
-                          </button>
+                          {b?.reportStatus === 1 ? (
+                            <span className="text-green-500 font-medium">Đã đủ</span>
+                          ) : b?.reportStatus === 2 ? (
+                            <span className="text-red-500 font-medium">Thiếu</span>
+                          ) : (
+                            <>
+                              <button
+                                className="bg-orange-500 hover:bg-orange-300 p-2 text-white rounded-full w-24"
+                                onClick={() => handleMarkEnough(b)}
+                              >
+                                Đủ
+                              </button>
+                              <button
+                                className="bg-red-600 hover:bg-red-500 p-2 text-white rounded-full w-24"
+                                onClick={() => handleOpenModal(b)}
+                              >
+                                Thiếu
+                              </button>
+                            </>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -239,7 +276,11 @@ export default function ManageBookingRequestAccept() {
         </div>
       </div>
 
-      <FacilityStatusModal isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmitReport} />
+      <FacilityStatusModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitReport}
+      />
     </div>
   )
 }
