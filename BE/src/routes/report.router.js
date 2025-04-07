@@ -8,7 +8,7 @@ reportRouter.put("update/:id", uploadImage.array("album", 10), reportController.
 
 reportRouter.get("/search/:bookingId", reportController.FindByBookingId);
 
-reportRouter.get("/search", reportController.FindAll);
+reportRouter.get("/", reportController.FindAll);
 
 reportRouter.post('/create', uploadImage.array('album', 10), reportController.create);
 

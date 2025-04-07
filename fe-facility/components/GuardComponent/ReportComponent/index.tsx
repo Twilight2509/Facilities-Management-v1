@@ -6,15 +6,22 @@ import {
   import { Pagination, PaginationProps, Tooltip } from "antd";
   import React, { useEffect, useState } from "react";
   import { ProgressSpinner } from "primereact/progressspinner";
+  import { getAllReport } from "../../../services/report.api"
   import { log } from "console";
   
   export default function ReportComponent() {
-    const [bookingData, setBookingData] = useState<any[]>([]);
+    const [reportData, setReportData] = useState<any[]>([]);
     const [totalPage, setTotalPage] = useState<number>(0);
     const [activePage, setActivePage] = useState<number>(0);
     const [isSpinning, setIsSpinning] = useState<boolean>(false);
   
-   
+   useEffect(() => {
+       getAllReport()
+         .then((res) => {
+           setReportData(res?.data?.booking)
+         })
+         .catch((err) => {});
+     }, [])
  
     
   
@@ -82,8 +89,8 @@ import {
                 </tr>
               </thead>
               <tbody>
-                {bookingData?.map((b, index) => {
-                  const status = b?.status;
+                {reportData?.map((r, index) => {
+                  const status = r?.status;
   
                   // if (status === 2) {
                     return (
@@ -93,7 +100,7 @@ import {
                         </td>
                         <td className="p-5 border text-center">
                           <p className="cursor-pointer hover:text-gray-400 flex items-center justify-center gap-1">
-                            <span>{b?.facilityId?.name}</span>
+                            <span>{r?.facilityId?.name}</span>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               height={10}
@@ -105,22 +112,21 @@ import {
                           </p>
                         </td>
                         <td className="p-5 border text-center">
-                          <p>{b?.slot}</p>
+                          <p>{r?.slot}</p>
                         </td>
                         <td className="p-5 border text-center">
-                          {b?.startDate && b.startDate.split("T")[1]?.substring(0, 5)} → 
-                          {b?.endDate && b.endDate.split("T")[1]?.substring(0, 5)}
+                          <p></p>
                         </td>
                         <td className="p-5 border text-center">
-                          {formatToDDMMYYYY(b?.startDate)}
+                          {formatToDDMMYYYY(r?.startDate)}
                         </td>
                         <td className="p-5 border text-center">
-                          <p>{b?.handler?.name}</p>
+                          <p>{r?.handler?.name}</p>
                         </td>
                         
                         <td className="p-5 border text-center">
                           <p className="cursor-pointer hover:text-gray-400 flex items-center justify-center gap-1">
-                            <span>{b?.booker?.name}</span>
+                            <span>{r?.booker?.name}</span>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               height={10}
@@ -161,7 +167,7 @@ import {
               />
             ) : (
               <>
-                {!Array.isArray(bookingData) || bookingData.length === 0 ? (
+                {!Array.isArray(reportData) || reportData.length === 0 ? (
                   <div className="text-center">
                     <h1 className="font-bold text-3xl my-10">No data</h1>
                   </div>
