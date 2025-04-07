@@ -886,14 +886,14 @@ export default function ListRoom({
             <Tooltip
                 title={
                   <div className="text-center">
-                    Chờ được duyệt <br />
-                    (Đã có người đặt trước, bạn có thể không được chấp nhận sử dụng phòng này)
+                    Chưa kiểm tra <br />
+                    (Cần đi kiểm tra lại)
                   </div>
                 }
             >
               <div className="w-1 h-4 bg-yellow-500"></div>
             </Tooltip>
-            <Tooltip title="Đã có người đặt">
+            <Tooltip title="Đã kiểm tra">
               <div className="w-1 h-4 bg-red-500"></div>
             </Tooltip>
             <Tooltip title="Chưa có ai đặt">

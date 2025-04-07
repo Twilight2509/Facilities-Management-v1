@@ -6,6 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Pagination, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { ProgressSpinner } from "primereact/progressspinner";
+import jsPDF from "jspdf";
+import { NOTO_SANS } from "./fonts/NotoSans-Regular-normal";
+
 import {
   getAllReports,
   getReportByBookingId,
@@ -63,6 +66,47 @@ export default function ReportComponent() {
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
 
+  const NOTO_SANS = "AAEAAAASAQAABAAgR0...";
+
+  const handleDownloadPDF = (report: any) => {
+  try { // <-- Mở khối try
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
+
+    // ========== NỘI DUNG PDF ==========
+    let yPos = 20;
+    const lineHeight = 10;
+
+    // Tiêu đề
+    doc.setFontSize(18);
+    doc.text("BIÊN BẢN VI PHẠM", 105, yPos, { align: "center" });
+    yPos += lineHeight * 2;
+      // Thông tin chi tiết
+      const fields = [
+        { label: "Tên phòng (sân)", value: report?.bookingId?.facilityId?.name || "N/A" },
+        { label: "Slot", value: report?.bookingId?.slot || "-" },
+        { label: "Thời gian tạo", value: formatDate(report?.bookingId?.createdAt) },
+        { label: "Người chịu trách nhiệm", value: report?.bookingId?.booker?.name || "-" },
+        { label: "Người lập biên bản", value: report?.bookingId?.booker?.name || "-" },
+        { label: "Lỗi vi phạm", value: report?.description || "Không rõ" },
+      ];
+  
+      doc.setFontSize(12);
+      fields.forEach((field) => {
+        doc.text(`${field.label}:`, 20, yPos);
+        doc.text(field.value.toString(), 70, yPos);
+        yPos += lineHeight;
+      });
+  
+      doc.save(`BaoCao_${report._id}.pdf`);
+    } catch (error) { // <-- Đóng khối try và mở catch
+      console.error("Lỗi khi tạo PDF:", error);
+      alert("Có lỗi xảy ra khi tạo file PDF!");
+    } // <-- Đóng khối catch
+  };
   return (
     <div>
       <div className="border flex flex-col justify-center">
@@ -124,11 +168,11 @@ export default function ReportComponent() {
                 </td>
                 <td className="border">
                   <div className="flex flex-col items-center gap-2 w-full py-1">
-                    <button className="bg-orange-500 hover:bg-orange-300 p-2 text-white rounded-full w-24">
-                      Đủ
-                    </button>
-                    <button className="bg-red-600 hover:bg-red-500 p-2 text-white rounded-full w-24">
-                      Thiếu
+                    <button 
+                      className="bg-green-500 hover:bg-green-300 p-2 text-white rounded-full w-24"
+                      onClick={() => handleDownloadPDF(r)}
+                    >
+                      Tải về
                     </button>
                   </div>
                 </td>

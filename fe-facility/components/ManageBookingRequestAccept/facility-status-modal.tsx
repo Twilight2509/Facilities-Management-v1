@@ -27,6 +27,7 @@ export const FacilityStatusModal: React.FC<FacilityStatusModalProps> = ({ isOpen
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-md p-6 w-full max-w-xl">
         <h2 className="text-xl font-bold text-center mb-4">Chi tiết tình trạng cơ sở vật chất</h2>
+        
 
         <div className="mb-4">
           <p className="mb-2">Tình trạng thực tế</p>
