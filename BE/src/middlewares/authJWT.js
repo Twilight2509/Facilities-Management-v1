@@ -22,27 +22,33 @@ const verifyToken = async (req, res, next) => {
 		})
 }
 
-function checkRole(roleName) {
+function checkRole(roleInput) {
+	const roleNames = Array.isArray(roleInput) ? roleInput : [roleInput];
+
 	return async function (req, res, next) {
 		try {
 			const user = await User.findById(req.userID).exec();
 			if (!user) {
 				return res.status(400).send({ message: "User not found!" });
 			}
+
 			const userRole = await Role.findById(user.roleId).exec();
 			if (!userRole) {
 				return res.status(400).send({ message: "User Role not found" });
 			}
-			if (userRole.roleName === roleName) {
+
+			if (roleNames.includes(userRole.roleName)) {
 				next();
-			}else{
-				return res.status(403).send({message: `Require ${roleName} role`});
+			} else {
+				return res.status(403).send({ message: `Require one of roles: ${roleNames.join(", ")}` });
 			}
 		} catch (error) {
 			return res.status(500).send({ message: error.message });
 		}
 	};
 }
+
+
 
 export default {
 	verifyToken,
