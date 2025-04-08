@@ -72,6 +72,15 @@ import {
   getBookingByUserId,
   getBookingUserByWeek,
 } from "../../../services/booking.api";
+import {
+  FRIDAY,
+  MONDAY,
+  SATURDAY,
+  SUNDAY,
+  THURSDAY,
+  TUESDAY,
+  WEDNESDAY,
+} from "../../../constant";
 
 const weeks = [
   "Monday",
@@ -180,8 +189,10 @@ export default function ListRoom({
   console.log(detailData);
   console.log("====================================");
 
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [weekValue, setWeekValue] = useState<string>("");
+  const currentDay = getCurrentDay();
   const refAdd = useRef<FileUpload | null>(null);
   const refUpdate = useRef<FileUpload | null>(null);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
@@ -217,22 +228,22 @@ export default function ListRoom({
   const [file, setFile] = useState<File | null>(null);
 
   const [disableButtonsMonday, setDisableButtonsMonday] =
-      useState<boolean>(false);
-    const [disableButtonsTuesday, setDisableButtonsTuesday] =
-      useState<boolean>(false);
-    const [disableButtonsWendsday, setDisableButtonsWendsday] =
-      useState<boolean>(false);
-    const [disableButtonsThurday, setDisableButtonsThurday] =
-      useState<boolean>(false);
-    const [disableButtonsFriday, setDisableButtonsFriday] =
-      useState<boolean>(false);
-    const [disableButtonsSaturday, setDisableButtonsSaturday] =
-      useState<boolean>(false);
-    const [disableButtonsSunday, setDisableButtonsSunday] =
-      useState<boolean>(false);
-    const [listBooking, setListBooking] = useState<any>(null);
-    const currentWeek: string = getCurrentWeek();
-    const [bookingUserByWeek, setBookingUserByWeek] = useState<any>(null);
+    useState<boolean>(false);
+  const [disableButtonsTuesday, setDisableButtonsTuesday] =
+    useState<boolean>(false);
+  const [disableButtonsWendsday, setDisableButtonsWendsday] =
+    useState<boolean>(false);
+  const [disableButtonsThurday, setDisableButtonsThurday] =
+    useState<boolean>(false);
+  const [disableButtonsFriday, setDisableButtonsFriday] =
+    useState<boolean>(false);
+  const [disableButtonsSaturday, setDisableButtonsSaturday] =
+    useState<boolean>(false);
+  const [disableButtonsSunday, setDisableButtonsSunday] =
+    useState<boolean>(false);
+  const [listBooking, setListBooking] = useState<any>(null);
+  const currentWeek: string = getCurrentWeek();
+  const [bookingUserByWeek, setBookingUserByWeek] = useState<any>(null);
 
   const showModalInactive = () => {
     setIsModalOpenChangeInactive(true);
@@ -314,6 +325,89 @@ export default function ListRoom({
 
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (currentWeek === weekValue) {
+      if (currentDay === MONDAY) {
+        setDisableButtonsMonday(true);
+        setDisableButtonsTuesday(false);
+        setDisableButtonsWendsday(false);
+        setDisableButtonsThurday(false);
+        setDisableButtonsFriday(false);
+        setDisableButtonsSaturday(false);
+        setDisableButtonsSunday(false);
+      } else if (currentDay === TUESDAY) {
+        setDisableButtonsMonday(true);
+        setDisableButtonsTuesday(true);
+        setDisableButtonsWendsday(false);
+        setDisableButtonsThurday(false);
+        setDisableButtonsFriday(false);
+        setDisableButtonsSaturday(false);
+        setDisableButtonsSunday(false);
+      } else if (currentDay === WEDNESDAY) {
+        setDisableButtonsMonday(true);
+        setDisableButtonsTuesday(true);
+        setDisableButtonsWendsday(true);
+        setDisableButtonsThurday(false);
+        setDisableButtonsFriday(false);
+        setDisableButtonsSaturday(false);
+        setDisableButtonsSunday(false);
+      } else if (currentDay === THURSDAY) {
+        setDisableButtonsMonday(true);
+        setDisableButtonsTuesday(true);
+        setDisableButtonsWendsday(true);
+        setDisableButtonsThurday(true);
+        setDisableButtonsFriday(false);
+        setDisableButtonsSaturday(false);
+        setDisableButtonsSunday(false);
+      } else if (currentDay === FRIDAY) {
+        setDisableButtonsMonday(true);
+        setDisableButtonsTuesday(true);
+        setDisableButtonsWendsday(true);
+        setDisableButtonsThurday(true);
+        setDisableButtonsFriday(true);
+        setDisableButtonsSaturday(false);
+        setDisableButtonsSunday(false);
+      } else if (currentDay === SATURDAY) {
+        setDisableButtonsMonday(true);
+        setDisableButtonsTuesday(true);
+        setDisableButtonsWendsday(true);
+        setDisableButtonsThurday(true);
+        setDisableButtonsFriday(true);
+        setDisableButtonsSaturday(true);
+        setDisableButtonsSunday(false);
+      } else if (currentDay === SUNDAY) {
+        setDisableButtonsMonday(true);
+        setDisableButtonsTuesday(true);
+        setDisableButtonsWendsday(true);
+        setDisableButtonsThurday(true);
+        setDisableButtonsFriday(true);
+        setDisableButtonsSaturday(true);
+        setDisableButtonsSunday(true);
+      }
+    } else {
+      // If weekValue is more than two weeks ahead of the current week, disable all buttons
+      const currentYear = parseInt(currentWeek.substring(0, 4), 10);
+      const currentWeekNum = parseInt(currentWeek.substring(6), 10);
+      const targetYear = parseInt(weekValue.substring(0, 4), 10);
+      const targetWeekNum = parseInt(weekValue.substring(6), 10);
+
+      // Calculate the difference in weeks
+      const weekDifference =
+        (targetYear - currentYear) * 52 + (targetWeekNum - currentWeekNum);
+
+      if (weekDifference > 1) {
+        // If the difference is greater than 2 weeks, disable all buttons
+        setDisableButtonsMonday(true);
+        setDisableButtonsTuesday(true);
+        setDisableButtonsWendsday(true);
+        setDisableButtonsThurday(true);
+        setDisableButtonsFriday(true);
+        setDisableButtonsSaturday(true);
+        setDisableButtonsSunday(true);
+      }
+    }
+  }, [weekValue]);
 
   const handleOkInactive = () => {
     if (typeof idFaci === "string") {
@@ -450,8 +544,77 @@ export default function ListRoom({
     );
   };
 
+  useEffect(() => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const isoWeek = getISOWeek(currentDate);
+
+    // Format the ISO week to "YYYY-Www"
+    const formattedWeekValue = `${year}-W${isoWeek
+      .toString()
+      .padStart(2, "0")}`;
+
+    setWeekValue(formattedWeekValue);
+
+    if (StorageService.getUser()) {
+      getBookingUserByWeek(
+        currentWeek,
+        StorageService.getUser().id,
+        detailData?._id
+      ).then(
+        (res: any) => {
+          console.log("====================================");
+          console.log("User Booking ::", res.data.booking);
+          console.log("====================================");
+          setBookingUserByWeek(res.data.booking);
+        },
+        (error) => { }
+      );
+    }
+
+    calendarBooking(currentWeek, detailData?._id)
+      .then((res: any) => {
+        setListBooking(res.data);
+      })
+      .catch((err: Error) => {
+        console.log("====================================");
+        console.log("err::", err);
+        console.log("====================================");
+      });
+  }, []);
 
 
+  useEffect(() => {
+    console.log("====================================");
+    console.log("valid day::", checkValidSlotThursday("Slot8", listBooking));
+    console.log("====================================");
+    console.log("====================================");
+    console.log("current day::", currentDay);
+    console.log("====================================");
+    if (!weekValue) {
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const isoWeek = getISOWeek(currentDate);
+
+      // Format the ISO week to "YYYY-Www"
+      const formattedWeekValue = `${year}-W${isoWeek
+        .toString()
+        .padStart(2, "0")}`;
+
+      setWeekValue(formattedWeekValue);
+    }
+    console.log("====================================");
+  }, [weekValue]);
+
+  const getISOWeek = (date: Date) => {
+    const d = new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+    );
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+  };
 
 
   const handleSelectedFile = (e: FileUploadSelectEvent) => {
@@ -484,7 +647,11 @@ export default function ListRoom({
 
   //form
   const handleOk = () => {
-    setOpen(false);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setOpen(false);
+    }, 3000);
   };
 
   const handleCancel = () => {
@@ -494,9 +661,7 @@ export default function ListRoom({
     refAdd.current?.setFiles([]);
     setOpen(false);
   };
-  const showModal = () => {
-    setOpen(true);
-  };
+
 
   const showModalUpdate = (data: any) => {
     console.log(data);
@@ -709,66 +874,74 @@ export default function ListRoom({
       showErrorCategory("Import facility error !!!");
     }
   };
-    const handleWeekChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const selectedWeek = event.target.value;
-  
-      if (StorageService.getUser()) {
-        getBookingUserByWeek(
-          event.target.value,
-          StorageService.getUser().id,
-          detailData?._id
-        ).then(
-          (res: any) => {
-            console.log("====================================");
-            console.log("User Booking ::", res.data.booking);
-            console.log("====================================");
-            setBookingUserByWeek(res.data.booking);
-          },
-          (error) => { }
-        );
-      }
-  
-      calendarBooking(event.target.value, detailData?._id)
-        .then((res: any) => {
-          setListBooking(res.data);
-        })
-        .catch((err: Error) => {
+  const handleWeekChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedWeek = event.target.value;
+
+    if (StorageService.getUser()) {
+      getBookingUserByWeek(
+        event.target.value,
+        StorageService.getUser().id,
+        detailData?._id
+      ).then(
+        (res: any) => {
           console.log("====================================");
-          console.log("err::", err);
+          console.log("User Booking ::", res.data.booking);
           console.log("====================================");
-        });
-      setWeekValue(selectedWeek);
-  
-      const selectedWeekNumber = parseInt(
-        selectedWeek.split("-")[1].substring(1),
-        10
+          setBookingUserByWeek(res.data.booking);
+        },
+        (error) => { }
       );
-      const currentWeekNumber = parseInt(
-        currentWeek.split("-")[1].substring(1),
-        10
-      );
-  
-      if (selectedWeekNumber < currentWeekNumber) {
-        setDisableButtonsMonday(true);
-        setDisableButtonsTuesday(true);
-        setDisableButtonsWendsday(true);
-        setDisableButtonsThurday(true);
-        setDisableButtonsFriday(true);
-        setDisableButtonsSaturday(true);
-        setDisableButtonsSunday(true);
-  
-        console.log("Buttons Disabled");
-      } else {
-        setDisableButtonsMonday(false);
-        setDisableButtonsTuesday(false);
-        setDisableButtonsWendsday(false);
-        setDisableButtonsThurday(false);
-        setDisableButtonsFriday(false);
-        setDisableButtonsSaturday(false);
-        setDisableButtonsSunday(false);
-        console.log("Buttons Enabled");
-      }
-    };
+    }
+
+    calendarBooking(event.target.value, detailData?._id)
+      .then((res: any) => {
+        setListBooking(res.data);
+      })
+      .catch((err: Error) => {
+        console.log("====================================");
+        console.log("err::", err);
+        console.log("====================================");
+      });
+    setWeekValue(selectedWeek);
+
+    const selectedWeekNumber = parseInt(
+      selectedWeek.split("-")[1].substring(1),
+      10
+    );
+    const currentWeekNumber = parseInt(
+      currentWeek.split("-")[1].substring(1),
+      10
+    );
+
+    if (selectedWeekNumber < currentWeekNumber) {
+      setDisableButtonsMonday(true);
+      setDisableButtonsTuesday(true);
+      setDisableButtonsWendsday(true);
+      setDisableButtonsThurday(true);
+      setDisableButtonsFriday(true);
+      setDisableButtonsSaturday(true);
+      setDisableButtonsSunday(true);
+
+      console.log("Buttons Disabled");
+    } else {
+      setDisableButtonsMonday(false);
+      setDisableButtonsTuesday(false);
+      setDisableButtonsWendsday(false);
+      setDisableButtonsThurday(false);
+      setDisableButtonsFriday(false);
+      setDisableButtonsSaturday(false);
+      setDisableButtonsSunday(false);
+      console.log("Buttons Enabled");
+    }
+  };
+
+  const showModal = () => {
+    if (StorageService.isLoggedIn() === false) {
+      showErrorCategory("You must login in to book room !!!");
+      return;
+    }
+    setOpen(true);
+  };
 
 
 
@@ -791,7 +964,7 @@ export default function ListRoom({
                   onChange={(e) => handleSearch(e.target.value)}
                 />
               </div>
-              
+
             </div>
             <table>
               <thead className="border">
@@ -819,16 +992,16 @@ export default function ListRoom({
                         </p>
                       </td>
                       <td className="p-5  border text-center">
-                      
+
                       </td>
                       <td className="border">
                         <div className="flex flex-col items-center gap-2 w-full py-1">
-                        <button
-                          onClick={showModal}
-                          className="bg-green-500 hover:bg-green-300 text-white font-semibold px-5 py-2 rounded-md"
-                        >
-                          Kiểm tra lịch
-                        </button>
+                          <button
+                            onClick={showModal}
+                            className="bg-green-500 hover:bg-green-300 text-white font-semibold px-5 py-2 rounded-md"
+                          >
+                            Kiểm tra lịch
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -884,12 +1057,12 @@ export default function ListRoom({
           </div>
           <div className="flex gap-2 justify-end mb-3">
             <Tooltip
-                title={
-                  <div className="text-center">
-                    Chưa kiểm tra <br />
-                    (Cần đi kiểm tra lại)
-                  </div>
-                }
+              title={
+                <div className="text-center">
+                  Chưa kiểm tra <br />
+                  (Cần đi kiểm tra lại)
+                </div>
+              }
             >
               <div className="w-1 h-4 bg-yellow-500"></div>
             </Tooltip>
@@ -956,26 +1129,25 @@ export default function ListRoom({
                         }
                         onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
                         className={`p-2 rounded-full text-white px-4 
-                        
-                          
-                        ${checkPendingSlotMonday(`Slot${i + 1}`, listBooking) === true
-                            ? "bg-yellow-500 hover:bg-yellow-300 cursor-not-allowed opacity-50" // Chờ xét duyệt
+    
+                            ${checkPendingSlotMonday(`Slot${i + 1}`, listBooking) === true
+                            ? "bg-yellow-500 hover:bg-yellow-300" // Chờ xét duyệt
                             : checkValidSlotMondayUser(
                               `Slot${i + 1}`,
                               bookingUserByWeek
                             ) === true
-                              ? "bg-green-800 hover:bg-green-300 cursor-not-allowed opacity-50"
+                              ? "bg-green-800 hover:bg-green-300"
                               : checkValidSlotMonday(
                                 `Slot${i + 1}`,
                                 listBooking
                               ) === true
-                                ? "bg-red-500 hover:bg-red-300 cursor-not-allowed opacity-50"
+                                ? "bg-red-500 hover:bg-red-300"
                                 : "bg-blue-500 hover:bg-blue-300"
                           }
-                
-                        ${checkValidSlotMonday(`Slot${i + 1}`, listBooking) ===
+    
+                            ${checkValidSlotMonday(`Slot${i + 1}`, listBooking) ===
                             false && disableButtonsMonday
-                            ? "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
+                            ? "bg-gray-400 hover:bg-gray-300"
                             : "bg-blue-500 hover:bg-blue-300"
                           }`}
                       >
