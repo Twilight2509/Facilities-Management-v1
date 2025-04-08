@@ -336,20 +336,17 @@ export default function ListRoom({
   };
 
   useEffect(() => {
-    if (currentWeek === weekValue) {
-      // Bỏ toàn bộ logic kiểm tra currentDay và setDisableButtons*
-    } else {
-      const currentYear = parseInt(currentWeek.substring(0, 4), 10);
-      const currentWeekNum = parseInt(currentWeek.substring(6), 10);
-      const targetYear = parseInt(weekValue.substring(0, 4), 10);
-      const targetWeekNum = parseInt(weekValue.substring(6), 10);
+    if (!weekValue) {
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const isoWeek = getISOWeek(currentDate);
 
-      const weekDifference =
-        (targetYear - currentYear) * 52 + (targetWeekNum - currentWeekNum);
-
-      // Bỏ logic vô hiệu hóa nút khi weekDifference > 1
+      const formattedWeekValue = `${year}-W${isoWeek.toString().padStart(2, "0")}`;
+      setWeekValue(formattedWeekValue);
     }
+    // Loại bỏ hoàn toàn logic kiểm tra ngày hiện tại và vô hiệu hóa nút
   }, [weekValue]);
+
   const handleOkInactive = () => {
     if (typeof idFaci === "string") {
       updateStatusFaci(idFaci)
@@ -994,214 +991,222 @@ export default function ListRoom({
                     </td>
                     <td className="p-2 border">
                       <button
-                        disabled={
-                          !checkValidSlotMonday(`Slot${i + 1}`, listBooking) &&
-                          !checkValidSlotMondayUser(`Slot${i + 1}`, bookingUserByWeek)
-                        }
                         onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
-                        className={`p-2 rounded-full text-white px-4 
-            ${checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-yellow-500 hover:bg-yellow-300" // Chưa báo cáo
+                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
+                          ${checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 0
+                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
                             : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-green-500 hover:bg-green-300" // Đã báo cáo
+                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
                               : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-red-500 hover:bg-red-300" // Thiếu đồ
-                                : "bg-blue-500 hover:bg-blue-300" // Chưa có ai đặt
+                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
+                                : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 3
+                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
+                                  : "bg-gray-500 cursor-not-allowed" // Default case
                           }
-            ${(!checkValidSlotMonday(`Slot${i + 1}`, listBooking) &&
+                          ${(!checkValidSlotMonday(`Slot${i + 1}`, listBooking) &&
                             !checkValidSlotMondayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                          "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
+                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                           }`}
+                        disabled={checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 0}
                       >
                         {checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Chưa"
+                          ? "Trống"
                           : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 1
-                            ? "Xong"
+                            ? "Chưa báo cáo"
                             : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 2
-                              ? "Thiếu"
-                              : ""}
+                              ? "Đủ"
+                              : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 3
+                                ? "Thiếu/Hỏng"
+                                : ""}
                       </button>
                     </td>
                     <td className="p-2 border">
                       <button
-                        disabled={
-                          !checkValidSlotTuesday(`Slot${i + 1}`, listBooking) &&
-                          !checkValidSlotTuesdayUser(`Slot${i + 1}`, bookingUserByWeek)
-                        }
-                        onClick={() => handleBooking(`Slot${i + 1}#Tuesday#${weekValue}`)}
-                        className={`p-2 rounded-full text-white px-4 
-            ${checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-yellow-500 hover:bg-yellow-300" // Chưa báo cáo
+                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
+                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
+                          ${checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 0
+                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
                             : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-green-500 hover:bg-green-300" // Đã báo cáo
+                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
                               : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-red-500 hover:bg-red-300" // Thiếu đồ
-                                : "bg-blue-500 hover:bg-blue-300" // Chưa có ai đặt
+                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
+                                : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 3
+                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
+                                  : "bg-gray-500 cursor-not-allowed" // Default case
                           }
-            ${(!checkValidSlotTuesday(`Slot${i + 1}`, listBooking) &&
+                          ${(!checkValidSlotTuesday(`Slot${i + 1}`, listBooking) &&
                             !checkValidSlotTuesdayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                          "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
+                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                           }`}
+                        disabled={checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 0}
                       >
                         {checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Chưa"
+                          ? "Trống"
                           : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 1
-                            ? "Xong"
+                            ? "Chưa báo cáo"
                             : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 2
-                              ? "Thiếu"
-                              : ""}
+                              ? "Đủ"
+                              : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 3
+                                ? "Thiếu/Hỏng"
+                                : ""}
                       </button>
                     </td>
                     <td className="p-2 border">
                       <button
-                        disabled={
-                          !checkValidSlotWednesday(`Slot${i + 1}`, listBooking) &&
-                          !checkValidSlotWednesdayUser(`Slot${i + 1}`, bookingUserByWeek)
-                        }
-                        onClick={() => handleBooking(`Slot${i + 1}#Wednesday#${weekValue}`)}
-                        className={`p-2 rounded-full text-white px-4 
-            ${checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-yellow-500 hover:bg-yellow-300" // Chưa báo cáo
+                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
+                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
+                          ${checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 0
+                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
                             : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-green-500 hover:bg-green-300" // Đã báo cáo
+                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
                               : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-red-500 hover:bg-red-300" // Thiếu đồ
-                                : "bg-blue-500 hover:bg-blue-300" // Chưa có ai đặt
+                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
+                                : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 3
+                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
+                                  : "bg-gray-500 cursor-not-allowed" // Default case
                           }
-            ${(!checkValidSlotWednesday(`Slot${i + 1}`, listBooking) &&
+                          ${(!checkValidSlotWednesday(`Slot${i + 1}`, listBooking) &&
                             !checkValidSlotWednesdayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                          "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
+                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                           }`}
+                        disabled={checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 0}
                       >
                         {checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Chưa"
+                          ? "Trống"
                           : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 1
-                            ? "Xong"
+                            ? "Chưa báo cáo"
                             : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 2
-                              ? "Thiếu"
-                              : ""}
+                              ? "Đủ"
+                              : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 3
+                                ? "Thiếu/Hỏng"
+                                : ""}
                       </button>
                     </td>
                     <td className="p-2 border">
                       <button
-                        disabled={
-                          !checkValidSlotThursday(`Slot${i + 1}`, listBooking) &&
-                          !checkValidSlotThursdayUser(`Slot${i + 1}`, bookingUserByWeek)
-                        }
-                        onClick={() => handleBooking(`Slot${i + 1}#Thursday#${weekValue}`)}
-                        className={`p-2 rounded-full text-white px-4 
-            ${checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-yellow-500 hover:bg-yellow-300" // Chưa báo cáo
+                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
+                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
+                          ${checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 0
+                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
                             : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-green-500 hover:bg-green-300" // Đã báo cáo
+                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
                               : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-red-500 hover:bg-red-300" // Thiếu đồ
-                                : "bg-blue-500 hover:bg-blue-300" // Chưa có ai đặt
+                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
+                                : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 3
+                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
+                                  : "bg-gray-500 cursor-not-allowed" // Default case
                           }
-            ${(!checkValidSlotThursday(`Slot${i + 1}`, listBooking) &&
+                          ${(!checkValidSlotThursday(`Slot${i + 1}`, listBooking) &&
                             !checkValidSlotThursdayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                          "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
+                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                           }`}
+                        disabled={checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 0}
                       >
                         {checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Chưa"
+                          ? "Trống"
                           : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 1
-                            ? "Xong"
+                            ? "Chưa báo cáo"
                             : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 2
-                              ? "Thiếu"
-                              : ""}
+                              ? "Đủ"
+                              : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 3
+                                ? "Thiếu/Hỏng"
+                                : ""}
                       </button>
                     </td>
                     <td className="p-2 border">
                       <button
-                        disabled={
-                          !checkValidSlotFriday(`Slot${i + 1}`, listBooking) &&
-                          !checkValidSlotFridayUser(`Slot${i + 1}`, bookingUserByWeek)
-                        }
-                        onClick={() => handleBooking(`Slot${i + 1}#Friday#${weekValue}`)}
-                        className={`p-2 rounded-full text-white px-4 
-            ${checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-yellow-500 hover:bg-yellow-300" // Chưa báo cáo
+                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
+                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
+                          ${checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 0
+                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
                             : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-green-500 hover:bg-green-300" // Đã báo cáo
+                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
                               : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-red-500 hover:bg-red-300" // Thiếu đồ
-                                : "bg-blue-500 hover:bg-blue-300" // Chưa có ai đặt
+                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
+                                : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 3
+                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
+                                  : "bg-gray-500 cursor-not-allowed" // Default case
                           }
-            ${(!checkValidSlotFriday(`Slot${i + 1}`, listBooking) &&
+                          ${(!checkValidSlotFriday(`Slot${i + 1}`, listBooking) &&
                             !checkValidSlotFridayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                          "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
+                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                           }`}
+                        disabled={checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 0}
                       >
                         {checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Chưa"
+                          ? "Trống"
                           : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 1
-                            ? "Xong"
+                            ? "Chưa báo cáo"
                             : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 2
-                              ? "Thiếu"
-                              : ""}
+                              ? "Đủ"
+                              : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 3
+                                ? "Thiếu/Hỏng"
+                                : ""}
                       </button>
                     </td>
                     <td className="p-2 border">
                       <button
-                        disabled={
-                          !checkValidSlotSaturday(`Slot${i + 1}`, listBooking) &&
-                          !checkValidSlotSaturdayUser(`Slot${i + 1}`, bookingUserByWeek)
-                        }
-                        onClick={() => handleBooking(`Slot${i + 1}#Saturday#${weekValue}`)}
-                        className={`p-2 rounded-full text-white px-4 
-            ${checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-yellow-500 hover:bg-yellow-300" // Chưa báo cáo
+                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
+                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
+                          ${checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 0
+                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
                             : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-green-500 hover:bg-green-300" // Đã báo cáo
+                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
                               : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-red-500 hover:bg-red-300" // Thiếu đồ
-                                : "bg-blue-500 hover:bg-blue-300" // Chưa có ai đặt
+                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
+                                : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 3
+                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
+                                  : "bg-gray-500 cursor-not-allowed" // Default case
                           }
-            ${(!checkValidSlotSaturday(`Slot${i + 1}`, listBooking) &&
+                          ${(!checkValidSlotSaturday(`Slot${i + 1}`, listBooking) &&
                             !checkValidSlotSaturdayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                          "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
+                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                           }`}
+                        disabled={checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 0}
                       >
                         {checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Chưa"
+                          ? "Trống"
                           : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 1
-                            ? "Xong"
+                            ? "Chưa báo cáo"
                             : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 2
-                              ? "Thiếu"
-                              : ""}
+                              ? "Đủ"
+                              : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 3
+                                ? "Thiếu/Hỏng"
+                                : ""}
                       </button>
                     </td>
                     <td className="p-2 border">
                       <button
-                        disabled={
-                          !checkValidSlotSunday(`Slot${i + 1}`, listBooking) &&
-                          !checkValidSlotSundayUser(`Slot${i + 1}`, bookingUserByWeek)
-                        }
-                        onClick={() => handleBooking(`Slot${i + 1}#Sunday#${weekValue}`)}
-                        className={`p-2 rounded-full text-white px-4 
-            ${checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-yellow-500 hover:bg-yellow-300" // Chưa báo cáo
+                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
+                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
+                          ${checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 0
+                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
                             : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-green-500 hover:bg-green-300" // Đã báo cáo
+                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
                               : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-red-500 hover:bg-red-300" // Thiếu đồ
-                                : "bg-blue-500 hover:bg-blue-300" // Chưa có ai đặt
+                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
+                                : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 3
+                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
+                                  : "bg-gray-500 cursor-not-allowed" // Default case
                           }
-            ${(!checkValidSlotSunday(`Slot${i + 1}`, listBooking) &&
+                          ${(!checkValidSlotSunday(`Slot${i + 1}`, listBooking) &&
                             !checkValidSlotSundayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                          "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
+                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
                           }`}
+                        disabled={checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 0}
                       >
                         {checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Chưa"
+                          ? "Trống"
                           : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 1
-                            ? "Xong"
+                            ? "Chưa báo cáo"
                             : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 2
-                              ? "Thiếu"
-                              : ""}
+                              ? "Đủ"
+                              : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 3
+                                ? "Thiếu/Hỏng"
+                                : ""}
                       </button>
                     </td>
+                    
                   </tr>
                 ))}
               </tbody>

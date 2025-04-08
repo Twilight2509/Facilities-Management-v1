@@ -63,7 +63,7 @@ const BookingSchema = new Schema(
         },
         reportStatus: {
             type: Number,
-            enum: [0, 1, 2], // 0: chưa báo cáo, 1: đã báo cáo, 2: đang xử lý hoặc các trạng thái khác nếu cần
+            enum: [0, 1, 2, 3], // 0: chưa báo cáo, 1: đã báo cáo, 2: đang xử lý hoặc các trạng thái khác nếu cần
             default: 0
         }
     },
