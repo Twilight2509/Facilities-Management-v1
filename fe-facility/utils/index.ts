@@ -408,3 +408,67 @@ export const formatDateVN = (dateString: string) => {
   // Return the formatted date and time
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
+
+// Kiểm tra reportStatus cho user
+export const checkReportStatusMondayUser = (slot: string, data: any): number => {
+  try {
+    const slotData = data?.Monday?.find((res: any) => res.slot === slot);
+    return slotData ? slotData.reportStatus : 0; // Trả về reportStatus hoặc 0 nếu không tìm thấy
+  } catch (err) {
+    return 0;
+  }
+};
+
+export const checkReportStatusTuesdayUser = (slot: string, data: any): number => {
+  try {
+    const slotData = data?.Tuesday?.find((res: any) => res.slot === slot);
+    return slotData ? slotData.reportStatus : 0;
+  } catch (err) {
+    return 0;
+  }
+};
+
+export const checkReportStatusWednesdayUser = (slot: string, data: any): number => {
+  try {
+    const slotData = data?.Wednesday?.find((res: any) => res.slot === slot);
+    return slotData ? slotData.reportStatus : 0;
+  } catch (err) {
+    return 0;
+  }
+};
+
+export const checkReportStatusThursdayUser = (slot: string, data: any): number => {
+  try {
+    const slotData = data?.Thursday?.find((res: any) => res.slot === slot);
+    return slotData ? slotData.reportStatus : 0;
+  } catch (err) {
+    return 0;
+  }
+};
+
+export const checkReportStatusFridayUser = (slot: string, data: any): number => {
+  try {
+    const slotData = data?.Friday?.find((res: any) => res.slot === slot);
+    return slotData ? slotData.reportStatus : 0;
+  } catch (err) {
+    return 0;
+  }
+};
+
+export const checkReportStatusSaturdayUser = (slot: string, data: any): number => {
+  try {
+    const slotData = data?.Saturday?.find((res: any) => res.slot === slot);
+    return slotData ? slotData.reportStatus : 0;
+  } catch (err) {
+    return 0;
+  }
+};
+
+export const checkReportStatusSundayUser = (slot: string, data: any): number => {
+  try {
+    const slotData = data?.Sunday?.find((res: any) => res.slot === slot);
+    return slotData ? slotData.reportStatus : 0;
+  } catch (err) {
+    return 0;
+  }
+};
