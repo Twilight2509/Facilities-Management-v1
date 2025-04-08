@@ -7,7 +7,6 @@ import { Pagination, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { ProgressSpinner } from "primereact/progressspinner";
 import jsPDF from "jspdf";
-import { NOTO_SANS } from "./fonts/NotoSans-Regular-normal";
 
 import {
   getAllReports,
@@ -19,9 +18,10 @@ import {
 
 export default function ReportComponent() {
   const [reportData, setReportData] = useState<any[]>([]);
-  const [totalPage, setTotalPage] = useState<number>(1); // default 1 page
+  const [totalPage, setTotalPage] = useState<number>(1);
   const [activePage, setActivePage] = useState<number>(1);
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
+  const [pageSize] = useState<number>(8); // Set 8 reports per page
 
   useEffect(() => {
     fetchReports();
@@ -37,7 +37,8 @@ export default function ReportComponent() {
 
       if (Array.isArray(reports)) {
         setReportData(reports);
-        setTotalPage(1); // Cập nhật nếu backend có total page
+        // Calculate total pages based on 8 items per page
+        setTotalPage(Math.ceil(reports.length / pageSize));
       } else {
         setReportData([]);
         setTotalPage(0);
@@ -48,6 +49,14 @@ export default function ReportComponent() {
       setIsSpinning(false);
     }
   };
+
+  // Get current reports for the active page
+  const getCurrentPageReports = () => {
+    const startIndex = (activePage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return reportData.slice(startIndex, endIndex);
+  };
+
   console.log("📌 Facility ID test:", reportData[0]?.bookingId?.facilityId.name);
   const onChangePage = (page: number) => {
     setActivePage(page);
@@ -69,21 +78,21 @@ export default function ReportComponent() {
   const NOTO_SANS = "AAEAAAASAQAABAAgR0...";
 
   const handleDownloadPDF = (report: any) => {
-  try { // <-- Mở khối try
-    const doc = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-    });
+    try {
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
 
-    // ========== NỘI DUNG PDF ==========
-    let yPos = 20;
-    const lineHeight = 10;
+      // ========== NỘI DUNG PDF ==========
+      let yPos = 20;
+      const lineHeight = 10;
 
-    // Tiêu đề
-    doc.setFontSize(18);
-    doc.text("BIÊN BẢN VI PHẠM", 105, yPos, { align: "center" });
-    yPos += lineHeight * 2;
+      // Tiêu đề
+      doc.setFontSize(18);
+      doc.text("BIÊN BẢN VI PHẠM", 105, yPos, { align: "center" });
+      yPos += lineHeight * 2;
       // Thông tin chi tiết
       const fields = [
         { label: "Tên phòng (sân)", value: report?.bookingId?.facilityId?.name || "N/A" },
@@ -102,11 +111,12 @@ export default function ReportComponent() {
       });
   
       doc.save(`BaoCao_${report._id}.pdf`);
-    } catch (error) { // <-- Đóng khối try và mở catch
+    } catch (error) {
       console.error("Lỗi khi tạo PDF:", error);
       alert("Có lỗi xảy ra khi tạo file PDF!");
-    } // <-- Đóng khối catch
+    }
   };
+
   return (
     <div>
       <div className="border flex flex-col justify-center">
@@ -138,9 +148,9 @@ export default function ReportComponent() {
             </tr>
           </thead>
           <tbody>
-            {reportData?.map((r, index) => (
+            {getCurrentPageReports()?.map((r, index) => (
               <tr className="border" key={r._id || index}>
-                <td className="p-5 border text-center">{index + 1}</td>
+                <td className="p-5 border text-center">{(activePage - 1) * pageSize + index + 1}</td>
                 <td className="p-5 border text-center">
                   <p className="cursor-pointer hover:text-gray-400 flex items-center justify-center gap-1">
                     <span>{r?.bookingId?.facilityId?.name || "N/A"}</span>
@@ -163,7 +173,6 @@ export default function ReportComponent() {
                   {r?.bookingId?.booker?.name || "-"}
                 </td>
                 <td className="p-5 border text-center">
-                  {/* Ví dụ lỗi vi phạm có thể show ở đây */}
                   <span>{r?.description || "Không rõ"}</span>
                 </td>
                 <td className="border">
@@ -199,7 +208,8 @@ export default function ReportComponent() {
               <div className="flex items-center justify-center">
                 <Pagination
                   current={activePage}
-                  total={totalPage * 10}
+                  total={reportData.length}
+                  pageSize={pageSize}
                   onChange={onChangePage}
                   showSizeChanger={false}
                 />
