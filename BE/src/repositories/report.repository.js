@@ -17,12 +17,13 @@ const FindAll = async () => {
     return await Report.find({})
         .populate("createdBy", "name")
         .populate("updatedBy", "name")
+        .populate("guardId", "name")
         // .populate("bookingId")
         .populate({
             path: "bookingId",
             populate: {
-                path: "facilityId", // <-- populate thêm field bên trong
-                model: "Facility",   // <-- đúng với tên model của bạn
+                path: "facilityId",
+                model: "Facility",
             },
         })
         .exec();

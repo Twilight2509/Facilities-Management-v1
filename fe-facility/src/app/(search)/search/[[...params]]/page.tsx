@@ -217,7 +217,7 @@ export default function SearchAll({ params }: { params: object }) {
                     </p>
                   </Tooltip>
                   <button className="absolute bottom-5 bg-green-500 hover:bg-green-300 text-white font-semibold p-1 rounded-md">
-                    Đặt phòng
+                    Đặt lịch
                   </button>
                 </div>
               </div>

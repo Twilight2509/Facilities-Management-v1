@@ -9,6 +9,7 @@ import { ProgressSpinner } from "primereact/progressspinner"
 import { FacilityStatusModal } from "./facility-status-modal"
 import { message } from "antd"
 import {ReviewReport} from "../GuardComponent/ReportComponent/ReviewReport";
+import {createReport} from "../../services/report.api";
 
 export default function ManageBookingRequestAccept() {
   const [bookingData, setBookingData] = useState<any[]>([])
@@ -19,7 +20,12 @@ export default function ManageBookingRequestAccept() {
   const [selectedBooking, setSelectedBooking] = useState<any>(null)
     const [isReviewMode, setIsReviewMode] = useState<boolean>(false)
 
-  useEffect(() => {
+    const storedDataString = localStorage.getItem("user");
+    const storedData = storedDataString ? JSON.parse(storedDataString) : null;
+
+    console.log(storedData._id);
+
+    useEffect(() => {
     setIsSpinning(true)
     getAllBooking(2)
       .then((res) => {
@@ -73,38 +79,46 @@ export default function ManageBookingRequestAccept() {
         setIsModalOpen(true)
     }
 
-
     const handleCloseModal = () => {
     setIsModalOpen(false)
     setSelectedBooking(null)
   }
 
-  const handleSubmitReport = (data: { description: string; image?: File }) => {
-    if (!selectedBooking) return
+    const handleSubmitReport = async (data: { description: string }) => {
+        if (!selectedBooking) return;
 
-    updateReportStatus(selectedBooking._id, 2) // 2 = Thiếu
-        .then(() => {
+        const body = {
+            bookingId: selectedBooking._id,
+            description: data.description,
+            status: 2,
+            album: [],
+            securityId: storedData._id,
+        };
+
+        try {
+            await createReport(body);
+
             setBookingData(prev =>
                 prev.map(item =>
                     item._id === selectedBooking._id
                         ? {
                             ...item,
+                            guardId: storedData._id,
                             reportStatus: 2,
                             reportDescription: data.description,
                         }
                         : item
                 )
-            )
-            setIsModalOpen(false)
-            setSelectedBooking(null)
-            message.success("📌 Báo cáo 'Thiếu' đã được gửi")
-        })
-        .catch(err => {
-            console.error("Lỗi khi cập nhật reportStatus = 2", err)
-            message.error("❌ Gửi báo cáo thất bại")
-        })
+            );
 
-  }
+            setIsModalOpen(false);
+            setSelectedBooking(null);
+            message.success("📌 Báo cáo 'Thiếu' đã được gửi");
+        } catch (err) {
+            console.error("Lỗi khi gửi báo cáo:", err);
+            message.error("❌ Gửi báo cáo thất bại");
+        }
+    };
 
   function formatDate(dateString: any) {
     if (!dateString || typeof dateString !== "string") {

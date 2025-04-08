@@ -136,12 +136,11 @@ export default function ReportComponent() {
         <table>
           <thead className="border">
             <tr>
-              <th className="p-5 border">#</th>
+              <th className="p-5 border">STT</th>
               <th className="p-5 border">Tên phòng (sân)</th>
               <th className="p-5 border">Slot</th>
               <th className="p-5 border">Thời gian tạo</th>
               <th className="p-5 border">Ảnh</th>
-              <th className="p-5 border">Người chịu trách nghiệm</th>
               <th className="p-5 border">Người lập biên bản</th>
               <th className="p-5 border">Lỗi vi phạm</th>
               <th className="p-5 border">Tải biên bản</th>
@@ -163,14 +162,20 @@ export default function ReportComponent() {
                   {formatDate(r?.bookingId?.createdAt)}
                 </td>
                 <td className="p-5 border text-center">
-                  <img src={r?.album} className="w-32 h-32 m-auto" />
-                </td>
-                <td className="p-5 border text-center">
-                  {r?.bookingId?.booker?.name || "-"}
+                  {Array.isArray(r.album) ? (
+                      <div className="flex flex-wrap gap-2 justify-center">
+                        {r.album.map((img: string, idx: number) => (
+                            <img key={idx} src={img} className="w-20 h-20 object-cover rounded" />
+                        ))}
+                      </div>
+                  ) : (
+                      <img src={r.album} className="w-32 h-32 object-cover m-auto rounded" />
+                  )}
                 </td>
 
+
                 <td className="p-5 border text-center">
-                  {r?.bookingId?.booker?.name || "-"}
+                  {r?.guardId?.name || "-d"}
                 </td>
                 <td className="p-5 border text-center">
                   <span>{r?.description || "Không rõ"}</span>

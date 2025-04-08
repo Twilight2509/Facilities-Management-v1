@@ -463,7 +463,7 @@ export default function InfomationDetailComponent({
             onClick={showModal}
             className="bg-green-500 hover:bg-green-300 text-white font-semibold px-5 py-2 rounded-md"
           >
-            Đặt phòng
+            Đặt lịch
           </button>
         </div>
       </div>

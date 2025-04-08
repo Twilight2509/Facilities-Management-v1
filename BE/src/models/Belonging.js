@@ -4,7 +4,6 @@ const BelongingDetailSchema = new mongoose.Schema({
     name: { type: String, required: true },
     status: {
         type: String,
-        enum: ["đầy đủ", "thiếu", "hỏng"],
         default: "đầy đủ"
     }
 });
