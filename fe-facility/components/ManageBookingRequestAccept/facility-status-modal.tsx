@@ -1,25 +1,117 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import {useEffect, useState } from "react"
+import axios from "axios";
 
 interface FacilityStatusModalProps {
   isOpen: boolean
   onClose: () => void
   onSubmit: (data: { description: string; image?: File }) => void
+  booking: any
+
 }
 
-export const FacilityStatusModal: React.FC<FacilityStatusModalProps> = ({ isOpen, onClose, onSubmit }) => {
+export const FacilityStatusModal: React.FC<FacilityStatusModalProps> = ({ isOpen, onClose, onSubmit, booking }) => {
   const [description, setDescription] = useState("")
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [belongings, setBelongings] = useState<any[]>([])
+  const [selectedItems, setSelectedItems] = useState<{ [key: string]: string }>({})
 
   const handleSubmit = () => {
-    onSubmit({
-      description,
-      image: selectedFile || undefined,
+    if (!booking?._id) return;
+
+    const formData = new FormData();
+    formData.append("description", description);
+    formData.append("status", "2"); // 2 là thiếu
+    formData.append("bookingId", booking._id);
+    formData.append("securityId", booking?.handler?._id || "");
+    if (selectedFile) {
+      formData.append("album", selectedFile);
+    }
+
+    axios.post("http://localhost:5152/report/create", formData)
+        .then(() => {
+          onSubmit({ description, image: selectedFile || undefined });
+          onClose();
+        })
+        .catch(err => {
+          console.error("Lỗi khi gửi báo cáo:", err);
+        });
+  };
+
+  const handleCheckboxChange = (id: string) => {
+    setSelectedItems(prev => {
+      const newSelected = { ...prev }
+      if (newSelected[id]) {
+        delete newSelected[id]
+      } else {
+        newSelected[id] = ""
+      }
+      return newSelected
     })
-    onClose()
   }
+
+  // useEffect(() => {
+  //   if (isOpen && booking?.facilityId?.category) {
+  //     const categoryId = booking.facilityId.category
+  //     axios.get(`http://localhost:5152/belonging/?categoryId=${categoryId}`)
+  //         .then(res => {
+  //           const facilities = Array.isArray(res.data) ? res.data : []
+  //           const details = facilities.flatMap(f => f.details || [])
+  //           setBelongings(details)
+  //           console.log("📋 Belongings details:", details)
+  //         })
+  //         .catch(err => {
+  //           console.error("Lỗi khi load belongings:", err)
+  //         })
+  //   }
+  // }, [isOpen, booking])
+
+  useEffect(() => {
+    const selectedDescriptions = Object.keys(selectedItems).map((id) => {
+      const item = belongings.find(b => b._id === id)
+      return item ? `- ${item.name} (${item.status})` : null
+    }).filter(Boolean)
+
+    setDescription(selectedDescriptions.join('\n'))
+  }, [selectedItems, belongings])
+
+  useEffect(() => {
+    if (isOpen && booking?.facilityId?.category) {
+      const categoryId = booking.facilityId.category
+      if (booking?.reportDescription) {
+        setDescription(booking.reportDescription)
+      }
+
+      axios.get(`http://localhost:5152/belonging/?categoryId=${categoryId}`)
+          .then(res => {
+            const facilities = Array.isArray(res.data) ? res.data : []
+            const details = facilities.flatMap(f => f.details || [])
+            setBelongings(details)
+          })
+          .catch(err => {
+            console.error("Lỗi khi load belongings:", err)
+          })
+    }
+  }, [isOpen, booking])
+  
+  useEffect(() => {
+    if (isOpen && booking?.reportStatus === 2) {
+      axios.get(`http://localhost:5152/report/booking/${booking._id}`)
+          .then(res => {
+            const data = res.data;
+            if (data?.description) setDescription(data.description);
+            if (data?.album) {
+              setSelectedFile({ name: data.album, type: "image/*" } as File);
+            }
+          })
+          .catch(err => {
+            console.error("Lỗi khi lấy lại báo cáo cũ:", err);
+          });
+    }
+  }, [isOpen, booking]);
+
 
   if (!isOpen) return null
 
@@ -60,6 +152,23 @@ export const FacilityStatusModal: React.FC<FacilityStatusModalProps> = ({ isOpen
               />
             </div>
           </div>
+          <div className="mb-4">
+            <p className="mb-2 font-semibold">Chọn cơ sở vật chất có vấn đề</p>
+            <ul className="space-y-2">
+              {belongings.map((item, idx) => (
+                  <li key={item._id || idx} className="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        checked={item._id in selectedItems}
+                        onChange={() => handleCheckboxChange(item._id)}
+                    />
+                    <label>{item.name} ({item.status})</label>
+                  </li>
+              ))}
+            </ul>
+          </div>
+
+
         </div>
 
         <div className="mb-6">

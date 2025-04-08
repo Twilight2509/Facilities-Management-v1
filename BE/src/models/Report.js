@@ -8,6 +8,7 @@ const Report = mongoose.model("Report", new Schema(
         album: [{
             type: String
         }],
+        guardId: { type: Schema.Types.ObjectId, ref: "User", required: true },
         status: { type: Number, required: true },
         createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
         updatedBy: { type: Schema.Types.ObjectId, ref: "User", required: true },

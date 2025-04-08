@@ -36,6 +36,7 @@ const create = async ({ body }) => {
         album,
         status,
         bookingId,
+        guardId: securityId,
         createdBy: securityId,
         updatedBy: securityId
     });

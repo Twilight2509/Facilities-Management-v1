@@ -7,6 +7,8 @@ import { useEffect, useState } from "react"
 import { getAllBooking, updateReportStatus } from "../../services/booking.api"
 import { ProgressSpinner } from "primereact/progressspinner"
 import { FacilityStatusModal } from "./facility-status-modal"
+import { message } from "antd"
+import {ReviewReport} from "../GuardComponent/ReportComponent/ReviewReport";
 
 export default function ManageBookingRequestAccept() {
   const [bookingData, setBookingData] = useState<any[]>([])
@@ -15,6 +17,7 @@ export default function ManageBookingRequestAccept() {
   const [isSpinning, setIsSpinning] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [selectedBooking, setSelectedBooking] = useState<any>(null)
+    const [isReviewMode, setIsReviewMode] = useState<boolean>(false)
 
   useEffect(() => {
     setIsSpinning(true)
@@ -64,12 +67,14 @@ export default function ManageBookingRequestAccept() {
       })
   }
 
-  const handleOpenModal = (booking: any) => {
-    setSelectedBooking(booking)
-    setIsModalOpen(true)
-  }
+    const handleOpenModal = (booking: any) => {
+        setSelectedBooking(booking)
+        setIsReviewMode(booking?.reportStatus === 2) // Nếu đã báo cáo thì bật chế độ xem lại
+        setIsModalOpen(true)
+    }
 
-  const handleCloseModal = () => {
+
+    const handleCloseModal = () => {
     setIsModalOpen(false)
     setSelectedBooking(null)
   }
@@ -77,30 +82,31 @@ export default function ManageBookingRequestAccept() {
   const handleSubmitReport = (data: { description: string; image?: File }) => {
     if (!selectedBooking) return
 
-    console.log("Report data:", data)
-
     updateReportStatus(selectedBooking._id, 2) // 2 = Thiếu
-      .then(() => {
-        // Cập nhật UI local
-        setBookingData(prev =>
-          prev.map(item =>
-            item._id === selectedBooking._id
-              ? { ...item, reportStatus: 2 }
-              : item
-          )
-        )
+        .then(() => {
+            setBookingData(prev =>
+                prev.map(item =>
+                    item._id === selectedBooking._id
+                        ? {
+                            ...item,
+                            reportStatus: 2,
+                            reportDescription: data.description,
+                        }
+                        : item
+                )
+            )
+            setIsModalOpen(false)
+            setSelectedBooking(null)
+            message.success("📌 Báo cáo 'Thiếu' đã được gửi")
+        })
+        .catch(err => {
+            console.error("Lỗi khi cập nhật reportStatus = 2", err)
+            message.error("❌ Gửi báo cáo thất bại")
+        })
 
-        // Reset modal
-        setIsModalOpen(false)
-        setSelectedBooking(null)
-      })
-      .catch(err => {
-        console.error("Lỗi khi cập nhật reportStatus = 2", err)
-      })
   }
 
   function formatDate(dateString: any) {
-    // Kiểm tra nếu dateString không tồn tại hoặc không phải là chuỗi hợp lệ
     if (!dateString || typeof dateString !== "string") {
       console.error("Invalid date string:", dateString)
       return "Invalid date"
@@ -108,14 +114,13 @@ export default function ManageBookingRequestAccept() {
 
     const dateTimeParts = dateString.split("T")
 
-    // Kiểm tra nếu mảng dateTimeParts không có ít nhất 2 phần tử
     if (dateTimeParts.length < 2) {
       console.error("Invalid date-time format:", dateString)
       return "Invalid format"
     }
 
     const datePart = dateTimeParts[0]
-    const timePart = dateTimeParts[1].substring(0, 8) // Lấy chỉ thời gian, bỏ qua phần mili giây và múi giờ
+    const timePart = dateTimeParts[1].substring(0, 8)
 
     return `${timePart} ${datePart}`
   }
@@ -126,18 +131,23 @@ export default function ManageBookingRequestAccept() {
     const parts = dateString.split("T")[0].split("-")
     if (parts.length !== 3) return "Invalid date"
 
-    return `${parts[2]}-${parts[1]}-${parts[0]}` // dd-mm-yyyy
+    return `${parts[2]}-${parts[1]}-${parts[0]}`
   }
   const handleMarkEnough = (booking: any) => {
     updateReportStatus(booking._id, 1) // 1 là reportStatus = Đủ
-      .then(() => {
-        // Cập nhật local UI nếu cần
-        setBookingData(prev =>
-          prev.map(item =>
-            item._id === booking._id ? { ...item, reportStatus: 1 } : item
-          )
-        );
-      })
+        .then(() => {
+            setBookingData(prev =>
+                prev.map(item =>
+                    item._id === booking._id ? { ...item, reportStatus: 1 } : item
+                )
+            )
+            message.success("Đã cập nhật trạng thái: Đủ")
+        })
+        .catch(err => {
+            console.error("Lỗi khi cập nhật reportStatus = 1", err);
+            message.error("Cập nhật trạng thái thất bại")
+        })
+
       .catch(err => {
         console.error("Lỗi khi cập nhật reportStatus = 1", err);
       });
@@ -217,7 +227,10 @@ export default function ManageBookingRequestAccept() {
                           {b?.reportStatus === 1 ? (
                             <span className="text-green-500 font-medium">Đã đủ</span>
                           ) : b?.reportStatus === 2 ? (
-                            <span className="text-red-500 font-medium">Thiếu</span>
+                              <span
+                                  className="text-red-500 font-medium cursor-pointer hover:underline"
+                                  onClick={() => handleOpenModal(b)}
+                              >Thiếu</span>
                           ) : (
                             <>
                               <button
@@ -271,12 +284,23 @@ export default function ManageBookingRequestAccept() {
           )}
         </div>
       </div>
+        {isModalOpen && selectedBooking && (
+            isReviewMode ? (
+                <ReviewReport
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    booking={selectedBooking}
+                />
+            ) : (
+                <FacilityStatusModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    onSubmit={handleSubmitReport}
+                    booking={selectedBooking}
+                />
+            )
+        )}
 
-      <FacilityStatusModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={handleSubmitReport}
-      />
     </div>
   )
 }
