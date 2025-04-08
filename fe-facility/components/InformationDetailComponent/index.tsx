@@ -551,10 +551,7 @@ export default function InfomationDetailComponent({
                           disableButtonsMonday ||
                           // checkPendingSlotMonday(`Slot${i + 1}`, listBooking) ||
                           checkValidSlotMonday(`Slot${i + 1}`, listBooking) ||
-                          checkValidSlotMondayUser(
-                            `Slot${i + 1}`,
-                            bookingUserByWeek
-                          )
+                          checkValidSlotMondayUser(`Slot${i + 1}`, bookingUserByWeek)
                         }
                         onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
                         className={`p-2 rounded-full text-white px-4 

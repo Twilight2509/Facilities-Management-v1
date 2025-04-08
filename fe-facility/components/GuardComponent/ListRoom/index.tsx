@@ -185,9 +185,14 @@ export default function ListRoom({
   showSuccessCategory: any;
   showErrorCategory: any;
 }) {
+
+  const [localDetailData, setLocalDetailData] = useState(detailData);
+  
   console.log("====================================");
-  console.log(detailData);
+  console.log(localDetailData);
   console.log("====================================");
+
+  
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -269,12 +274,13 @@ export default function ListRoom({
       slot: arrayBooking[0],
       weekdays: arrayBooking[1],
       weeks: arrayBooking[2],
-      facilityId: detailData?._id,
+      facilityId: localDetailData?._id,
       booker: userId,
       startDate: day.trim(),
       endDate: day.trim(),
       isComment: false,
       status: 1,
+      
     };
 
     console.log("====================================");
@@ -289,7 +295,7 @@ export default function ListRoom({
           showErrorCategory("Booking failed: You already have a booking");
         } else {
           showSuccessCategory("Booking successfully !!!");
-          calendarBooking(weekValue, detailData?._id)
+          calendarBooking(weekValue, localDetailData?._id)
             .then((res: any) => {
               setListBooking(res.data);
             })
@@ -303,7 +309,7 @@ export default function ListRoom({
             getBookingUserByWeek(
               weekValue,
               StorageService.getUser().id,
-              detailData?._id
+              localDetailData?._id
             ).then(
               (res: any) => {
                 console.log("====================================");
@@ -560,7 +566,7 @@ export default function ListRoom({
       getBookingUserByWeek(
         currentWeek,
         StorageService.getUser().id,
-        detailData?._id
+        localDetailData?._id
       ).then(
         (res: any) => {
           console.log("====================================");
@@ -572,7 +578,7 @@ export default function ListRoom({
       );
     }
 
-    calendarBooking(currentWeek, detailData?._id)
+    calendarBooking(currentWeek, localDetailData?._id)
       .then((res: any) => {
         setListBooking(res.data);
       })
@@ -581,7 +587,7 @@ export default function ListRoom({
         console.log("err::", err);
         console.log("====================================");
       });
-  }, []);
+  }, [localDetailData]);
 
 
   useEffect(() => {
@@ -881,7 +887,7 @@ export default function ListRoom({
       getBookingUserByWeek(
         event.target.value,
         StorageService.getUser().id,
-        detailData?._id
+        localDetailData?._id
       ).then(
         (res: any) => {
           console.log("====================================");
@@ -893,7 +899,7 @@ export default function ListRoom({
       );
     }
 
-    calendarBooking(event.target.value, detailData?._id)
+    calendarBooking(event.target.value, localDetailData?._id)
       .then((res: any) => {
         setListBooking(res.data);
       })
@@ -981,23 +987,24 @@ export default function ListRoom({
                 {/* Uncomment this part if categoryData is supposed to be used */}
                 {Array.isArray(listFacility) &&
                   listFacility.length > 0 &&
-                  listFacility.map((c, index) => (
+                  listFacility.map((facility, index) => (
                     <tr className="" key={index}>
                       <td className="p-5 border text-center">
                         <p>{index + 1}</p>
                       </td>
                       <td className="p-5 border text-center">
                         <p className="cursor-pointer hover:text-gray-400 flex items-center justify-center gap-1">
-                          <span>{c?.name}</span>
+                          <span>{facility?.name}</span>
                         </p>
                       </td>
-                      <td className="p-5  border text-center">
-
-                      </td>
+                      <td className="p-5 border text-center"></td>
                       <td className="border">
                         <div className="flex flex-col items-center gap-2 w-full py-1">
                           <button
-                            onClick={showModal}
+                            onClick={() => {
+                              setLocalDetailData(facility); // Cập nhật dữ liệu của dòng được chọn
+                              showModal(); // Hiển thị modal
+                            }}
                             className="bg-green-500 hover:bg-green-300 text-white font-semibold px-5 py-2 rounded-md"
                           >
                             Kiểm tra lịch
