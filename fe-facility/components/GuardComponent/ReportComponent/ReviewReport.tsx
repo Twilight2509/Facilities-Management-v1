@@ -61,22 +61,22 @@ export const ReviewReport: React.FC<ReviewReportProps> = ({ isOpen, onClose, boo
                     </div>
                 </div>
 
-                <div className="mb-4">
-                    <p className="font-semibold mb-2">Cơ sở vật chất được báo cáo:</p>
-                    <ul className="list-disc pl-5">
-                        {belongings.length > 0 ? (
-                            belongings.map((item, idx) => (
-                                <li key={idx}>{item.name} ({item.status})</li>
-                            ))
-                        ) : (
-                            <li>Không có mục nào được ghi nhận</li>
-                        )}
-                    </ul>
-                </div>
+                {/*<div className="mb-4">*/}
+                {/*    <p className="font-semibold mb-2">Cơ sở vật chất được báo cáo:</p>*/}
+                {/*    <ul className="list-disc pl-5">*/}
+                {/*        {belongings.length > 0 ? (*/}
+                {/*            belongings.map((item, idx) => (*/}
+                {/*                <li key={idx}>{item.name} ({item.status})</li>*/}
+                {/*            ))*/}
+                {/*        ) : (*/}
+                {/*            <li>Không có mục nào được ghi nhận</li>*/}
+                {/*        )}*/}
+                {/*    </ul>*/}
+                {/*</div>*/}
 
                 {imageUrls.length > 0 && (
                     <div className="mb-4">
-                        <p className="font-semibold mb-2">Ảnh đã gửi:</p>
+                        <p className="font-semibold mb-2">Ảnh báo cáo:</p>
                         <div className="flex space-x-2 overflow-x-auto">
                             {imageUrls.slice(0, 4).map((url, idx) => {
                                 const isLast = idx === 3 && imageUrls.length > 4
