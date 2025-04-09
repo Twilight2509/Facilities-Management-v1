@@ -10,6 +10,7 @@ import { FacilityStatusModal } from "./facility-status-modal"
 import { message } from "antd"
 import {ReviewReport} from "../GuardComponent/ReportComponent/ReviewReport";
 import {createReport} from "../../services/report.api";
+import axios from "axios";
 
 export default function ManageBookingRequestAccept() {
   const [bookingData, setBookingData] = useState<any[]>([])
@@ -84,19 +85,56 @@ export default function ManageBookingRequestAccept() {
     setSelectedBooking(null)
   }
 
-    const handleSubmitReport = async (data: { description: string }) => {
-        if (!selectedBooking) return;
+    // const handleSubmitReport = async (data: { description: string; image?: File }) => {
+    //     if (!selectedBooking) return;
+    //
+    //     // const body = {
+    //     //     bookingId: selectedBooking._id,
+    //     //     description: data.description,
+    //     //     status: 2,
+    //     //     album: [],
+    //     //     securityId: storedData._id,
+    //     // };
+    //
+    //     try {
+    //         // await createReport(body);
+    //         setBookingData(prev =>
+    //             prev.map(item =>
+    //                 item._id === selectedBooking._id
+    //                     ? {
+    //                         ...item,
+    //                         guardId: storedData._id,
+    //                         reportStatus: 2,
+    //                         reportDescription: data.description,
+    //                     }
+    //                     : item
+    //             )
+    //         );
+    //
+    //         setIsModalOpen(false);
+    //         setSelectedBooking(null);
+    //         message.success("📌 Báo cáo 'Thiếu' đã được gửi");
+    //     } catch (err) {
+    //         console.error("Lỗi khi gửi báo cáo:", err);
+    //         message.error("❌ Gửi báo cáo thất bại");
+    //     }
+    // };
 
-        const body = {
-            bookingId: selectedBooking._id,
-            description: data.description,
-            status: 2,
-            album: [],
-            securityId: storedData._id,
-        };
+    const handleSubmitReport = async (data: { description: string; files: File[] }) => {
+        if (!selectedBooking || !storedData?._id) return
+
+        const formData = new FormData()
+        formData.append("description", data.description)
+        formData.append("bookingId", selectedBooking._id)
+        formData.append("securityId", storedData._id)
+        formData.append("status", "2")
+
+        data.files.forEach(file => {
+            formData.append("album", file)
+        })
 
         try {
-            await createReport(body);
+            await axios.post("http://localhost:5152/report/create", formData)
 
             setBookingData(prev =>
                 prev.map(item =>
@@ -109,18 +147,18 @@ export default function ManageBookingRequestAccept() {
                         }
                         : item
                 )
-            );
+            )
 
-            setIsModalOpen(false);
-            setSelectedBooking(null);
-            message.success("📌 Báo cáo 'Thiếu' đã được gửi");
+            setIsModalOpen(false)
+            setSelectedBooking(null)
+            message.success("📌 Báo cáo 'Thiếu' đã được gửi")
         } catch (err) {
-            console.error("Lỗi khi gửi báo cáo:", err);
-            message.error("❌ Gửi báo cáo thất bại");
+            console.error("Lỗi khi gửi báo cáo:", err)
+            message.error("❌ Gửi báo cáo thất bại")
         }
-    };
+    }
 
-  function formatDate(dateString: any) {
+    function formatDate(dateString: any) {
     if (!dateString || typeof dateString !== "string") {
       console.error("Invalid date string:", dateString)
       return "Invalid date"

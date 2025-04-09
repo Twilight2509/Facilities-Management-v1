@@ -44,7 +44,7 @@ const create = async ({ body }) => {
 
     const savedReport = await report.save();
 
-    await Booking.findByIdAndUpdate(bookingId, { reportStatus: 1 });
+    await Booking.findByIdAndUpdate(bookingId, { reportStatus: parseInt(status) });
 
     return savedReport;
 };

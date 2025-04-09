@@ -77,16 +77,28 @@ export const ReviewReport: React.FC<ReviewReportProps> = ({ isOpen, onClose, boo
                 {imageUrls.length > 0 && (
                     <div className="mb-4">
                         <p className="font-semibold mb-2">Ảnh đã gửi:</p>
-                        <div className="grid grid-cols-2 gap-4">
-                            {imageUrls.map((url, idx) => (
-                                <img
-                                    key={idx}
-                                    src={url}
-                                    alt={`Ảnh báo cáo ${idx + 1}`}
-                                    className="w-full max-h-64 object-contain border rounded"
-                                />
-                            ))}
+                        <div className="flex space-x-2 overflow-x-auto">
+                            {imageUrls.slice(0, 4).map((url, idx) => {
+                                const isLast = idx === 3 && imageUrls.length > 4
+                                const remaining = imageUrls.length - 4
+
+                                return (
+                                    <div key={idx} className="relative w-32 h-32 rounded border overflow-hidden">
+                                        <img
+                                            src={url}
+                                            alt={`Ảnh báo cáo ${idx + 1}`}
+                                            className={`w-full h-full object-cover ${isLast ? 'opacity-60' : ''}`}
+                                        />
+                                        {isLast && (
+                                            <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-lg bg-black bg-opacity-50">
+                                                +{remaining}
+                                            </div>
+                                        )}
+                                    </div>
+                                )
+                            })}
                         </div>
+
                     </div>
                 )}
             </div>
