@@ -409,66 +409,80 @@ export const formatDateVN = (dateString: string) => {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
+interface SlotData {
+  _id: string;
+  slot: string;
+  reportStatus: number;
+}
+
+interface BookingData {
+  Sunday?: SlotData[];
+  Monday?: SlotData[];
+  Tuesday?: SlotData[];
+  Wednesday?: SlotData[];
+  Thursday?: SlotData[];
+  Friday?: SlotData[];
+  Saturday?: SlotData[];
+}
+
+interface ReportStatusResult {
+  reportStatus: number; // Thay status thành reportStatus
+  id: string | null;
+}
+
 // Kiểm tra reportStatus cho user
-export const checkReportStatusMondayUser = (slot: string, data: any): number => {
-  try {
-    const slotData = data?.Monday?.find((res: any) => res.slot === slot);
-    return slotData ? slotData.reportStatus : 0; // Trả về reportStatus hoặc 0 nếu không tìm thấy
-  } catch (err) {
-    return 0;
+export const checkReportStatusMondayUser = (slot: string, data: BookingData): ReportStatusResult => {
+  const slotData = data?.Monday?.find((res) => res.slot === slot);
+  if (slotData) {
+    return { reportStatus: slotData.reportStatus, id: slotData._id }; // Thay status thành reportStatus
   }
+  return { reportStatus: 3, id: null }; // Trống
 };
 
-export const checkReportStatusTuesdayUser = (slot: string, data: any): number => {
-  try {
-    const slotData = data?.Tuesday?.find((res: any) => res.slot === slot);
-    return slotData ? slotData.reportStatus : 0;
-  } catch (err) {
-    return 0;
+export const checkReportStatusTuesdayUser = (slot: string, data: BookingData): ReportStatusResult => {
+  const slotData = data?.Tuesday?.find((res) => res.slot === slot); // Sửa Monday thành Tuesday
+  if (slotData) {
+    return { reportStatus: slotData.reportStatus, id: slotData._id }; // Thay status thành reportStatus
   }
+  return { reportStatus: 3, id: null }; // Trống
 };
 
-export const checkReportStatusWednesdayUser = (slot: string, data: any): number => {
-  try {
-    const slotData = data?.Wednesday?.find((res: any) => res.slot === slot);
-    return slotData ? slotData.reportStatus : 0;
-  } catch (err) {
-    return 0;
+export const checkReportStatusWednesdayUser = (slot: string, data: BookingData): ReportStatusResult => {
+  const slotData = data?.Wednesday?.find((res) => res.slot === slot); // Sửa Monday thành Wednesday
+  if (slotData) {
+    return { reportStatus: slotData.reportStatus, id: slotData._id }; // Thay status thành reportStatus
   }
+  return { reportStatus: 3, id: null }; // Trống
 };
 
-export const checkReportStatusThursdayUser = (slot: string, data: any): number => {
-  try {
-    const slotData = data?.Thursday?.find((res: any) => res.slot === slot);
-    return slotData ? slotData.reportStatus : 0;
-  } catch (err) {
-    return 0;
+export const checkReportStatusThursdayUser = (slot: string, data: BookingData): ReportStatusResult => {
+  const slotData = data?.Thursday?.find((res) => res.slot === slot); // Sửa Monday thành Thursday
+  if (slotData) {
+    return { reportStatus: slotData.reportStatus, id: slotData._id }; // Thay status thành reportStatus
   }
+  return { reportStatus: 3, id: null }; // Trống
 };
 
-export const checkReportStatusFridayUser = (slot: string, data: any): number => {
-  try {
-    const slotData = data?.Friday?.find((res: any) => res.slot === slot);
-    return slotData ? slotData.reportStatus : 0;
-  } catch (err) {
-    return 0;
+export const checkReportStatusFridayUser = (slot: string, data: BookingData): ReportStatusResult => {
+  const slotData = data?.Friday?.find((res) => res.slot === slot); // Sửa Monday thành Friday
+  if (slotData) {
+    return { reportStatus: slotData.reportStatus, id: slotData._id }; // Thay status thành reportStatus
   }
+  return { reportStatus: 3, id: null }; // Trống
 };
 
-export const checkReportStatusSaturdayUser = (slot: string, data: any): number => {
-  try {
-    const slotData = data?.Saturday?.find((res: any) => res.slot === slot);
-    return slotData ? slotData.reportStatus : 0;
-  } catch (err) {
-    return 0;
+export const checkReportStatusSaturdayUser = (slot: string, data: BookingData): ReportStatusResult => {
+  const slotData = data?.Saturday?.find((res) => res.slot === slot); // Sửa Monday thành Saturday
+  if (slotData) {
+    return { reportStatus: slotData.reportStatus, id: slotData._id }; // Thay status thành reportStatus
   }
+  return { reportStatus: 3, id: null }; // Trống
 };
 
-export const checkReportStatusSundayUser = (slot: string, data: any): number => {
-  try {
-    const slotData = data?.Sunday?.find((res: any) => res.slot === slot);
-    return slotData ? slotData.reportStatus : 0;
-  } catch (err) {
-    return 0;
+export const checkReportStatusSundayUser = (slot: string, data: BookingData): ReportStatusResult => {
+  const slotData = data?.Sunday?.find((res) => res.slot === slot);
+  if (slotData) {
+    return { reportStatus: slotData.reportStatus, id: slotData._id }; // Thay status thành reportStatus
   }
+  return { reportStatus: 3, id: null }; // Trống
 };

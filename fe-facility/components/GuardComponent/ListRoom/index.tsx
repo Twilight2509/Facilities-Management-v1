@@ -90,6 +90,8 @@ import {
   WEDNESDAY,
 } from "../../../constant";
 
+import { ReviewReport } from "../ReportComponent/ReviewReport";
+
 const weeks = [
   "Monday",
   "Tuesday",
@@ -197,6 +199,7 @@ export default function ListRoom({
   console.log("====================================");
   console.log(localDetailData);
   console.log("====================================");
+
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -822,6 +825,29 @@ export default function ListRoom({
     setOpen(true);
   };
 
+
+  // Thay đổi tên state và hàm để phù hợp với ReviewReport
+  const [isReviewReportOpen, setIsReviewReportOpen] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<any>(null);
+
+  const handleOpenReviewModal = (bookingId: string) => {
+    // Tìm booking trong listBooking dựa trên ID
+    const booking = Object.values(listBooking)
+      .flat()
+      .find((item: any) => item._id === bookingId);
+
+    if (booking) {
+      setSelectedBooking(booking);
+      setIsReviewReportOpen(true);
+    } else {
+      showErrorCategory("Không tìm thấy thông tin booking!");
+    }
+  };
+
+  const handleReviewReportClose = () => {
+    setIsReviewReportOpen(false);
+    setSelectedBooking(null);
+  };
   return (
     <>
       <div className="">
@@ -917,7 +943,7 @@ export default function ListRoom({
       </div>
       {/* modal booking */}
       <Modal
-        className="w-fit"
+        className="w-fit z-[1000]"
         open={open}
         onOk={handleOk}
         closeIcon={<></>}
@@ -947,8 +973,8 @@ export default function ListRoom({
             <Tooltip title="Thiếu đồ">
               <div className="w-1 h-4 bg-red-500"></div>
             </Tooltip>
-            <Tooltip title="Không thể đặt slot này">
-              <div className="w-1 h-4 bg-gray-400"></div>
+            <Tooltip title="Trống">
+              <div className="w-1 h-4 bg-gray-500"></div>
             </Tooltip>
           </div>
           <div className="flex justify-center">
@@ -972,252 +998,299 @@ export default function ListRoom({
                 </tr>
               </thead>
               <tbody>
-                {Array.from({ length: 9 }, (_, i) => (
-                  <tr key={`slot_${i}_Slot1`}>
-                    <td className="p-2 border">
-                      <Tooltip title={`${SlotTime[`Slot${i + 1}`]}`}>
-                        <div className="flex items-center gap-1">
-                          <p className="text-xl">Slot{i + 1}</p>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 512 512"
-                          >
-                            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
-                          </svg>
-                        </div>
-                      </Tooltip>
-                    </td>
-                    <td className="p-2 border">
-                      <button
-                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
-                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
-                          ${checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
-                            : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
-                              : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
-                                : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 3
-                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
-                                  : "bg-gray-500 cursor-not-allowed" // Default case
+                {Array.from({ length: 9 }, (_, i) => {
+                  const slot = `Slot${i + 1}`;
+                  const mondayStatus = checkReportStatusMondayUser(slot, listBooking);
+                  const tuesdayStatus = checkReportStatusTuesdayUser(slot, listBooking);
+                  const wednesdayStatus = checkReportStatusWednesdayUser(slot, listBooking);
+                  const thursdayStatus = checkReportStatusThursdayUser(slot, listBooking);
+                  const fridayStatus = checkReportStatusFridayUser(slot, listBooking);
+                  const saturdayStatus = checkReportStatusSaturdayUser(slot, listBooking);
+                  const sundayStatus = checkReportStatusSundayUser(slot, listBooking);
+
+                  return (
+                    <tr key={`slot_${i}_Slot1`}>
+                      <td className="p-2 border">
+                        <Tooltip title={`${SlotTime[slot]}`}>
+                          <div className="flex items-center gap-1">
+                            <p className="text-xl">{slot}</p>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 512 512"
+                            >
+                              <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+                            </svg>
+                          </div>
+                        </Tooltip>
+                      </td>
+                      {/* Monday */}
+                      <td className="p-2 border">
+                        <button
+                          onClick={() => {
+                            if (mondayStatus.reportStatus === 2 && mondayStatus.id) {
+                              handleOpenReviewModal(mondayStatus.id);
+                            }
+                          }}
+                          className={`w-24 h-10 rounded-full text-white px-2 text-xs truncate
+                      ${mondayStatus.reportStatus === 0
+                              ? "bg-yellow-500 hover:bg-yellow-400 cursor-not-allowed opacity-50"
+                              : mondayStatus.reportStatus === 1
+                                ? "bg-green-500 hover:bg-green-400 cursor-not-allowed opacity-50"
+                                : mondayStatus.reportStatus === 2
+                                  ? "bg-red-500 hover:bg-red-400"
+                                  : mondayStatus.reportStatus === 3
+                                    ? "bg-gray-500 cursor-not-allowed opacity-50"
+                                    : "bg-gray-500 cursor-not-allowed opacity-50"
+                            }`}
+                          disabled={
+                            mondayStatus.reportStatus !== 2 ||
+                            (!checkValidSlotMonday(slot, listBooking) &&
+                              !checkValidSlotMondayUser(slot, bookingUserByWeek))
                           }
-                          ${(!checkValidSlotMonday(`Slot${i + 1}`, listBooking) &&
-                            !checkValidSlotMondayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
-                          }`}
-                        disabled={checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 0}
-                      >
-                        {checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Trống"
-                          : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 1
+                        >
+                          {mondayStatus.reportStatus === 0
                             ? "Chưa báo cáo"
-                            : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 2
+                            : mondayStatus.reportStatus === 1
                               ? "Đủ"
-                              : checkReportStatusMondayUser(`Slot${i + 1}`, listBooking) === 3
+                              : mondayStatus.reportStatus === 2
                                 ? "Thiếu/Hỏng"
-                                : ""}
-                      </button>
-                    </td>
-                    <td className="p-2 border">
-                      <button
-                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
-                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
-                          ${checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
-                            : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
-                              : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
-                                : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 3
-                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
-                                  : "bg-gray-500 cursor-not-allowed" // Default case
+                                : mondayStatus.reportStatus === 3
+                                  ? "Trống"
+                                  : ""}
+                        </button>
+                      </td>
+                      {/* Tuesday */}
+                      <td className="p-2 border">
+                        <button
+                          onClick={() => {
+                            if (tuesdayStatus.reportStatus === 2 && tuesdayStatus.id) {
+                              handleOpenReviewModal(tuesdayStatus.id);
+                            }
+                          }}
+                          className={`w-24 h-10 rounded-full text-white px-2 text-xs truncate
+                      ${tuesdayStatus.reportStatus === 0
+                              ? "bg-yellow-500 hover:bg-yellow-400 cursor-not-allowed opacity-50"
+                              : tuesdayStatus.reportStatus === 1
+                                ? "bg-green-500 hover:bg-green-400 cursor-not-allowed opacity-50"
+                                : tuesdayStatus.reportStatus === 2
+                                  ? "bg-red-500 hover:bg-red-400"
+                                  : tuesdayStatus.reportStatus === 3
+                                    ? "bg-gray-500 cursor-not-allowed opacity-50"
+                                    : "bg-gray-500 cursor-not-allowed opacity-50"
+                            }`}
+                          disabled={
+                            tuesdayStatus.reportStatus !== 2 ||
+                            (!checkValidSlotTuesday(slot, listBooking) &&
+                              !checkValidSlotTuesdayUser(slot, bookingUserByWeek))
                           }
-                          ${(!checkValidSlotTuesday(`Slot${i + 1}`, listBooking) &&
-                            !checkValidSlotTuesdayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
-                          }`}
-                        disabled={checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 0}
-                      >
-                        {checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Trống"
-                          : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 1
+                        >
+                          {tuesdayStatus.reportStatus === 0
                             ? "Chưa báo cáo"
-                            : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 2
+                            : tuesdayStatus.reportStatus === 1
                               ? "Đủ"
-                              : checkReportStatusTuesdayUser(`Slot${i + 1}`, listBooking) === 3
+                              : tuesdayStatus.reportStatus === 2
                                 ? "Thiếu/Hỏng"
-                                : ""}
-                      </button>
-                    </td>
-                    <td className="p-2 border">
-                      <button
-                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
-                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
-                          ${checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
-                            : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
-                              : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
-                                : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 3
-                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
-                                  : "bg-gray-500 cursor-not-allowed" // Default case
+                                : tuesdayStatus.reportStatus === 3
+                                  ? "Trống"
+                                  : ""}
+                        </button>
+                      </td>
+                      {/* Wednesday */}
+                      <td className="p-2 border">
+                        <button
+                          onClick={() => {
+                            if (wednesdayStatus.reportStatus === 2 && wednesdayStatus.id) {
+                              handleOpenReviewModal(wednesdayStatus.id);
+                            }
+                          }}
+                          className={`w-24 h-10 rounded-full text-white px-2 text-xs truncate
+                      ${wednesdayStatus.reportStatus === 0
+                              ? "bg-yellow-500 hover:bg-yellow-400 cursor-not-allowed opacity-50"
+                              : wednesdayStatus.reportStatus === 1
+                                ? "bg-green-500 hover:bg-green-400 cursor-not-allowed opacity-50"
+                                : wednesdayStatus.reportStatus === 2
+                                  ? "bg-red-500 hover:bg-red-400"
+                                  : wednesdayStatus.reportStatus === 3
+                                    ? "bg-gray-500 cursor-not-allowed opacity-50"
+                                    : "bg-gray-500 cursor-not-allowed opacity-50"
+                            }`}
+                          disabled={
+                            wednesdayStatus.reportStatus !== 2 ||
+                            (!checkValidSlotWednesday(slot, listBooking) &&
+                              !checkValidSlotWednesdayUser(slot, bookingUserByWeek))
                           }
-                          ${(!checkValidSlotWednesday(`Slot${i + 1}`, listBooking) &&
-                            !checkValidSlotWednesdayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
-                          }`}
-                        disabled={checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 0}
-                      >
-                        {checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Trống"
-                          : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 1
+                        >
+                          {wednesdayStatus.reportStatus === 0
                             ? "Chưa báo cáo"
-                            : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 2
+                            : wednesdayStatus.reportStatus === 1
                               ? "Đủ"
-                              : checkReportStatusWednesdayUser(`Slot${i + 1}`, listBooking) === 3
+                              : wednesdayStatus.reportStatus === 2
                                 ? "Thiếu/Hỏng"
-                                : ""}
-                      </button>
-                    </td>
-                    <td className="p-2 border">
-                      <button
-                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
-                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
-                          ${checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
-                            : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
-                              : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
-                                : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 3
-                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
-                                  : "bg-gray-500 cursor-not-allowed" // Default case
+                                : wednesdayStatus.reportStatus === 3
+                                  ? "Trống"
+                                  : ""}
+                        </button>
+                      </td>
+                      {/* Thursday */}
+                      <td className="p-2 border">
+                        <button
+                          onClick={() => {
+                            if (thursdayStatus.reportStatus === 2 && thursdayStatus.id) {
+                              handleOpenReviewModal(thursdayStatus.id);
+                            }
+                          }}
+                          className={`w-24 h-10 rounded-full text-white px-2 text-xs truncate
+                      ${thursdayStatus.reportStatus === 0
+                              ? "bg-yellow-500 hover:bg-yellow-400 cursor-not-allowed opacity-50"
+                              : thursdayStatus.reportStatus === 1
+                                ? "bg-green-500 hover:bg-green-400 cursor-not-allowed opacity-50"
+                                : thursdayStatus.reportStatus === 2
+                                  ? "bg-red-500 hover:bg-red-400"
+                                  : thursdayStatus.reportStatus === 3
+                                    ? "bg-gray-500 cursor-not-allowed opacity-50"
+                                    : "bg-gray-500 cursor-not-allowed opacity-50"
+                            }`}
+                          disabled={
+                            thursdayStatus.reportStatus !== 2 ||
+                            (!checkValidSlotThursday(slot, listBooking) &&
+                              !checkValidSlotThursdayUser(slot, bookingUserByWeek))
                           }
-                          ${(!checkValidSlotThursday(`Slot${i + 1}`, listBooking) &&
-                            !checkValidSlotThursdayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
-                          }`}
-                        disabled={checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 0}
-                      >
-                        {checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Trống"
-                          : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 1
+                        >
+                          {thursdayStatus.reportStatus === 0
                             ? "Chưa báo cáo"
-                            : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 2
+                            : thursdayStatus.reportStatus === 1
                               ? "Đủ"
-                              : checkReportStatusThursdayUser(`Slot${i + 1}`, listBooking) === 3
+                              : thursdayStatus.reportStatus === 2
                                 ? "Thiếu/Hỏng"
-                                : ""}
-                      </button>
-                    </td>
-                    <td className="p-2 border">
-                      <button
-                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
-                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
-                          ${checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
-                            : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
-                              : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
-                                : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 3
-                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
-                                  : "bg-gray-500 cursor-not-allowed" // Default case
+                                : thursdayStatus.reportStatus === 3
+                                  ? "Trống"
+                                  : ""}
+                        </button>
+                      </td>
+                      {/* Friday */}
+                      <td className="p-2 border">
+                        <button
+                          onClick={() => {
+                            if (fridayStatus.reportStatus === 2 && fridayStatus.id) {
+                              handleOpenReviewModal(fridayStatus.id);
+                            }
+                          }}
+                          className={`w-24 h-10 rounded-full text-white px-2 text-xs truncate
+                      ${fridayStatus.reportStatus === 0
+                              ? "bg-yellow-500 hover:bg-yellow-400 cursor-not-allowed opacity-50"
+                              : fridayStatus.reportStatus === 1
+                                ? "bg-green-500 hover:bg-green-400 cursor-not-allowed opacity-50"
+                                : fridayStatus.reportStatus === 2
+                                  ? "bg-red-500 hover:bg-red-400"
+                                  : fridayStatus.reportStatus === 3
+                                    ? "bg-gray-500 cursor-not-allowed opacity-50"
+                                    : "bg-gray-500 cursor-not-allowed opacity-50"
+                            }`}
+                          disabled={
+                            fridayStatus.reportStatus !== 2 ||
+                            (!checkValidSlotFriday(slot, listBooking) &&
+                              !checkValidSlotFridayUser(slot, bookingUserByWeek))
                           }
-                          ${(!checkValidSlotFriday(`Slot${i + 1}`, listBooking) &&
-                            !checkValidSlotFridayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
-                          }`}
-                        disabled={checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 0}
-                      >
-                        {checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Trống"
-                          : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 1
+                        >
+                          {fridayStatus.reportStatus === 0
                             ? "Chưa báo cáo"
-                            : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 2
+                            : fridayStatus.reportStatus === 1
                               ? "Đủ"
-                              : checkReportStatusFridayUser(`Slot${i + 1}`, listBooking) === 3
+                              : fridayStatus.reportStatus === 2
                                 ? "Thiếu/Hỏng"
-                                : ""}
-                      </button>
-                    </td>
-                    <td className="p-2 border">
-                      <button
-                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
-                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
-                          ${checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
-                            : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
-                              : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
-                                : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 3
-                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
-                                  : "bg-gray-500 cursor-not-allowed" // Default case
+                                : fridayStatus.reportStatus === 3
+                                  ? "Trống"
+                                  : ""}
+                        </button>
+                      </td>
+                      {/* Saturday */}
+                      <td className="p-2 border">
+                        <button
+                          onClick={() => {
+                            if (saturdayStatus.reportStatus === 2 && saturdayStatus.id) {
+                              handleOpenReviewModal(saturdayStatus.id);
+                            }
+                          }}
+                          className={`w-24 h-10 rounded-full text-white px-2 text-xs truncate
+                      ${saturdayStatus.reportStatus === 0
+                              ? "bg-yellow-500 hover:bg-yellow-400 cursor-not-allowed opacity-50"
+                              : saturdayStatus.reportStatus === 1
+                                ? "bg-green-500 hover:bg-green-400 cursor-not-allowed opacity-50"
+                                : saturdayStatus.reportStatus === 2
+                                  ? "bg-red-500 hover:bg-red-400"
+                                  : saturdayStatus.reportStatus === 3
+                                    ? "bg-gray-500 cursor-not-allowed opacity-50"
+                                    : "bg-gray-500 cursor-not-allowed opacity-50"
+                            }`}
+                          disabled={
+                            saturdayStatus.reportStatus !== 2 ||
+                            (!checkValidSlotSaturday(slot, listBooking) &&
+                              !checkValidSlotSaturdayUser(slot, bookingUserByWeek))
                           }
-                          ${(!checkValidSlotSaturday(`Slot${i + 1}`, listBooking) &&
-                            !checkValidSlotSaturdayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
-                          }`}
-                        disabled={checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 0}
-                      >
-                        {checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Trống"
-                          : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 1
+                        >
+                          {saturdayStatus.reportStatus === 0
                             ? "Chưa báo cáo"
-                            : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 2
+                            : saturdayStatus.reportStatus === 1
                               ? "Đủ"
-                              : checkReportStatusSaturdayUser(`Slot${i + 1}`, listBooking) === 3
+                              : saturdayStatus.reportStatus === 2
                                 ? "Thiếu/Hỏng"
-                                : ""}
-                      </button>
-                    </td>
-                    <td className="p-2 border">
-                      <button
-                        onClick={() => handleBooking(`Slot${i + 1}#Monday#${weekValue}`)}
-                        className={`w-24 h-10 rounded-full text-white px-2 text-text-xs truncate
-                          ${checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 0
-                            ? "bg-gray-500 cursor-not-allowed" // Trống - màu xám, không thể chọn
-                            : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 1
-                              ? "bg-yellow-500 hover:bg-yellow-400" // Chưa báo cáo - màu vàng
-                              : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 2
-                                ? "bg-green-500 hover:bg-green-400" // Đủ - màu xanh lá
-                                : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 3
-                                  ? "bg-red-500 hover:bg-red-400" // Thiếu/Hỏng - màu đỏ
-                                  : "bg-gray-500 cursor-not-allowed" // Default case
+                                : saturdayStatus.reportStatus === 3
+                                  ? "Trống"
+                                  : ""}
+                        </button>
+                      </td>
+                      {/* Sunday */}
+                      <td className="p-2 border">
+                        <button
+                          onClick={() => {
+                            if (sundayStatus.reportStatus === 2 && sundayStatus.id) {
+                              handleOpenReviewModal(sundayStatus.id);
+                            }
+                          }}
+                          className={`w-24 h-10 rounded-full text-white px-2 text-xs truncate
+                      ${sundayStatus.reportStatus === 0
+                              ? "bg-yellow-500 hover:bg-yellow-400 cursor-not-allowed opacity-50"
+                              : sundayStatus.reportStatus === 1
+                                ? "bg-green-500 hover:bg-green-400 cursor-not-allowed opacity-50"
+                                : sundayStatus.reportStatus === 2
+                                  ? "bg-red-500 hover:bg-red-400"
+                                  : sundayStatus.reportStatus === 3
+                                    ? "bg-gray-500 cursor-not-allowed opacity-50"
+                                    : "bg-gray-500 cursor-not-allowed opacity-50"
+                            }`}
+                          disabled={
+                            sundayStatus.reportStatus !== 2 ||
+                            (!checkValidSlotSunday(slot, listBooking) &&
+                              !checkValidSlotSundayUser(slot, bookingUserByWeek))
                           }
-                          ${(!checkValidSlotSunday(`Slot${i + 1}`, listBooking) &&
-                            !checkValidSlotSundayUser(`Slot${i + 1}`, bookingUserByWeek)) &&
-                            "bg-gray-400 hover:bg-gray-300 cursor-not-allowed opacity-50"
-                          }`}
-                        disabled={checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 0}
-                      >
-                        {checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 0
-                          ? "Trống"
-                          : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 1
+                        >
+                          {sundayStatus.reportStatus === 0
                             ? "Chưa báo cáo"
-                            : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 2
+                            : sundayStatus.reportStatus === 1
                               ? "Đủ"
-                              : checkReportStatusSundayUser(`Slot${i + 1}`, listBooking) === 3
+                              : sundayStatus.reportStatus === 2
                                 ? "Thiếu/Hỏng"
-                                : ""}
-                      </button>
-                    </td>
-                    
-                  </tr>
-                ))}
+                                : sundayStatus.reportStatus === 3
+                                  ? "Trống"
+                                  : ""}
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
-            <div>
-              <div></div>
-              <div></div>
-            </div>
           </div>
         </div>
       </Modal>
+
+      <ReviewReport
+        isOpen={isReviewReportOpen}
+        onClose={handleReviewReportClose}
+        booking={selectedBooking}
+      />
     </>
   );
 }

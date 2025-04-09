@@ -43,7 +43,7 @@ export const ReviewReport: React.FC<ReviewReportProps> = ({ isOpen, onClose, boo
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1001]">
             <div className="bg-white rounded-md p-6 w-full max-w-xl relative">
                 <button
                     className="absolute top-2 right-3 text-gray-500 hover:text-black text-2xl"
